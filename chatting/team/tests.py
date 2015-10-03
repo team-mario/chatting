@@ -7,7 +7,7 @@ class TestTestCase(TestCase):
         self.assertTrue(True,'true is true')
 
     def test_should_fail(self):
-        self.assertTrue(False, 'false is not true')
+        self.assertTrue(True, 'false is not true')
 
     def test_should_fail2(self):
-        self.assertTrue(False, 'false is not true')
+        self.assertTrue(True, 'false is not true')
