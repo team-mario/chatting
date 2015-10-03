@@ -4,7 +4,7 @@ python:
 - 3.4
 install:
 - pip install -r requirements.txt
-- pip install pytest coveralls pytest-django
+- pip install -r test_requirements.txt
 before_script:
 - flake8 chatting
 script:
