@@ -5,3 +5,6 @@ from django.test import TestCase
 class TestTestCase(TestCase):
     def test_test1(self):
         self.assertTrue(True,'true is true')
+
+    def test_should_fail(self):
+        self.assertTrue(False, 'false is not true')
