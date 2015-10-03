@@ -5,6 +5,8 @@ python:
 install:
 - pip install -r requirements.txt
 - pip install pytest coveralls pytest-django
+before_script:
+- flake8 chatting
 script:
 - py.test chatting
 after_success:
