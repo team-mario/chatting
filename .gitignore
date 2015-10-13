@@ -60,3 +60,6 @@ target/
 # sqlite
 *.sqlite3
 *.sq3
+
+
+*.env
