@@ -62,4 +62,4 @@ target/
 *.sq3
 
 
-.env
+*.env
