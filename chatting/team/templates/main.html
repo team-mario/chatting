@@ -1,1 +1,9 @@
 {% extends 'base.html' %}
+
+{% block login_block %}
+Login with <a href="/team/login/fb">Facebook</a>.<br />
+        <form action="/team/login/fb">
+            <input type="text" name="id" value="me.yahoo.com" />
+            <input type="submit" value="Authenticate With OpenID">
+        </form>
+{% endblock%}
