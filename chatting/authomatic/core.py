@@ -1263,8 +1263,7 @@ class Authomatic(object):
         # Set logging level.
         if logger is None:
             self._logger.setLevel(logging_level)
-    
-    
+
     def login(self, adapter, provider_name, callback=None, session=None, session_saver=None, **kwargs):
         """
         If :data:`provider_name` specified, launches the login procedure
@@ -1313,7 +1312,7 @@ class Authomatic(object):
                                    secure=self.secure_cookie)
     
                 session_saver = session.save
-    
+
             # Resolve provider class.
             class_ = provider_settings.get('class_')
             if not class_:

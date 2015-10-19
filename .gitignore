@@ -63,6 +63,6 @@ target/
 
 
 *.env
-
+.idea
 # Facebook App Key
 /chatting/chatting/facebookconfig.py

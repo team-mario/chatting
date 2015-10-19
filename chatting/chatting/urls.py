@@ -20,7 +20,7 @@ from team import urls as team_urls
 
 urlpatterns = [
     # url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', team_views.main_page, name='main'),
+    url(r'^$', team_views.home_page, name='home'),
     url(r'^team/', include(team_urls))
     # url(r'^accounts/', include(account_urls))
 ]
