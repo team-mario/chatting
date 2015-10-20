@@ -1,5 +1,4 @@
 from django.db import models
-from django.core.urlresolvers import reverse
 
 
 class UserInfo(models.Model):
@@ -12,5 +11,3 @@ class UserInfo(models.Model):
 
     def __repr__(self):
         return '<UserInfo %s>' % self.user_name
-
-

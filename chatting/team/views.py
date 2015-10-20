@@ -1,9 +1,6 @@
 from django.shortcuts import render, redirect
-
-from django.http import HttpResponse
 from authomatic.core import Authomatic
 from authomatic.adapters import DjangoAdapter
-
 from team.config import CONFIG
 from team.models import UserInfo
 
