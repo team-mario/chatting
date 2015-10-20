@@ -32,10 +32,10 @@ class LoginTest(FunctionalTest):
         # He logs with facebook by clicking confirm button.
         self.browser.find_element_by_id(
             'email'
-        ).send_keys('sgs4716@naver.com')
+        ).send_keys('')
         self.browser.find_element_by_id(
             'pass'
-        ).send_keys('dlehdduq01')
+        ).send_keys('')
 
         self.browser.find_element_by_id('u_0_2').click()
 
