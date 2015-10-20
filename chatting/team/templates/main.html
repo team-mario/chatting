@@ -1,1 +1,9 @@
 {% extends 'base.html' %}
+
+{% block user_info_table %}
+    <table>
+        <td>{{ user_info.user_id }}</td>
+        <td>{{ user_info.user_name }}</td>
+    </table>
+{% endblock %}
+

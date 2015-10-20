@@ -15,36 +15,47 @@ def home_page(request):
 
 
 def login_page(request, provider_name):
+
     # We we need the response object for the adapter.
-    res_redirect = redirect('/team/main')
+    res_redirect = redirect('main')
+
     # Start the login procedure.
     result = authomatic.login(DjangoAdapter(request, res_redirect), provider_name)
 
     # If there is no result, the login procedure is still pending.
     # Don't write anything to the response if there is no result!
     if result:
-        '''
-        # If there is result, the login procedure is over and we can write to response.
-        response.write('<a href="/">Home</a>')
-        response.write(dir(result))
+        user_info_model = UserInfo
+        if not (result.user.name and result.user.id):
+            result.user.update()
+        user_id = format(result.user.id)
+        user_name = format(result.user.name)
 
-        if result.error:
-            # Login procedure finished with an error.
-            response.write('<h2>Damn that error: {0}</h2>'.format(result.error.message))
+        if user_info_model.objects.filter(user_id=user_id).exists():
+            request.session['user_id'] = user_id
+            return res_redirect
+        else:
+            user_info = user_info_model.objects.create(user_id=user_id, user_name=user_name)
+            user_info.save()
+            request.session['user_id'] = user_id
+            return res_redirect
 
-        elif result.user:
-            # OAuth 2.0 and OAuth 1.0a provide only limited user data on login,
-            # We need to update the user to get more info.
-            if not (result.user.name and result.user.id):
-                result.user.update()
-            # Check if user's id is already exists
-            response.write(u'<h1>Hi {0}</h1>'.format(result.user.name))
-            response.write(u'<h2>Your id is: {0}</h2>'.format(result.user.id))
-        '''
-
-    # return response
     return res_redirect
 
 
 def main_page(request):
+    user_info_model = UserInfo
+    user_id = request.session['user_id']
+    if user_info_model.objects.filter(user_id=user_id).exists():
+        user_info = user_info_model.objects.get(user_id=user_id)
+        return render(request, 'main.html', {'user_info': user_info})
+
     return render(request, 'main.html')
+
+
+def log_out(request):
+    try:
+        del request.session['user_id']
+    except KeyError:
+        pass
+    return render(request, 'home.html')

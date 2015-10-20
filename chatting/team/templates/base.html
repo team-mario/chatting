@@ -10,10 +10,19 @@
     </head>
     <body>
     <div class="container">
+
         <div class="row">
             {% block login_block %}
             {% endblock %}
         </div>
+
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                {% block user_info_table %}
+                {% endblock %}
+            </div>
+        </div>
+
     </div>
 
     <!-- CDN for bootstrap and jquery js files. -->
