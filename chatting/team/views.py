@@ -12,7 +12,6 @@ def home_page(request):
 
 
 def login_page(request, provider_name):
-
     # We we need the response object for the adapter.
     res_redirect = redirect('main')
 
@@ -46,13 +45,15 @@ def main_page(request):
     if user_info_model.objects.filter(user_id=user_id).exists():
         user_info = user_info_model.objects.get(user_id=user_id)
         return render(request, 'main.html', {'user_info': user_info})
-
+    else:  # It should throw error page .
+        return render(request, 'main.html')
     return render(request, 'main.html')
 
 
 def log_out(request):
     try:
         del request.session['user_id']
+        return redirect('home')
     except KeyError:
         pass
-    return render(request, 'home.html')
+    return redirect('home')
