@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block logout_block %}
+<a href="/team/logout/" class="login_btn">Logout</a>
+{% endblock %}
+
+{% block user_info_table %}
+    <table>
+        <td>{{ user_info.user_id }}</td>
+        <td>{{ user_info.user_name }}</td>
+    </table>
+{% endblock %}
+

@@ -60,3 +60,9 @@ target/
 # sqlite
 *.sqlite3
 *.sq3
+
+
+*.env
+.idea
+# Facebook App Key
+/chatting/chatting/facebookconfig.py
