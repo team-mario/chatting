@@ -7,12 +7,12 @@ from django.template.loader import render_to_string
 
 #  Create your tests here.
 class TeamTest(TestCase):
-    # root url이 index 함수를 호출하는게 맞는지 검사
+    # check  '/'(url) is return right function(func : index)
     def test_root_url_resolves_to_index(self):
         found = resolve('/')
         self.assertEqual(found.func, index)
 
-    # index 함수가 index.html을 랜더링 하는지 검사
+    # check that 'function index' is return base.html
     def test_index_returns_correct_html(self):
         request = HttpRequest()
         response = index(request)

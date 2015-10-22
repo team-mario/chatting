@@ -1,7 +1,5 @@
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-import datetime
 
 
 class NewVisitorTest(StaticLiveServerTestCase):
@@ -27,17 +25,17 @@ class NewVisitorTest(StaticLiveServerTestCase):
         nav = self.browser.find_element_by_tag_name('nav')
         div = nav.find_element_by_tag_name('div')
         h2 = div.find_element_by_tag_name('h2')
-        ul = div.find_element_by_tag_name('ul')
 
         # check nav > h2 : sorted issue title
-        text_h2 = self.browser.find_element_by_tag_name('h2').text
-        self.assertEqual('Favourite Issues', text_h2)
+        self.assertEqual('Favourite Issues', h2.text)
 
         # check the right class? (nav > div)
         self.assertIn('sorted_issue_list', div.get_attribute('class'))
 
         # check search input box
-        self.assertEqual(self.browser.find_element_by_id('q').get_attribute('placeholder'), 'search here')
+        input_search = self.browser.find_element_by_id('q')
+        self.assertEqual(input_search.get_attribute('placeholder'), 'search here')
 
         # check search button
-        self.assertEqual(self.browser.find_element_by_id('btn_search').get_attribute('value'), 'Search')
+        btn_search = self.browser.find_element_by_id('btn_search')
+        self.assertEqual(btn_search.get_attribute('value'), 'Search')
