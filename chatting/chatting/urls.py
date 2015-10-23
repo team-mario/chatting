@@ -14,10 +14,10 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
 from django.conf.urls import url
-from chatting.team import views as team_views
-
+from team.views import PostIssueForm
 
 urlpatterns = [
-    url(r'^admin/', include(admin.site.urls)),
-    url(r'^', 'team.views.index'),
+    # url(r'^admin/', include(admin.site.urls)),
+    url(r'^', 'team.views.index', name='index'),
+    url(r'^', PostIssueForm.as_view(), name='post_issue_form')
 ]
