@@ -18,6 +18,6 @@ from chatting.team import views as team_views
 
 
 urlpatterns = [
-    # url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', team_views.main_page, name='main'),
+    url(r'^admin/', include(admin.site.urls)),
+    url(r'^', 'team.views.index'),
 ]
