@@ -21,8 +21,8 @@ class NewVisitorTest(StaticLiveServerTestCase):
         text_h1 = self.browser.find_element_by_tag_name('h1').text
         self.assertEqual('TeamMario', text_h1)
 
-        # check left navigation structure : nav > div > h2, ul > li
-        nav = self.browser.find_element_by_tag_name('nav')
+        # check left navigation structure : #nav > div > h2, ul > li
+        nav = self.browser.find_element_by_id('nav')
         div = nav.find_element_by_tag_name('div')
         h2 = div.find_element_by_tag_name('h2')
 
