@@ -7,6 +7,9 @@ install:
 - pip install -r test_requirements.txt
 before_script:
 - flake8 chatting
+- 'sh -e /etc/init.d/xvfb start'
+env:
+- DISPLAY=":99.0"
 script:
 - py.test chatting
 after_success:
