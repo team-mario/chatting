@@ -59,3 +59,18 @@ class NewVisitorTest(StaticLiveServerTestCase):
         self.assertRegex(self.browser.current_url, url_regex_str)
 
         self.check_basic_layout()
+
+        # start check message page
+        messages_input_container = \
+            self.browser.find_element_by_id('messages_input_container')
+
+        # check messages input box
+        messages_input_box = messages_input_container.find_element_by_id('msg')
+
+        self.assertEqual(messages_input_box.get_attribute("class"),
+                         "messages_input_box")
+
+        messages_list_container = \
+            self.browser.find_element_by_id('messages_input_container')
+
+        messages_list_container.find_elements_by_tag_name("div")
