@@ -77,6 +77,10 @@ body{
     padding:3px 0;
     color:#ab9ba9;
 }
+#nav ul li a:link, #nav ul li a:hover, #nav ul li a:visited{
+    color:#ab9ba9;
+    text-decoration:underline;
+}
 #container{
     margin-left:250px;
     padding:90px 10px 10px 10px;
