@@ -6,7 +6,7 @@ install:
 - pip install -r requirements.txt
 - pip install -r test_requirements.txt
 before_script:
-- flake8 --ignore=E501 chatting
+- flake8 chatting
 - 'sh -e /etc/init.d/xvfb start'
 env:
 - DISPLAY=":99.0"

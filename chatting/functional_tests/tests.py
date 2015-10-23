@@ -34,7 +34,8 @@ class NewVisitorTest(StaticLiveServerTestCase):
 
         # check search input box
         input_search = self.browser.find_element_by_id('q')
-        self.assertEqual(input_search.get_attribute('placeholder'), 'search here')
+        self.assertEqual(input_search.get_attribute('placeholder'),
+                         'search here')
 
         # check search button
         btn_search = self.browser.find_element_by_id('btn_search')
