@@ -71,6 +71,15 @@ class NewVisitorTest(StaticLiveServerTestCase):
                          "messages_input_box")
 
         messages_list_container = \
-            self.browser.find_element_by_id('messages_input_container')
+            self.browser.find_element_by_id('messages_list_container')
 
-        messages_list_container.find_elements_by_tag_name("div")
+        # check message element
+        messages = messages_list_container.find_elements_by_tag_name("div")
+        msg = messages[0]
+        msg_send_infor = \
+            msg.find_element_by_class_name("message_send_information")
+        msg_sender = \
+            msg_send_infor.find_element_by_class_name("message_sender")
+        msg_datetime = \
+            msg_send_infor.find_element_by_class_name("message_datetime")
+        msg_content = msg.find_element_by_class_name("message_content")
