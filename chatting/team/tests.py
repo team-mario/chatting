@@ -3,14 +3,15 @@ from django.core.urlresolvers import resolve
 from team.views import index
 from django.http import HttpRequest
 from django.template.loader import render_to_string
+from message import views
 
 
 #  Create your tests here.
 class TeamTest(TestCase):
     # check  '/'(url) is return right function(func : index)
     def test_root_url_resolves_to_index(self):
-        found = resolve('/')
-        self.assertEqual(found.func, index)
+        found = resolve('/messages/project-plan')
+        self.assertEqual(found.func, views.list)
 
     # check that 'function index' is return base.html
     def test_index_returns_correct_html(self):

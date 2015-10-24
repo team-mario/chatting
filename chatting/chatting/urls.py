@@ -19,5 +19,7 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^messages/project-plan$', 'message.views.list'),
-    url(r'^', 'team.views.index'),
+    url(r'^login/', 'login.views.login'),
+    url(r'^register/', 'login.views.register'),
+    url(r'^', 'login.views.index'),
 ]
