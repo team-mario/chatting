@@ -4,8 +4,6 @@
     var last_update_time = 0;
     var csrftoken;
     $(function() {
-        get_message();
-
         $("#msg").keyup(function (e) {
             if (e.keyCode == 13) {
                 send_message($("#msg").val());
@@ -19,11 +17,22 @@
             url: '/messages/message/' + last_update_time,
             cache: false,
             success: function(response) {
-                alert('success' + response);
+                append_messsage(response);
             },
             failure: function(response) {
                 alert('sorry, load error. please try again');
             },
+        });
+    }
+    function append_messsage(messages){
+        $.each(messages, function(key){
+            var sender = messages[key].sender;
+            var datetime = messages[key].datetime;
+            var content = messages[key].content;
+
+            var message_object = '<div class="message"><div class="message_send_information"><span class="message_sender">' + sender + '</span><span class="message_datetime">' + datetime + '</span></div><div class="message_content">' + content + '</div></div>';
+
+            $("#messages_list_container").append(message_object);
         });
     }
     function csrfSafeMethod(method) {
