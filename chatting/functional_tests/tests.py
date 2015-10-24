@@ -1,14 +1,42 @@
-from selenium import webdriver
-from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from .base import FunctionalTest
 
 
-class NewVisitorTest(StaticLiveServerTestCase):
-    def setUp(self):
-        self.browser = webdriver.Firefox()
-        self.browser.implicitly_wait(3)
+class LoginTest(FunctionalTest):
 
-    def tearDown(self):
-        self.browser.quit()
+    def test_cannot_add_invalid_id_and_password(self):
+        self.browser.get(self.server_url)
+        self.get_item_input_login_box().send_keys('\n')
+        alert = self.browser.switch_to_alert()
+        error = alert.text
+        alert.accept()
+
+        self.assertEqual(error, 'Invalid id or password')
+
+        self.get_item_input_password_box().send_keys('\n')
+        alert = self.browser.switch_to_alert()
+        error = alert.text
+        alert.accept()
+        self.assertEqual(error, 'Invalid id or password')
+
+        self.get_item_input_login_box().send_keys('test id')
+        self.get_item_input_password_box().send_keys('test password\n')
+
+        alert = self.browser.switch_to_alert()
+        error = alert.text
+        alert.accept()
+        self.assertEqual(error, 'Invalid id or password')
+
+    def test_cannot_register_invalid_form(self):
+        self.browser.get(self.server_url)
+
+        self.browser.find_element_by_id('register_btn').click()
+        self.browser.find_element_by_id('id_name').send_keys('123')
+        self.browser.find_element_by_id('id_password').send_keys('321')
+        self.browser.find_element_by_id('id_checkPassword').send_keys('123')
+        self.browser.find_element_by_id('submit_btn').click()
+
+
+class NewVisitorTest(FunctionalTest):
 
     def check_basic_layout(self):
         # check browser title
@@ -39,9 +67,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
         self.assertEqual(btn_search.get_attribute('value'), 'Search')
 
     def test_new_visitor(self):
-        # execute browser
-        self.browser.get(self.live_server_url)
-
+        self.login()
         self.check_basic_layout()
 
         # find element by id 'project plan' issue
@@ -59,3 +85,6 @@ class NewVisitorTest(StaticLiveServerTestCase):
         self.assertRegex(self.browser.current_url, url_regex_str)
 
         self.check_basic_layout()
+
+
+
