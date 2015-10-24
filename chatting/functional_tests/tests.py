@@ -85,6 +85,3 @@ class NewVisitorTest(FunctionalTest):
         self.assertRegex(self.browser.current_url, url_regex_str)
 
         self.check_basic_layout()
-
-
-

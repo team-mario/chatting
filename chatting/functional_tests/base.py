@@ -2,8 +2,8 @@ from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 import sys
 from selenium import webdriver
 
-class FunctionalTest(StaticLiveServerTestCase):
 
+class FunctionalTest(StaticLiveServerTestCase):
     @classmethod
     def setUpClass(cls):
         for arg in sys.argv:
@@ -18,7 +18,6 @@ class FunctionalTest(StaticLiveServerTestCase):
     def tearDownClass(cls):
         if cls.server_url == cls.live_server_url:
             super().tearDownClass()
-
 
     def setUp(self):
         self.browser = webdriver.Firefox()

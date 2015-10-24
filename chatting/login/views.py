@@ -21,12 +21,15 @@ def register(request):
         for list in name_list:
             isvalid = False
 
-        if form.is_valid() and password1 == password2 and isvalid == True:
+        if form.is_valid() and password1 == password2 and isvalid is True:
             save_user_information(user_id, password1)
             return HttpResponseRedirect('/')
         else:
             form = RegisterForm
-            return render(request, 'login/main.html', {'msg': 'Invalid id or password', 'form': form})
+            return render(request,
+                          'login/main.html',
+                          {'msg': 'Invalid id or password',
+                           'form': form})
 
 
 def login(request):
@@ -47,10 +50,12 @@ def login(request):
             return render(request, 'message/list.html', context)
         else:
             form = RegisterForm
-            return render(request, 'login/main.html', {'msg': 'Invalid id or password', 'form': form})
+            return render(request,
+                          'login/main.html',
+                          {'msg': 'Invalid id or password',
+                           'form': form})
 
 
 def save_user_information(aname, apassword):
     q = User(name=aname, password=apassword)
     q.save()
-
