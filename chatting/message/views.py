@@ -3,12 +3,13 @@ from message.models import Message
 from django.http import HttpResponse
 import json
 import datetime
+import time
 
 
 # Create your views here.
-def list(request):
+def message_list(request):
     messages = []
-    current_datetime = datetime.datetime.now()
+    current_timestamp = int(time.time())
     for data in Message.objects.all().order_by('id'):
             dic = {}
             dic['sender'] = data.sender
@@ -18,7 +19,7 @@ def list(request):
 
     context = {
         'messages': messages,
-        'current_datetime': current_datetime,
+        'current_timestamp': current_timestamp,
     }
 
     return render(
@@ -28,7 +29,7 @@ def list(request):
     )
 
 
-def message(request, last_update_time=None):
+def message_create(request):
     if request.method == 'POST':
         Message.objects.create(
             sender=request.POST.get('sender', ''),
@@ -36,11 +37,13 @@ def message(request, last_update_time=None):
         )
         return HttpResponse("inserted")
 
-    elif request.method == 'GET':
-        if last_update_time is None:
-            last_update_time = request.GET.get('last_update_time', None)
+    return HttpResponse("error")
 
-        if last_update_time is not None:
+def message_receive(request):
+    if request.method == 'GET':
+        last_primary_key = request.GET.get('last_primary_key', None)
+
+        if last_primary_key is not None:
             messages = []
             for data in Message.objects.all().order_by('id'):
                     dic = {}

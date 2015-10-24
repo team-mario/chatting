@@ -1,9 +1,10 @@
 {% extends "common/base.html" %}
 {% block container %}
 <script type="text/javascript">
-    var last_update_time = 0;
+    var last_update_time = {{ current_timestamp }};
     var csrftoken;
     $(function() {
+        last_update_time = $.now();
         $("#msg").keyup(function (e) {
             if (e.keyCode == 13) {
                 send_message($("#msg").val());
@@ -14,7 +15,8 @@
         $.ajax({
             type: 'GET',
             contentType: 'application/json',
-            url: '/messages/message/' + last_update_time,
+            url: '/messages/receive',
+            data: {'last_primary_key': '10'},
             cache: false,
             success: function(response) {
                 append_messsage(response);
@@ -36,13 +38,14 @@
         });
     }
     function send_message(msg){
+        last_update_time = $.now()
         csrftoken = getCookie('csrftoken');
         if(!csrftoken)
             csrftoken = $("input[name*='csrfmiddlewaretoken']").val();
 
         $.ajax({
             type: 'POST',
-            url: '/messages/message',
+            url: '/messages/create',
             data: {content: msg, sender:'bbayoung7849'},
             cache: false,
             beforeSend:function(xhr){
