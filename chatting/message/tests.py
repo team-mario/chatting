@@ -17,18 +17,16 @@ class TeamTest(TestCase):
     def test_message_list_return_correct_data(self):
         Message.objects.create(
             sender='bbayoung7849',
-            datetime='2015-06-09 00:00:00',
             content='우하하하하하',
         )
 
         response = self.client.get('/messages/project-plan')
-        messages = response.context['messages']
+        message = response.context['messages']
+        message = message[0]
 
-        # check correct json data
-        for data in messages:
-            self.assertEqual(data['sender'], 'bbayoung7849')
-            self.assertEqual(data['content'], '우하하하하하')
-            self.assertIsNotNone(data['datetime'])
+        self.assertEqual(message['sender'], 'bbayoung7849')
+        self.assertEqual(message['content'], '우하하하하하')
+        self.assertIsNotNone(message['datetime'])
 
         self.assertEqual(response.context['last_primary_key'], 0)
 
