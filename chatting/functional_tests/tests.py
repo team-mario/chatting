@@ -92,3 +92,4 @@ class NewVisitorTest(StaticLiveServerTestCase):
         # check compate send message to display message
         self.assertEqual(msg_sender.text, 'bbayoung7849')
         self.assertEqual(msg_content.text, 'parkyoungwoo')
+        self.assertIsNotNone(msg_datetime)

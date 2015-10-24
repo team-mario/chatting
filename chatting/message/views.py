@@ -2,14 +2,11 @@ from django.shortcuts import render
 from message.models import Message
 from django.http import HttpResponse
 import json
-import datetime
-import time
 
 
 # Create your views here.
 def message_list(request):
     messages = []
-    current_timestamp = int(time.time())
     for data in Message.objects.all().order_by('id'):
             dic = {}
             dic['sender'] = data.sender
@@ -19,7 +16,7 @@ def message_list(request):
 
     context = {
         'messages': messages,
-        'current_timestamp': current_timestamp,
+        'last_primary_key': 0,
     }
 
     return render(
@@ -38,6 +35,7 @@ def message_create(request):
         return HttpResponse("inserted")
 
     return HttpResponse("error")
+
 
 def message_receive(request):
     if request.method == 'GET':

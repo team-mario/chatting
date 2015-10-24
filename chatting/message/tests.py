@@ -3,10 +3,7 @@ from django.core.urlresolvers import resolve
 from message.views import message_list, message_create, message_receive
 from message.models import Message
 from django.http import HttpRequest
-from django.template.loader import render_to_string
 import json
-import datetime
-import time
 
 
 #  Create your tests here.
@@ -33,6 +30,7 @@ class TeamTest(TestCase):
             self.assertEqual(data['content'], '우하하하하하')
             self.assertIsNotNone(data['datetime'])
 
+        self.assertEqual(response.context['last_primary_key'], 0)
 
     def test_message_create_from_POST_data(self):
         request = HttpRequest()
@@ -40,7 +38,7 @@ class TeamTest(TestCase):
         request.POST['sender'] = 'bbayoung7849'
         request.POST['content'] = 'wow wow'
 
-        response = message_create(request)
+        message_create(request)
 
         # compare stored message data to request data
         self.assertEqual(Message.objects.count(), 1)
