@@ -30,9 +30,12 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+FIXTURE_DIRS = (
+    os.path.join(BASE_DIR, "message/fixtures/"),
+)
+
 
 # Application definition
-
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',

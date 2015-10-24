@@ -8,6 +8,8 @@ import json
 
 #  Create your tests here.
 class TeamTest(TestCase):
+    fixtures = ['fixtures/initial_data.json', ]
+
     # check  '/messages/issue'(url) is return 'message_list' function
     def test_issue_url_resolves_to_message_list(self):
         found = resolve('/messages/project-plan')
