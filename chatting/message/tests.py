@@ -1,9 +1,10 @@
 from django.test import TestCase
 from django.core.urlresolvers import resolve
-from message.views import list
+from message.views import list, message
 from message.models import Message
 from django.http import HttpRequest
 from django.template.loader import render_to_string
+import json
 
 
 #  Create your tests here.
@@ -19,6 +20,46 @@ class TeamTest(TestCase):
         response = list(request)
         expected_html = render_to_string('message/list.html')
         self.assertEqual(response.content.decode(), expected_html)
+
+    # check 'list function' is return json data
+    def test_message_list_return_correct_json(self):
+        request = HttpRequest()
+        response = list(request)
+        # messages = json.load(response.content['messages'].decode())
+
+    # check message insert from post request
+    # and message return correct json data
+    def test_message_save_POST_request_and_GET_return_correct_json(self):
+        request = HttpRequest()
+        request.method = 'POST'
+        request.POST['sender'] = 'bbayoung7849'
+        request.POST['content'] = 'wow wow'
+
+        response = message(request)
+
+        # compare stored message data to request data
+        self.assertEqual(Message.objects.count(), 1)
+        new_message = Message.objects.first()
+        self.assertEqual(new_message.sender, 'bbayoung7849')
+        self.assertEqual(new_message.content, 'wow wow')
+
+        # check response data
+        self.assertEqual(response.content.decode(), 'inserted')
+
+        # check return correct json data
+        request = HttpRequest()
+        request.method = 'GET'
+        request.GET['last_update_time'] = '0'
+
+        response = message(request)
+
+        messages = json.loads(response.content.decode())
+
+        for data in messages:
+            self.assertIsNotNone(data['sender'])
+            self.assertIsNotNone(data['datetime'])
+            self.assertIsNotNone(data['content'])
+
 
 class MessageModelTest(TestCase):
     def test_saving_and_retrieving_message(self):

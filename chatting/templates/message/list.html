@@ -1,56 +1,83 @@
 {% extends "common/base.html" %}
 {% block container %}
+<script type="text/javascript">
+    var last_update_time = 0;
+    var csrftoken;
+    $(function() {
+        get_message();
+
+        $("#msg").keyup(function (e) {
+            if (e.keyCode == 13) {
+                send_message($("#msg").val());
+            }
+        });
+    });
+    function get_message(){
+        $.ajax({
+            type: 'GET',
+            contentType: 'application/json',
+            url: '/messages/message/' + last_update_time,
+            cache: false,
+            success: function(response) {
+                alert('success' + response);
+            },
+            failure: function(response) {
+                alert('sorry, load error. please try again');
+            },
+        });
+    }
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+    function send_message(msg){
+        csrftoken = getCookie('csrftoken');
+        $.ajax({
+            type: 'POST',
+            url: '/messages/message',
+            data: {content: msg, sender:'bbayoung1234'},
+            cache: false,
+            beforeSend:function(xhr){
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            },
+            success: function(response) {
+                get_message();
+            },
+            failure: function(response) {
+                alert('sorry, insert error. please try again');
+            },
+            complete: function(){
+                $("#msg").val("");
+            },
+        });
+    }
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+</script>
 
 <div id="messages_list_container">
-    <div class="message">
-        <div class="message_send_information">
-            <span class="message_sender">bbayoung7849</span>
-            <span class="message_datetime">4:19 PM</span>
+    {% for message in messages %}
+        <div class="message">
+            <div class="message_send_information">
+                <span class="message_sender">{{ message.sender }}</span>
+                <span class="message_datetime">{{ message.datetime }}</span>
+            </div>
+            <div class="message_content">{{ message.content }}</div>
         </div>
-        <div class="message_content">contents</div>
-    </div>
-    <div class="message">
-        <div class="message_send_information">
-            <span class="message_sender">bbayoung7849</span>
-            <span class="message_datetime">4:19 PM</span>
-        </div>
-        <div class="message_content">contents</div>
-    </div>
-    <div class="message">
-        <div class="message_send_information">
-            <span class="message_sender">bbayoung7849</span>
-            <span class="message_datetime">4:19 PM</span>
-        </div>
-        <div class="message_content">contents</div>
-    </div>
-    <div class="message">
-        <div class="message_send_information">
-            <span class="message_sender">bbayoung7849</span>
-            <span class="message_datetime">4:19 PM</span>
-        </div>
-        <div class="message_content">contents</div>
-    </div>
-    <div class="message">
-        <div class="message_send_information">
-            <span class="message_sender">bbayoung7849</span>
-            <span class="message_datetime">4:19 PM</span>
-        </div>
-        <div class="message_content">contents</div>
-    </div>
-    <div class="message">
-        <div class="message_send_information">
-            <span class="message_sender">bbayoung7849</span>
-            <span class="message_datetime">4:19 PM</span>
-        </div>
-        <div class="message_content">contents</div>
-    </div>
-    <div class="message">
-        <div class="message_send_information">
-            <span class="message_sender">bbayoung7849</span>
-            <span class="message_datetime">4:19 PM</span>
-        </div>
-        <div class="message_content">contents</div>
-    </div>
+    {% endfor %}
 </div>
 
 <div id="messages_input_container">

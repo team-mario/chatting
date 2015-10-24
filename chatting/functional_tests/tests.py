@@ -1,5 +1,6 @@
 from selenium import webdriver
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from selenium.webdriver.common.keys import Keys
 
 
 class NewVisitorTest(StaticLiveServerTestCase):
@@ -70,6 +71,10 @@ class NewVisitorTest(StaticLiveServerTestCase):
         self.assertEqual(messages_input_box.get_attribute("class"),
                          "messages_input_box")
 
+        # message send
+        messages_input_box.send_keys('parkyoungwoo')
+        messages_input_box.send_keys(Keys.ENTER)
+
         messages_list_container = \
             self.browser.find_element_by_id('messages_list_container')
 
@@ -83,3 +88,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
         msg_datetime = \
             msg_send_infor.find_element_by_class_name("message_datetime")
         msg_content = msg.find_element_by_class_name("message_content")
+
+        # check compate send message to display message
+        self.assertEqual(msg_sender.text, 'bbayoung7849')
+        self.assertEqual(msg_content.text, 'parkyoungwoo')

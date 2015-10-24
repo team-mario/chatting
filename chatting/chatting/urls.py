@@ -19,5 +19,7 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^messages/project-plan$', 'message.views.list'),
+    url(r'^messages/message$', 'message.views.message'),
+    url(r'^messages/message/([0-9]+)', 'message.views.message'),
     url(r'^', 'team.views.index'),
 ]
