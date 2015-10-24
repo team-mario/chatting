@@ -14,7 +14,7 @@ class TeamTest(TestCase):
         self.assertEqual(found.func, message_list)
 
     # check 'message_list' function
-    def test_message_list_correct_return_data(self):
+    def test_message_list_return_correct_data(self):
         Message.objects.create(
             sender='bbayoung7849',
             datetime='2015-06-09 00:00:00',
@@ -40,13 +40,12 @@ class TeamTest(TestCase):
 
         message_create(request)
 
-        # compare stored message data to request data
         self.assertEqual(Message.objects.count(), 1)
         new_message = Message.objects.first()
         self.assertEqual(new_message.sender, 'bbayoung7849')
         self.assertEqual(new_message.content, 'wow wow')
 
-    # 'messaage_receive' is function name
+    # check 'messaage_receive' function
     def test_message_receive_return_correct_json_data(self):
         request = HttpRequest()
         request.method = 'POST'

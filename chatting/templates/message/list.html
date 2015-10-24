@@ -17,28 +17,26 @@
             data: {'last_primary_key': '10'},
             cache: false,
             success: function(response) {
-                append_messsage(response);
+                append_messsage_to_div(response);
             },
             failure: function(response) {
                 alert('sorry, load error. please try again');
             },
         });
     }
-    function append_messsage(messages){
+    function append_messsage_to_div(messages){
         $.each(messages, function(key){
             var sender = messages[key].sender;
             var datetime = messages[key].datetime;
             var content = messages[key].content;
 
-            var message_object = '<div class="message"><div class="message_send_information"><span class="message_sender">' + sender + '</span><span class="message_datetime">' + datetime + '</span></div><div class="message_content">' + content + '</div></div>';
+            var message_tag = '<div class="message"><div class="message_send_information"><span class="message_sender">' + sender + '</span><span class="message_datetime">' + datetime + '</span></div><div class="message_content">' + content + '</div></div>';
 
-            $("#messages_list_container").append(message_object);
+            $("#messages_list_container").append(message_tag);
         });
     }
     function send_message(msg){
-        csrftoken = getCookie('csrftoken');
-        if(!csrftoken)
-            csrftoken = $("input[name*='csrfmiddlewaretoken']").val();
+        csrftoken = $("input[name*='csrfmiddlewaretoken']").val();
 
         $.ajax({
             type: 'POST',
@@ -58,21 +56,6 @@
                 $("#msg").val("");
             },
         });
-    }
-    function getCookie(name) {
-        var cookieValue = null;
-        if (document.cookie && document.cookie != '') {
-            var cookies = document.cookie.split(';');
-            for (var i = 0; i < cookies.length; i++) {
-                var cookie = jQuery.trim(cookies[i]);
-                // Does this cookie string begin with the name we want?
-                if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        return cookieValue;
     }
 </script>
 {% csrf_token %}
