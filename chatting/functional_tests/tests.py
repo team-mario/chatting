@@ -3,7 +3,12 @@ from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium.webdriver.common.keys import Keys
 
 
+fixtures_data_count = 5
+
+
 class NewVisitorTest(StaticLiveServerTestCase):
+    fixtures = ['initial_data.json', ]
+
     def setUp(self):
         self.browser = webdriver.Firefox()
         self.browser.implicitly_wait(3)
@@ -79,8 +84,10 @@ class NewVisitorTest(StaticLiveServerTestCase):
             self.browser.find_element_by_id('messages_list_container')
 
         # check message element
-        messages = messages_list_container.find_elements_by_tag_name("div")
-        msg = messages[0]
+        messages = \
+            messages_list_container.find_elements_by_class_name("message")
+        msg = messages[fixtures_data_count]
+
         msg_send_infor = \
             msg.find_element_by_class_name("message_send_information")
         msg_sender = \

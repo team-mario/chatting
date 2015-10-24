@@ -7,8 +7,11 @@ import json
 
 
 #  Create your tests here.
+fixtures_data_count = 5
+
+
 class TeamTest(TestCase):
-    fixtures = ['fixtures/initial_data.json', ]
+    fixtures = ['initial_data.json', ]
 
     # check  '/messages/issue'(url) is return 'message_list' function
     def test_issue_url_resolves_to_message_list(self):
@@ -18,49 +21,53 @@ class TeamTest(TestCase):
     # check 'message_list' function
     def test_message_list_return_correct_data(self):
         Message.objects.create(
-            sender='bbayoung7849',
+            sender='mario',
             content='우하하하하하',
         )
 
         response = self.client.get('/messages/project-plan')
-        message = response.context['messages']
-        message = message[0]
+        messages = response.context['messages']
+        message = messages[fixtures_data_count]
 
-        self.assertEqual(message['sender'], 'bbayoung7849')
+        self.assertEqual(message['sender'], 'mario')
         self.assertEqual(message['content'], '우하하하하하')
-        self.assertIsNotNone(message['datetime'])
 
-        self.assertEqual(response.context['last_primary_key'], 0)
+        last_primary_key = Message.objects.last().id
+        self.assertEqual(response.context['last_primary_key'],
+                         last_primary_key)
 
     def test_message_create_from_POST_data(self):
         request = HttpRequest()
         request.method = 'POST'
-        request.POST['sender'] = 'bbayoung7849'
-        request.POST['content'] = 'wow wow'
+        request.POST['sender'] = 'testing_goat'
+        request.POST['content'] = 'wow_wow'
 
         message_create(request)
 
-        self.assertEqual(Message.objects.count(), 1)
-        new_message = Message.objects.first()
-        self.assertEqual(new_message.sender, 'bbayoung7849')
-        self.assertEqual(new_message.content, 'wow wow')
+        self.assertEqual(Message.objects.count(), fixtures_data_count + 1)
+        new_message = Message.objects.last()
+        self.assertEqual(new_message.sender, 'testing_goat')
+        self.assertEqual(new_message.content, 'wow_wow')
 
     # check 'messaage_receive' function
     def test_message_receive_return_correct_json_data(self):
+        last_primary_key = Message.objects.last().id
+
         request = HttpRequest()
         request.method = 'POST'
         request.POST['sender'] = 'tester'
         request.POST['content'] = 'test contest'
-        response = message_create(request)
+        message_create(request)
 
         request = HttpRequest()
         request.method = 'GET'
-        request.GET['last_primary_key'] = 10
+        request.GET['last_primary_key'] = last_primary_key
 
         response = message_receive(request)
         messages = json.loads(response.content.decode())
 
         for data in messages:
+            self.assertTrue(data['id'] > 0)
             self.assertEqual(data['sender'], 'tester')
             self.assertEqual(data['content'], 'test contest')
             self.assertIsNotNone(data['datetime'])

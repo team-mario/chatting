@@ -2,6 +2,7 @@
 {% block container %}
 <script type="text/javascript">
     var csrftoken;
+    var last_primary_key = {{ last_primary_key }};
     $(function() {
         $("#msg").keyup(function (e) {
             if (e.keyCode == 13) {
@@ -14,13 +15,16 @@
             type: 'GET',
             contentType: 'application/json',
             url: '/messages/receive',
-            data: {'last_primary_key': '10'},
+            data: {'last_primary_key': last_primary_key},
             cache: false,
-            success: function(response) {
+            success: function(response){
                 append_messsage_to_div(response);
             },
             failure: function(response) {
                 alert('sorry, load error. please try again');
+            },
+            complete:function(response){
+                console.log(JSON.stringify(response));
             },
         });
     }
@@ -33,6 +37,7 @@
             var message_tag = '<div class="message"><div class="message_send_information"><span class="message_sender">' + sender + '</span><span class="message_datetime">' + datetime + '</span></div><div class="message_content">' + content + '</div></div>';
 
             $("#messages_list_container").append(message_tag);
+            last_primary_key = messages[key].id;
         });
     }
     function send_message(msg){

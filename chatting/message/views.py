@@ -14,9 +14,11 @@ def message_list(request):
             dic['content'] = data.content
             messages.append(dic)
 
+    last_primary_key = Message.objects.last().id
+
     context = {
         'messages': messages,
-        'last_primary_key': 0,
+        'last_primary_key': last_primary_key,
     }
 
     return render(
@@ -43,8 +45,10 @@ def message_receive(request):
 
         if last_primary_key is not None:
             messages = []
-            for data in Message.objects.all().order_by('id'):
+            last_key = int(last_primary_key)
+            for data in Message.objects.filter(id__gt=last_key).order_by('id'):
                     dic = {}
+                    dic['id'] = data.id
                     dic['sender'] = data.sender
                     dic['datetime'] = str(data.datetime)
                     dic['content'] = data.content
