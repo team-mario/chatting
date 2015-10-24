@@ -5,7 +5,7 @@ from message.models import Message
 from django.http import HttpRequest
 from django.template.loader import render_to_string
 import json
-
+import datetime
 
 #  Create your tests here.
 class TeamTest(TestCase):
@@ -22,14 +22,31 @@ class TeamTest(TestCase):
         self.assertEqual(response.content.decode(), expected_html)
 
     # check 'list function' is return json data
-    def test_message_list_return_correct_json(self):
-        request = HttpRequest()
-        response = list(request)
-        # messages = json.load(response.content['messages'].decode())
+    def test_func_list(self):
+        Message.objects.create(
+            sender='bbayoung7849',
+            datetime='2015-06-09 00:00:00',
+            content='우하하하하하',
+        )
+        response = self.client.get('/messages/project-plan')
+
+        # get return value
+        messages = response.context['messages']
+        current_datetime = response.context['current_datetime']
+
+        # check correct json data
+        for data in messages:
+            self.assertEqual(data['sender'], 'bbayoung7849')
+            self.assertEqual(data['content'], '우하하하하하')
+            self.assertIsNotNone(data['datetime'])
+
+        # check current datetime
+        self.assertIsNotNone(current_datetime)
+
 
     # check message insert from post request
     # and message return correct json data
-    def test_message_save_POST_request_and_GET_return_correct_json(self):
+    def test_func_message_POST_and_GET(self):
         request = HttpRequest()
         request.method = 'POST'
         request.POST['sender'] = 'bbayoung7849'

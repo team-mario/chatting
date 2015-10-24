@@ -2,11 +2,13 @@ from django.shortcuts import render
 from message.models import Message
 from django.http import HttpResponse
 import json
+import datetime
 
 
 # Create your views here.
 def list(request):
     messages = []
+    current_datetime = datetime.datetime.now()
     for data in Message.objects.all().order_by('id'):
             dic = {}
             dic['sender'] = data.sender
@@ -14,10 +16,15 @@ def list(request):
             dic['content'] = data.content
             messages.append(dic)
 
+    context = {
+        'messages': messages,
+        'current_datetime': current_datetime,
+    }
+
     return render(
         request,
         'message/list.html',
-        {'messages': messages},
+        context
     )
 
 
