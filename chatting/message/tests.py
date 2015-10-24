@@ -77,12 +77,10 @@ class MessageModelTest(TestCase):
     def test_saving_and_retrieving_message(self):
         Message.objects.create(
             sender='bbayoung7849',
-            datetime='2015-06-09 00:00:00',
             content='우하하하하하',
         )
         Message.objects.create(
             sender='mario',
-            datetime='2014-06-09 00:00:00',
             content='wow',
         )
 
