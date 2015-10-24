@@ -35,16 +35,15 @@
             $("#messages_list_container").append(message_object);
         });
     }
-    function csrfSafeMethod(method) {
-        // these HTTP methods do not require CSRF protection
-        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-    }
     function send_message(msg){
         csrftoken = getCookie('csrftoken');
+        if(!csrftoken)
+            csrftoken = $("input[name*='csrfmiddlewaretoken']").val();
+
         $.ajax({
             type: 'POST',
             url: '/messages/message',
-            data: {content: msg, sender:'bbayoung1234'},
+            data: {content: msg, sender:'bbayoung7849'},
             cache: false,
             beforeSend:function(xhr){
                 xhr.setRequestHeader("X-CSRFToken", csrftoken);
@@ -76,7 +75,7 @@
         return cookieValue;
     }
 </script>
-
+{% csrf_token %}
 <div id="messages_list_container">
     {% for message in messages %}
         <div class="message">
