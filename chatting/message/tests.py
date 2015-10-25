@@ -30,7 +30,7 @@ class TeamTest(TestCase):
         message = messages[fixtures_data_count]
 
         # regex for check the time format (am/pm)
-        time_regex_str = "([1]|[0-2]):[0-5][0-9](\\s)?(?i)(am|pm)"
+        time_regex_str = "([1]|[0-9]):[0-5][0-9](\\s)?(?i)(am|pm)"
 
         self.assertEqual(message['sender'], 'mario')
         self.assertEqual(message['content'], '우하하하하하')
@@ -70,7 +70,7 @@ class TeamTest(TestCase):
         response = message_receive(request)
         messages = json.loads(response.content.decode())
 
-        time_regex_str = "([1]|[0-2]):[0-5][0-9](\\s)?(?i)(am|pm)"
+        time_regex_str = "([1]|[0-9]):[0-5][0-9](\\s)?(?i)(am|pm)"
 
         for data in messages:
             self.assertTrue(data['id'] > 0)
