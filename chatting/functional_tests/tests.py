@@ -96,7 +96,10 @@ class NewVisitorTest(StaticLiveServerTestCase):
             msg_send_infor.find_element_by_class_name("message_datetime")
         msg_content = msg.find_element_by_class_name("message_content")
 
+        # regex for check the time format(am/pm)
+        time_regex_str = "([1]|[0-2]):[0-5][0-9](\\s)?(?i)(am|pm)"
+
         # check compate send message to display message
         self.assertEqual(msg_sender.text, 'bbayoung7849')
         self.assertEqual(msg_content.text, 'parkyoungwoo')
-        self.assertIsNotNone(msg_datetime)
+        self.assertRegex(msg_datetime.text, time_regex_str)

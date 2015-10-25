@@ -10,7 +10,7 @@ def message_list(request):
     for data in Message.objects.all().order_by('id'):
             dic = {}
             dic['sender'] = data.sender
-            dic['datetime'] = data.datetime
+            dic['datetime'] = data.datetime.strftime("%-I:%M %p")
             dic['content'] = data.content
             messages.append(dic)
 
@@ -50,7 +50,7 @@ def message_receive(request):
                     dic = {}
                     dic['id'] = data.id
                     dic['sender'] = data.sender
-                    dic['datetime'] = str(data.datetime)
+                    dic['datetime'] = str(data.datetime.strftime("%-I:%M %p"))
                     dic['content'] = data.content
                     messages.append(dic)
             messages = json.dumps(messages)
