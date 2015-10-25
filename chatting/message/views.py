@@ -14,7 +14,10 @@ def message_list(request):
             dic['content'] = data.content
             messages.append(dic)
 
-    last_primary_key = Message.objects.last().id
+    try:
+        last_primary_key = Message.objects.last().id
+    except:
+        last_primary_key = 0
 
     context = {
         'messages': messages,

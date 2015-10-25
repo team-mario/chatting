@@ -9,7 +9,14 @@
                 send_message($("#msg").val());
             }
         });
+        scroll_to_bottom('direct');
     });
+    function scroll_to_bottom(mode){
+        if(mode == 'smooth')
+            $("html, body").animate({ scrollTop: $(document).height() }, "slow");
+        else
+            $('html, body').scrollTop( $(document).height() );
+    }
     function get_message(){
         $.ajax({
             type: 'GET',
@@ -37,6 +44,7 @@
 
             $("#messages_list_container").append(message_tag);
             last_primary_key = messages[key].id;
+            scroll_to_bottom('smooth');
         });
     }
     function send_message(msg){
