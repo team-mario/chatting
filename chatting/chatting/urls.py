@@ -18,6 +18,8 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^messages/project-plan$', 'message.views.list'),
+    url(r'^messages/project-plan$', 'message.views.message_list'),
+    url(r'^messages/create$', 'message.views.message_create'),
+    url(r'^messages/receive$', 'message.views.message_receive'),
     url(r'^', 'team.views.index'),
 ]

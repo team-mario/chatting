@@ -1,8 +1,14 @@
 from selenium import webdriver
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from selenium.webdriver.common.keys import Keys
+
+
+fixtures_data_count = 5
 
 
 class NewVisitorTest(StaticLiveServerTestCase):
+    fixtures = ['initial_data.json', ]
+
     def setUp(self):
         self.browser = webdriver.Firefox()
         self.browser.implicitly_wait(3)
@@ -59,3 +65,38 @@ class NewVisitorTest(StaticLiveServerTestCase):
         self.assertRegex(self.browser.current_url, url_regex_str)
 
         self.check_basic_layout()
+
+        # start check message page
+        messages_input_container = \
+            self.browser.find_element_by_id('messages_input_container')
+
+        # check messages input box
+        messages_input_box = messages_input_container.find_element_by_id('msg')
+
+        self.assertEqual(messages_input_box.get_attribute("class"),
+                         "messages_input_box")
+
+        # message send
+        messages_input_box.send_keys('parkyoungwoo')
+        messages_input_box.send_keys(Keys.ENTER)
+
+        messages_list_container = \
+            self.browser.find_element_by_id('messages_list_container')
+
+        # check message element
+        messages = \
+            messages_list_container.find_elements_by_class_name("message")
+        msg = messages[fixtures_data_count]
+
+        msg_send_infor = \
+            msg.find_element_by_class_name("message_send_information")
+        msg_sender = \
+            msg_send_infor.find_element_by_class_name("message_sender")
+        msg_datetime = \
+            msg_send_infor.find_element_by_class_name("message_datetime")
+        msg_content = msg.find_element_by_class_name("message_content")
+
+        # check compate send message to display message
+        self.assertEqual(msg_sender.text, 'bbayoung7849')
+        self.assertEqual(msg_content.text, 'parkyoungwoo')
+        self.assertIsNotNone(msg_datetime)

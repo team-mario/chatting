@@ -1,4 +1,82 @@
 {% extends "common/base.html" %}
 {% block container %}
-In Container Block
+<script type="text/javascript">
+    var csrftoken;
+    var last_primary_key = {{ last_primary_key }};
+    $(function() {
+        $("#msg").keyup(function (e) {
+            if (e.keyCode == 13) {
+                send_message($("#msg").val());
+            }
+        });
+    });
+    function get_message(){
+        $.ajax({
+            type: 'GET',
+            contentType: 'application/json',
+            url: '/messages/receive',
+            data: {'last_primary_key': last_primary_key},
+            cache: false,
+            success: function(response){
+                append_messsage_to_div(response);
+            },
+            failure: function(response) {
+                alert('sorry, load error. please try again');
+            },
+            complete:function(response){
+                console.log(JSON.stringify(response));
+            },
+        });
+    }
+    function append_messsage_to_div(messages){
+        $.each(messages, function(key){
+            var sender = messages[key].sender;
+            var datetime = messages[key].datetime;
+            var content = messages[key].content;
+
+            var message_tag = '<div class="message"><div class="message_send_information"><span class="message_sender">' + sender + '</span><span class="message_datetime">' + datetime + '</span></div><div class="message_content">' + content + '</div></div>';
+
+            $("#messages_list_container").append(message_tag);
+            last_primary_key = messages[key].id;
+        });
+    }
+    function send_message(msg){
+        csrftoken = $("input[name*='csrfmiddlewaretoken']").val();
+
+        $.ajax({
+            type: 'POST',
+            url: '/messages/create',
+            data: {content: msg, sender:'bbayoung7849'},
+            cache: false,
+            beforeSend:function(xhr){
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            },
+            success: function(response) {
+                get_message();
+            },
+            failure: function(response) {
+                alert('sorry, insert error. please try again');
+            },
+            complete: function(){
+                $("#msg").val("");
+            },
+        });
+    }
+</script>
+{% csrf_token %}
+<div id="messages_list_container">
+    {% for message in messages %}
+        <div class="message">
+            <div class="message_send_information">
+                <span class="message_sender">{{ message.sender }}</span>
+                <span class="message_datetime">{{ message.datetime }}</span>
+            </div>
+            <div class="message_content">{{ message.content }}</div>
+        </div>
+    {% endfor %}
+</div>
+
+<div id="messages_input_container">
+    <input type="text" name="msg" id="msg" class="messages_input_box">
+</div>
 {% endblock %}
