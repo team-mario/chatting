@@ -34,7 +34,7 @@ class TeamTest(TestCase):
 
         self.assertEqual(message['sender'], 'mario')
         self.assertEqual(message['content'], '우하하하하하')
-        self.assertRegex(message['datetime'], time_regex_str)
+        self.assertRegex(message['time'], time_regex_str)
 
         last_primary_key = Message.objects.last().id
         self.assertEqual(response.context['last_primary_key'],
@@ -76,7 +76,7 @@ class TeamTest(TestCase):
             self.assertTrue(data['id'] > 0)
             self.assertEqual(data['sender'], 'tester')
             self.assertEqual(data['content'], 'test contest')
-            self.assertRegex(data['datetime'], time_regex_str)
+            self.assertRegex(data['time'], time_regex_str)
 
 
 class MessageModelTest(TestCase):

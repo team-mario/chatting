@@ -99,7 +99,7 @@ body{
     font-size:15px;
     line-height:22px;
 }
-#messages_list_container .message_datetime{
+#messages_list_container .message_time{
     color:#ccc;
     font-size:12px;
     line-height:22px;
