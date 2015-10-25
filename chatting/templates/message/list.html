@@ -5,11 +5,12 @@
     var last_primary_key = {{ last_primary_key }};
     $(function() {
         $("#msg").keyup(function (e) {
-            if (e.keyCode == 13) {
+            if (e.keyCode == 13 && $("#msg").val() != "") {
                 send_message($("#msg").val());
             }
         });
         scroll_to_bottom('direct');
+        setInterval(get_message, 3000);
     });
     function scroll_to_bottom(mode){
         if(mode == 'smooth')
