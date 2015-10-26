@@ -36,7 +36,9 @@ class TeamTest(TestCase):
         self.assertEqual(message['content'], '우하하하하하')
         self.assertRegex(message['time'], time_regex_str)
 
-        last_primary_key = Message.objects.last().id
+        messages_list = Message.objects.all().order_by('id')
+        last_primary_key = messages_list[len(messages_list)-1].id
+
         self.assertEqual(response.context['last_primary_key'],
                          last_primary_key)
 
