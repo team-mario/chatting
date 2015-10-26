@@ -6,7 +6,7 @@ from django.views.generic import UpdateView
 def index(request):
     # Suppose I can hold a user session after login success.
     # request.session['user_id'] = '11'
-    return render(request, 'common/base.html')
+    return render(request, 'issue/post_issue_form.html')
 
 
 class PostIssueForm(UpdateView):

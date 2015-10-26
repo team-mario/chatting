@@ -1,1 +1,15 @@
-{% extends 'base.html' %}
+{% extends 'common/base.html' %}
+
+{% block post_issue_block %}
+
+<button type="button" class="btn btn-primary" id="btn_post_issue" data-toggle="modal" data-target=".bs-example-modal-sm">
+    Add Issue</button>
+
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+
+    </div>
+  </div>
+</div>
+{% endblock %}

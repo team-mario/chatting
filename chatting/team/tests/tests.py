@@ -1,11 +1,10 @@
 from django.test import TestCase
 from django.core.urlresolvers import resolve
-from team.views import index
 from django.http import HttpRequest
 from django.template.loader import render_to_string
+from team.views import index
 
 
-#  Create your tests here.
 class TeamTest(TestCase):
     # check  '/'(url) is return right function(func : index)
     def test_root_url_resolves_to_index(self):
@@ -16,5 +15,5 @@ class TeamTest(TestCase):
     def test_index_returns_correct_html(self):
         request = HttpRequest()
         response = index(request)
-        expected_html = render_to_string('common/base.html')
+        expected_html = render_to_string('issue/post_issue_form.html')
         self.assertEqual(response.content.decode(), expected_html)

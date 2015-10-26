@@ -26,7 +26,8 @@
         </div>
         <div id="nav">
             <div class='post_issue'>
-                 <a id="my_modal_runner" class='btn' href='{% url "post_issue_form"%}'>Post Issue</a>
+                 {% block post_issue_block %}
+                 {% endblock %}
             </div>
             <div class='sorted_issue_list'>
                 <h2>Favorite Issues</h2>
