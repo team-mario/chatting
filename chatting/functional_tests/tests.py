@@ -1,9 +1,37 @@
 from selenium import webdriver
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium.webdriver.common.keys import Keys
+import unittest
 
 
 fixtures_data_count = 5
+
+
+class LoginTest(unittest.TestCase):
+    def timeout(self, time_to_sleep):
+        import time
+        time.sleep(time_to_sleep)
+
+    def setUp(self):
+        self.browser = webdriver.Firefox()
+        self.browser.implicitly_wait(3)
+
+    def tearDown(self):
+        self.browser.quit()
+
+    def login_user(self):
+        self.browser.get('http://127.0.0.1:8000/')
+        self.browser.find_element_by_id('id_username').send_keys('jang')
+        self.browser.find_element_by_id('id_password').send_keys('min')
+        self.browser.find_element_by_id('login_btn').submit()
+
+    def test_login(self):
+        self.login_user()
+
+    def test_logout(self):
+        self.login_user()
+        self.browser.find_element_by_id('btn_information').click()
+        self.browser.find_element_by_id('id_logout').click()
 
 
 class NewVisitorTest(StaticLiveServerTestCase):
@@ -46,7 +74,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
 
     def test_new_visitor(self):
         # execute browser
-        self.browser.get(self.live_server_url)
+        self.browser.get('http://localhost:8000/accounts/profile/')
 
         self.check_basic_layout()
 

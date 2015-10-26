@@ -1,0 +1,16 @@
+<html>
+<head>
+    <title>Registration</title>
+</head>
+<body>
+<h1>Registration</h1>
+<form method="post" action=".">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input id="retistration_btn" type="submit" value="Registration" />
+</form>
+{% if form.errors %}
+    <p>Invalid id or password</p>
+{% endif %}
+</body>
+</html>

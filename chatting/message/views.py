@@ -8,13 +8,17 @@ import json
 def message_list(request):
     messages = []
     for data in Message.objects.all().order_by('id'):
-            dic = {}
-            dic['sender'] = data.sender
-            dic['datetime'] = data.datetime
-            dic['content'] = data.content
-            messages.append(dic)
+        dic = {}
+        dic['sender'] = data.sender
+        dic['datetime'] = data.datetime
+        dic['content'] = data.content
+        messages.append(dic)
 
-    last_primary_key = Message.objects.last().id
+    try:
+        last_primary_key = Message.objects.last().id
+
+    except None:
+        last_primary_key = 0
 
     context = {
         'messages': messages,
@@ -40,6 +44,7 @@ def message_create(request):
 
 
 def message_receive(request):
+    print('cc')
     if request.method == 'GET':
         last_primary_key = request.GET.get('last_primary_key', None)
 
