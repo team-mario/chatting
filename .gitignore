@@ -61,5 +61,9 @@ target/
 *.sqlite3
 *.sq3
 
+
+.env
+=======
 # .idea
 .idea/
+Django

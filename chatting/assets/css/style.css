@@ -131,3 +131,9 @@ body{
     content: '';
     display: block;
 }
+#nav .post_issue{
+
+}
+#nav .post_issue input[type="button"], input[type="submit"], button{
+    width:100%;
+}
