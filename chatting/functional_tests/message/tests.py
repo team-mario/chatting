@@ -30,7 +30,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
         h2 = div.find_element_by_tag_name('h2')
 
         # check nav > h2 : sorted issue title
-        self.assertEqual('Favourite Issues', h2.text)
+        self.assertEqual('Favorite Issues', h2.text)
 
         # check the right class? (nav > div)
         self.assertIn('sorted_issue_list', div.get_attribute('class'))
@@ -67,8 +67,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
         self.check_basic_layout()
 
         # start check message page
-        messages_input_container = \
-            self.browser.find_element_by_id('messages_input_container')
+        messages_input_container = self.browser.find_element_by_id('messages_input_container')
 
         # check messages input box
         messages_input_box = messages_input_container.find_element_by_id('msg')

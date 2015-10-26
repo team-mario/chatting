@@ -1,7 +1,7 @@
 __author__ = 'judelee'
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
-from .base import FunctionalTest
+from base import FunctionalTest
 
 
 class PostissueTest(FunctionalTest):
