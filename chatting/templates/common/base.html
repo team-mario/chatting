@@ -7,8 +7,6 @@
     <title>issue chat</title>
     {% load staticfiles %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-
 </head>
 <body>
     <div id="wrap" class="clearfix">
@@ -26,6 +24,8 @@
         </div>
         <div id="nav">
             <div class='post_issue'>
+                <button type="button" class="btn btn-primary" id="btn_post_issue" data-toggle="modal" data-target=".bs-example-modal-sm">
+    Add Issue</button>
                  {% block post_issue_block %}
                  {% endblock %}
             </div>
@@ -33,14 +33,15 @@
                 <h2>Favorite Issues</h2>
                 <ul>
                     <li>no search result(14)</li>
-                    <li>project plan</li>
+                    <li><a href="/messages/project-plan" id="project-plan">project plan</a></li>
                     <li>how to good mentoring(22)</li>
                     <li>software maestro</li>
                 <ul>
             </div>
         </div>
         <div id="container">
-	        Django<br><br><br><br><br>Django<br><br><br><br><br>Django<br><br><br><br><br>Django<br><br><br><br><br>Django<br><br><br><br><br>Django<br><br><br><br><br>Django<br><br><br><br><br>Django<br><br><br><br><br>Django<br><br><br><br><br>Django<br><br><br><br><br>Django<br><br><br><br><br>Django<br><br><br><br><br>Django<br><br><br><br><br>Django<br><br><br><br><br>Django<br><br><br><br><br>Django<br><br><br><br><br>
+            {% block container %}
+            {% endblock %}
         </div>
     </div>
 

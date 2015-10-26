@@ -17,7 +17,8 @@ from django.conf.urls import url
 from team.views import PostIssueForm
 
 urlpatterns = [
-    # url(r'^admin/', include(admin.site.urls)),
     url(r'^', 'team.views.index', name='index'),
-    url(r'^', PostIssueForm.as_view(), name='post_issue_form')
+    url(r'^messages/project-plan$', 'message.views.message_list'),
+    url(r'^messages/create$', 'message.views.message_create'),
+    url(r'^messages/receive$', 'message.views.message_receive'),
 ]

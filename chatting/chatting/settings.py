@@ -30,9 +30,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+FIXTURE_DIRS = (
+    os.path.join(BASE_DIR, 'fixtures'),
+)
 
 # Application definition
-
 INSTALLED_APPS = (
     # 'django.contrib.admin',
     'django.contrib.auth',
@@ -41,6 +43,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'team',
+    'message',
 )
 
 MIDDLEWARE_CLASSES = (
