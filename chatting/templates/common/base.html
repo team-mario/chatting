@@ -7,8 +7,12 @@
     <title>issue chat</title>
     {% load staticfiles %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ=="
-          crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <script src="http://code.jquery.com/jquery.min.js"></script>
+    <script src="{% static 'js/custom.js' %}"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 </head>
 <body>
     <div id="wrap" class="clearfix">
@@ -25,14 +29,16 @@
             </div>
         </div>
         <div id="nav">
+
             <div class='post_issue'>
-                <button type="button" class="btn btn-primary" id="btn_post_issue" data-toggle="modal" data-target=".bs-example-modal-sm">
+                <button type="button" id="btn_post_issue" class="btn btn-lg btn-primary open-modal">
     Add Issue</button>
                  {% block post_issue_block %}
                  {% endblock %}
             </div>
+
             <div class='sorted_issue_list'>
-                <h2>Favorite Issues</h2>
+                <h2>Favourite Issues</h2>
                 <ul>
                     <li>no search result(14)</li>
                     <li><a href="/messages/project-plan" id="project-plan">project plan</a></li>
@@ -40,16 +46,39 @@
                     <li>software maestro</li>
                 <ul>
             </div>
+
         </div>
+         <div id="PostIssueChannelModal" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width:10%;">&times;</button>
+                        <h4 class="modal-title">Create A Issue Channel</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form action="/issue/create" method="post">
+                        {% csrf_token %}
+                        {{ issue_channel_form }}
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Create a channel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
         <div id="container">
             {% block container %}
             {% endblock %}
         </div>
     </div>
 
-    <script src="http://code.jquery.com/jquery.min.js"></script>
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+
 </body>
 </html>
 

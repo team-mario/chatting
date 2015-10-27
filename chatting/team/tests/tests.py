@@ -15,6 +15,5 @@ class TeamTest(TestCase):
     def test_index_returns_correct_html(self):
         request = HttpRequest()
         response = index(request)
-        expected_html = render_to_string('issue/post_issue_form.html')
         expected_html = render_to_string('common/base.html')
         self.assertEqual(response.content.decode(), expected_html)

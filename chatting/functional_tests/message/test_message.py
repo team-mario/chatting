@@ -30,7 +30,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
         h2 = div.find_element_by_tag_name('h2')
 
         # check nav > h2 : sorted issue title
-        self.assertEqual('Favorite Issues', h2.text)
+        self.assertEqual('Favourite Issues', h2.text)
 
         # check the right class? (nav > div)
         self.assertIn('sorted_issue_list', div.get_attribute('class'))

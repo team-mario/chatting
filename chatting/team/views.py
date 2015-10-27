@@ -1,10 +1,10 @@
 from django.shortcuts import render
-from django.views.generic import UpdateView
-# from django_modalview.generic.base import ModalTemplateView
+from .forms import IssueChannelForm
 
 
 def index(request):
     # Suppose I can hold a user session after login success.
     # request.session['user_id'] = '11'
-    return render(request, 'common/base.html')
+    issue_channel_form = IssueChannelForm
+    return render(request, 'common/base.html', {'issue_channel_form': issue_channel_form})
 

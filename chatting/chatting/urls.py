@@ -16,8 +16,8 @@ Including another URLconf
 from django.conf.urls import url
 
 urlpatterns = [
-    url(r'^', 'team.views.index', name='index'),
     url(r'^messages/project-plan$', 'message.views.message_list'),
     url(r'^messages/create$', 'message.views.message_create'),
     url(r'^messages/receive$', 'message.views.message_receive'),
+    url(r'^', 'team.views.index', name='index'),
 ]
