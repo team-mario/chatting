@@ -1,48 +1,37 @@
-from selenium import webdriver
-from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from .base import FunctionalTest
 from selenium.webdriver.common.keys import Keys
-import unittest
 
 
 fixtures_data_count = 5
 
 
-class LoginTest(unittest.TestCase):
+class LoginTest(FunctionalTest):
+    fixtures = ['initial_data.json', ]
+
     def timeout(self, time_to_sleep):
         import time
         time.sleep(time_to_sleep)
 
-    def setUp(self):
-        self.browser = webdriver.Firefox()
-        self.browser.implicitly_wait(3)
-
-    def tearDown(self):
-        self.browser.quit()
-
-    def login_user(self):
-        self.browser.get('http://127.0.0.1:8000/')
-        self.browser.find_element_by_id('id_username').send_keys('jang')
-        self.browser.find_element_by_id('id_password').send_keys('min')
-        self.browser.find_element_by_id('login_btn').submit()
-
-    def test_login(self):
-        self.login_user()
-
     def test_logout(self):
-        self.login_user()
+        self.login()
         self.browser.find_element_by_id('btn_information').click()
         self.browser.find_element_by_id('id_logout').click()
+        self.timeout(1)
+
+    def test_change_password(self):
+        self.login()
+        self.browser.find_element_by_id('btn_information').click()
+        self.browser.find_element_by_id('id_change_password').click()
+
+        self.browser.find_element_by_id('id_old_password').send_keys('test')
+        self.browser.find_element_by_id('id_new_password1').send_keys('test1')
+        self.browser.find_element_by_id('id_new_password2').send_keys('test1')
+        self.browser.find_element_by_id('change_password_btn').click()
+        self.timeout(1)
 
 
-class NewVisitorTest(StaticLiveServerTestCase):
+class NewVisitorTest(FunctionalTest):
     fixtures = ['initial_data.json', ]
-
-    def setUp(self):
-        self.browser = webdriver.Firefox()
-        self.browser.implicitly_wait(3)
-
-    def tearDown(self):
-        self.browser.quit()
 
     def check_basic_layout(self):
         # check browser title
@@ -74,7 +63,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
 
     def test_new_visitor(self):
         # execute browser
-        self.browser.get('http://localhost:8000/accounts/profile/')
+        self.login()
 
         self.check_basic_layout()
 
@@ -120,11 +109,14 @@ class NewVisitorTest(StaticLiveServerTestCase):
             msg.find_element_by_class_name("message_send_information")
         msg_sender = \
             msg_send_infor.find_element_by_class_name("message_sender")
-        msg_datetime = \
-            msg_send_infor.find_element_by_class_name("message_datetime")
+        msg_time = \
+            msg_send_infor.find_element_by_class_name("message_time")
         msg_content = msg.find_element_by_class_name("message_content")
+
+        # regex for check the time format(am/pm)
+        time_regex_str = "([1]|[0-9]):[0-5][0-9](\\s)?(?i)(am|pm)"
 
         # check compate send message to display message
         self.assertEqual(msg_sender.text, 'bbayoung7849')
         self.assertEqual(msg_content.text, 'parkyoungwoo')
-        self.assertIsNotNone(msg_datetime)
+        self.assertRegex(msg_time.text, time_regex_str)

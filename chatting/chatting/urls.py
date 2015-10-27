@@ -17,6 +17,7 @@ from django.conf.urls import url, include
 from django.contrib import admin
 
 urlpatterns = [
+    url(r'^admin/', include(admin.site.urls)),
     url(r'^messages/project-plan$', 'message.views.message_list'),
     url(r'^messages/create$', 'message.views.message_create'),
     url(r'^messages/receive$', 'message.views.message_receive'),
@@ -31,5 +32,5 @@ urlpatterns = [
         'django.contrib.auth.views.password_change_done'),
     url(r'^accounts/profile/', 'message.views.message_list'),
     url(r'^', 'login.views.index'),
-    url(r'^admin/', include(admin.site.urls)),
+    # url(r'^', 'team.views.index'),
 ]

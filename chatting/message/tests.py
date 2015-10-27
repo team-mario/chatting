@@ -29,10 +29,16 @@ class TeamTest(TestCase):
         messages = response.context['messages']
         message = messages[fixtures_data_count]
 
+        # regex for check the time format (am/pm)
+        time_regex_str = "([1]|[0-9]):[0-5][0-9](\\s)?(?i)(am|pm)"
+
         self.assertEqual(message['sender'], 'mario')
         self.assertEqual(message['content'], '우하하하하하')
+        self.assertRegex(message['time'], time_regex_str)
 
-        last_primary_key = Message.objects.last().id
+        messages_list = Message.objects.all().order_by('id')
+        last_primary_key = messages_list[len(messages_list)-1].id
+
         self.assertEqual(response.context['last_primary_key'],
                          last_primary_key)
 
@@ -66,11 +72,13 @@ class TeamTest(TestCase):
         response = message_receive(request)
         messages = json.loads(response.content.decode())
 
+        time_regex_str = "([1]|[0-9]):[0-5][0-9](\\s)?(?i)(am|pm)"
+
         for data in messages:
             self.assertTrue(data['id'] > 0)
             self.assertEqual(data['sender'], 'tester')
             self.assertEqual(data['content'], 'test contest')
-            self.assertIsNotNone(data['datetime'])
+            self.assertRegex(data['time'], time_regex_str)
 
 
 class MessageModelTest(TestCase):
