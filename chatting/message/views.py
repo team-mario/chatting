@@ -7,14 +7,18 @@ import json
 # Create your views here.
 def message_list(request):
     messages = []
-    for data in Message.objects.all().order_by('id'):
+    messages_list = Message.objects.all().order_by('id')
+    for data in messages_list:
             dic = {}
             dic['sender'] = data.sender
-            dic['datetime'] = data.datetime
+            dic['time'] = data.datetime.strftime("%-I:%M %p")
             dic['content'] = data.content
             messages.append(dic)
 
-    last_primary_key = Message.objects.last().id
+    if len(messages_list) > 0:
+        last_primary_key = messages_list[len(messages_list)-1].id
+    else:
+        last_primary_key = 0
 
     context = {
         'messages': messages,
@@ -50,7 +54,7 @@ def message_receive(request):
                     dic = {}
                     dic['id'] = data.id
                     dic['sender'] = data.sender
-                    dic['datetime'] = str(data.datetime)
+                    dic['time'] = str(data.datetime.strftime("%-I:%M %p"))
                     dic['content'] = data.content
                     messages.append(dic)
             messages = json.dumps(messages)

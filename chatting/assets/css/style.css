@@ -88,7 +88,7 @@ body{
     padding:90px 10px 10px 10px;
 }
 #messages_list_container{
-    margin-bottom:50px;
+    margin-bottom:80px;
 }
 #messages_list_container .message{
     padding-top:20px;
@@ -99,7 +99,7 @@ body{
     font-size:15px;
     line-height:22px;
 }
-#messages_list_container .message_datetime{
+#messages_list_container .message_time{
     color:#ccc;
     font-size:12px;
     line-height:22px;
@@ -113,9 +113,11 @@ body{
 #messages_input_container{
     position:fixed;
     height:44px;
-    bottom:10px;
+    padding:10px 0;
+    bottom:0px;
     left:260px;
     right:40px;
+    background-color:#fff;
 }
 #messages_input_container input[type="text"]{
     width:100%;
