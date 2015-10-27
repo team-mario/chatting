@@ -32,7 +32,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
         # check nav > h2 : sorted issue title
         self.assertEqual('Favourite Issues', h2.text)
 
-        # check the right class? (nav > div)
+        # check the correct class in (nav > div)
         self.assertIn('sorted_issue_list', div.get_attribute('class'))
 
         # check search input box
@@ -43,6 +43,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
         # check search button
         btn_search = self.browser.find_element_by_id('btn_search')
         self.assertEqual(btn_search.get_attribute('value'), 'Search')
+
 
     def test_new_visitor(self):
         # execute browser
@@ -82,6 +83,9 @@ class NewVisitorTest(StaticLiveServerTestCase):
 
         messages_list_container = \
             self.browser.find_element_by_id('messages_list_container')
+
+        # view shows a date ? at least one date
+        message_date = self.browser.find_element_by_class_name('message_date')
 
         # check message element
         messages = \
