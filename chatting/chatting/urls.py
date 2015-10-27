@@ -13,7 +13,7 @@ Including another URLconf
     1. Add an import:  from blog import urls as blog_urls
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
-from django.conf.urls import include, url
+from django.conf.urls import url, include
 from django.contrib import admin
 
 urlpatterns = [
@@ -21,5 +21,16 @@ urlpatterns = [
     url(r'^messages/project-plan$', 'message.views.message_list'),
     url(r'^messages/create$', 'message.views.message_create'),
     url(r'^messages/receive$', 'message.views.message_receive'),
-    url(r'^', 'team.views.index'),
+    url(r'^accounts/logout/$', 'django.contrib.auth.views.logout',
+        {'next_page': '/accounts/login/'}),
+    url(r'^register/success/$', 'django.contrib.auth.views.login'),
+    url(r'^register/$', 'login.views.register_page'),
+    url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
+    url(r'^password_change/$', 'django.contrib.auth.views.password_change',
+        {'post_change_redirect': 'message.views.message_list'}),
+    url(r'^password_change/done/$',
+        'django.contrib.auth.views.password_change_done'),
+    url(r'^accounts/profile/', 'message.views.message_list'),
+    url(r'^', 'login.views.index'),
+    # url(r'^', 'team.views.index'),
 ]

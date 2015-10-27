@@ -1,20 +1,37 @@
-from selenium import webdriver
-from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from .base import FunctionalTest
 from selenium.webdriver.common.keys import Keys
 
 
 fixtures_data_count = 5
 
 
-class NewVisitorTest(StaticLiveServerTestCase):
+class LoginTest(FunctionalTest):
     fixtures = ['initial_data.json', ]
 
-    def setUp(self):
-        self.browser = webdriver.Firefox()
-        self.browser.implicitly_wait(3)
+    def timeout(self, time_to_sleep):
+        import time
+        time.sleep(time_to_sleep)
 
-    def tearDown(self):
-        self.browser.quit()
+    def test_logout(self):
+        self.login()
+        self.browser.find_element_by_id('btn_information').click()
+        self.browser.find_element_by_id('id_logout').click()
+        self.timeout(1)
+
+    def test_change_password(self):
+        self.login()
+        self.browser.find_element_by_id('btn_information').click()
+        self.browser.find_element_by_id('id_change_password').click()
+
+        self.browser.find_element_by_id('id_old_password').send_keys('test')
+        self.browser.find_element_by_id('id_new_password1').send_keys('test1')
+        self.browser.find_element_by_id('id_new_password2').send_keys('test1')
+        self.browser.find_element_by_id('change_password_btn').click()
+        self.timeout(1)
+
+
+class NewVisitorTest(FunctionalTest):
+    fixtures = ['initial_data.json', ]
 
     def check_basic_layout(self):
         # check browser title
@@ -46,7 +63,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
 
     def test_new_visitor(self):
         # execute browser
-        self.browser.get(self.live_server_url)
+        self.login()
 
         self.check_basic_layout()
 

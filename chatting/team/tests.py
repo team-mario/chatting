@@ -1,8 +1,6 @@
 from django.test import TestCase
 from django.core.urlresolvers import resolve
-from team.views import index
-from django.http import HttpRequest
-from django.template.loader import render_to_string
+from login.views import index
 
 
 #  Create your tests here.
@@ -12,9 +10,7 @@ class TeamTest(TestCase):
         found = resolve('/')
         self.assertEqual(found.func, index)
 
-    # check that 'function index' is return base.html
-    def test_index_returns_correct_html(self):
-        request = HttpRequest()
-        response = index(request)
-        expected_html = render_to_string('common/base.html')
-        self.assertEqual(response.content.decode(), expected_html)
+    # check that 'function index' is return redirected url
+    def test_index_returns_correct_redirected_url(self):
+        response = self.client.get('/')
+        self.assertRedirects(response, '/accounts/login/')

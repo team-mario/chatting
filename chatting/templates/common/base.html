@@ -7,7 +7,31 @@
     <title>issue chat</title>
     {% load staticfiles %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <script src="http://code.jquery.com/jquery.min.js"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css">
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+    <script>
+        $(function(){
+            $("#dialog").dialog({
+                autoOpen:false,
+                position:[100,200],
+                modal:true,
+                resizable:false,
+
+                buttons:{
+                    "확인":function(){
+                        $(this).dialog("close");
+                    },"취소":function(){
+                        $(this).dialog("close");
+                    }
+                }
+            });
+
+            $("#btn_information").on("click",function(){
+                $("#dialog").dialog("open");
+            });
+        });
+    </script>
 </head>
 <body>
     <div id="wrap" class="clearfix">
@@ -20,7 +44,7 @@
                 <span class="clearfix"><input type="button" id="btn_search" value="Search"></span>
             </div>
             <div class="my_information">
-                My Information
+                <span class="clearfix"><input type="button" id="btn_information" value="my_information"></span>
             </div>
         </div>
         <div id="nav">
@@ -31,13 +55,19 @@
                     <li><a href="/messages/project-plan" id="project-plan">project plan</a></li>
                     <li>how to good mentoring(22)</li>
                     <li>software maestro</li>
-                <ul>
+                </ul>
             </div>
         </div>
         <div id="container">
             {% block container %}
             {% endblock %}
         </div>
+    </div>
+    <div id="dialog" title="My Information">
+        <ul>
+            <li><a id="id_logout" href="/accounts/logout/">Logout</a></li>
+            <li><a id="id_change_password" href="../../password_change/">Change Password</a></li>
+        </ul>
     </div>
 </body>
 </html>
