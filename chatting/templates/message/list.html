@@ -5,11 +5,19 @@
     var last_primary_key = {{ last_primary_key }};
     $(function() {
         $("#msg").keyup(function (e) {
-            if (e.keyCode == 13) {
+            if (e.keyCode == 13 && $("#msg").val() != "") {
                 send_message($("#msg").val());
             }
         });
+        scroll_to_bottom('direct');
+        setInterval(get_message, 3000);
     });
+    function scroll_to_bottom(mode){
+        if(mode == 'smooth')
+            $("html, body").animate({ scrollTop: $(document).height() }, "slow");
+        else
+            $('html, body').scrollTop( $(document).height() );
+    }
     function get_message(){
         $.ajax({
             type: 'GET',
@@ -31,13 +39,13 @@
     function append_messsage_to_div(messages){
         $.each(messages, function(key){
             var sender = messages[key].sender;
-            var datetime = messages[key].datetime;
+            var time = messages[key].time;
             var content = messages[key].content;
-
-            var message_tag = '<div class="message"><div class="message_send_information"><span class="message_sender">' + sender + '</span><span class="message_datetime">' + datetime + '</span></div><div class="message_content">' + content + '</div></div>';
+            var message_tag = '<div class="message"><div class="message_send_information"><span class="message_sender">' + sender + '</span><span class="message_time">' + time + '</span></div><div class="message_content">' + content + '</div></div>';
 
             $("#messages_list_container").append(message_tag);
             last_primary_key = messages[key].id;
+            scroll_to_bottom('smooth');
         });
     }
     function send_message(msg){
@@ -69,7 +77,7 @@
         <div class="message">
             <div class="message_send_information">
                 <span class="message_sender">{{ message.sender }}</span>
-                <span class="message_datetime">{{ message.datetime }}</span>
+                <span class="message_time">{{ message.time }}</span>
             </div>
             <div class="message_content">{{ message.content }}</div>
         </div>
