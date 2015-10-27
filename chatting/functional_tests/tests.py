@@ -85,8 +85,9 @@ class NewVisitorTest(StaticLiveServerTestCase):
             self.browser.find_element_by_id('messages_list_container')
 
         # view shows a date ? at least one date
+        date_regex_str = "(September|April|June|November)\s([0-2][0-9]|30|31)"
         message_date = self.browser.find_element_by_class_name('message_date')
-
+        self.assertRegex(message_date.text, date_regex_str)
         # check message element
         messages = \
             messages_list_container.find_elements_by_class_name("message")
