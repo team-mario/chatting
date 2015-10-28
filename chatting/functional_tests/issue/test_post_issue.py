@@ -1,5 +1,4 @@
 __author__ = 'judelee'
-from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from base import FunctionalTest
 import time
@@ -41,4 +40,12 @@ class PostIssueTest(FunctionalTest):
             'id_channel_content'
         ).send_keys('test contents')
 
-        # After click the submit button, the user moves to new created channel.
+        self.browser.find_element_by_id('btn_post_submit').click()
+
+        # After click the submit button, the user can see the created channel with channel name.
+        sorted_issue_list = self.browser.find_element_by_class_name('sorted_issue_list')
+        ul_list = sorted_issue_list.find_element_by_tag_name('ul')
+        li_list = ul_list.find_element_by_tag_name('li')
+
+        time.sleep(2)
+        self.assertIn('Test Issue', li_list.text)
