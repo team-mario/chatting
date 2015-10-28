@@ -1,20 +1,12 @@
-from selenium import webdriver
-from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from functional_tests.base import FunctionalTest
 from selenium.webdriver.common.keys import Keys
 
 
 fixtures_data_count = 5
 
 
-class NewVisitorTest(StaticLiveServerTestCase):
+class NewVisitorTest(FunctionalTest):
     fixtures = ['initial_data.json', ]
-
-    def setUp(self):
-        self.browser = webdriver.Firefox()
-        self.browser.implicitly_wait(3)
-
-    def tearDown(self):
-        self.browser.quit()
 
     def check_basic_layout(self):
         # check browser title
@@ -46,7 +38,8 @@ class NewVisitorTest(StaticLiveServerTestCase):
 
     def test_new_visitor(self):
         # execute browser
-        self.browser.get(self.live_server_url)
+        # self.browser.get(self.live_server_url)
+        self.login()
 
         self.check_basic_layout()
 
@@ -85,6 +78,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
         # check message element
         messages = \
             messages_list_container.find_elements_by_class_name("message")
+
         msg = messages[fixtures_data_count]
 
         msg_send_infor = \

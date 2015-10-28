@@ -1,10 +1,12 @@
-__author__ = 'judelee'
 from selenium.webdriver.support.ui import WebDriverWait
-from base import FunctionalTest
+from functional_tests.base import FunctionalTest
 import time
+
+fixtures_data_count = 5
 
 
 class PostIssueTest(FunctionalTest):
+    fixtures = ['initial_data.json', ]
 
     def wait_for_element_with_id(self, element_id):
         WebDriverWait(self.browser, timeout=30).until(
@@ -18,7 +20,7 @@ class PostIssueTest(FunctionalTest):
 
     def test_can_post_issue(self):
         # User can see the "Add Issue" button in main page.
-        self.browser.get(self.server_url)
+        self.login()
 
         self.wait_for_element_with_id('btn_post_issue')
 
@@ -36,6 +38,7 @@ class PostIssueTest(FunctionalTest):
         self.browser.find_element_by_id(
             'id_channel_name'
         ).send_keys('Test Issue')
+
         self.browser.find_element_by_id(
             'id_channel_content'
         ).send_keys('test contents')
