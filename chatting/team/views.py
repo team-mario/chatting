@@ -26,4 +26,3 @@ def channel_create(request):
         IssueChannel.objects.create(user_id=user_info, channel_name=channel_name, channel_content=channel_content)
 
     return HttpResponseRedirect('../accounts/profile/')
-
