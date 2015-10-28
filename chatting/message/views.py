@@ -16,7 +16,7 @@ def message_list(request):
             messages.append(dic)
 
     if len(messages_list) > 0:
-        last_primary_key = messages_list[len(messages_list)-1].id
+        last_primary_key = messages_list[len(messages_list) - 1].id
     else:
         last_primary_key = 0
 

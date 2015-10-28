@@ -13,13 +13,14 @@ Including another URLconf
     1. Add an import:  from blog import urls as blog_urls
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
-from django.conf.urls import include, url
-from django.contrib import admin
+from django.conf.urls import url
 
 urlpatterns = [
-    url(r'^admin/', include(admin.site.urls)),
     url(r'^messages/project-plan$', 'message.views.message_list'),
     url(r'^messages/create$', 'message.views.message_create'),
     url(r'^messages/receive$', 'message.views.message_receive'),
-    url(r'^', 'team.views.index'),
+    url(r'^issue/create$', 'team.views.channel_create', name='channel_create'),
+    # url(r'^issue/channel/(?P<org>\S+)', 'team.views.channel_detail', name='channel_detail'),
+    url(r'^', 'team.views.index', name='index'),
+
 ]
