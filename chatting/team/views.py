@@ -10,7 +10,6 @@ def index(request):
         pass
     else:
         UserInfo.objects.create(user_id='JudeLee', user_password='bb')
-
     issue_channel_form = IssueChannelForm
     return render(request, 'common/base.html', {'issue_channel_form': issue_channel_form, 'issue_channel': IssueChannel.objects.all()})
 
@@ -22,5 +21,8 @@ def channel_create(request):
         channel_name = request.POST.get('channel_name')
         channel_content = request.POST.get('channel_content')
         IssueChannel.objects.create(user_id=user_info, channel_name=channel_name, channel_content=channel_content)
-
     return redirect('/')
+
+
+def channel_detail(request, channel_name):
+    return redirect('/messages/project-plan')

@@ -20,7 +20,7 @@ urlpatterns = [
     url(r'^messages/create$', 'message.views.message_create'),
     url(r'^messages/receive$', 'message.views.message_receive'),
     url(r'^issue/create$', 'team.views.channel_create', name='channel_create'),
-    # url(r'^issue/channel/(?P<org>\S+)', 'team.views.channel_detail', name='channel_detail'),
+    url(r'^issue/channel/(?P<channel_name>\S+?)', 'team.views.channel_detail', name='channel_detail'),
     url(r'^', 'team.views.index', name='index'),
 
 ]

@@ -23,6 +23,7 @@ def message_list(request):
     context = {
         'messages': messages,
         'last_primary_key': last_primary_key,
+
     }
 
     return render(
