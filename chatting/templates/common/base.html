@@ -6,13 +6,37 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>issue chat</title>
     {% load staticfiles %}
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css">
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-    <script src="http://code.jquery.com/jquery.min.js"></script>
     <script src="{% static 'js/custom.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script>
+        $(function(){
+            $("#dialog").dialog({
+                autoOpen:false,
+                position:[100,200],
+                modal:true,
+                resizable:false,
+
+                buttons:{
+                    "확인":function(){
+                        $(this).dialog("close");
+                    },"취소":function(){
+                        $(this).dialog("close");
+                    }
+                }
+            });
+
+            $("#information_btn").on("click",function(){
+                $("#dialog").dialog("open");
+            });
+        });
+    </script>
 </head>
 <body>
     <div id="wrap" class="clearfix">
@@ -25,14 +49,13 @@
                 <span class="clearfix"><input type="button" id="btn_search" value="Search"></span>
             </div>
             <div class="my_information">
-                My Information
+                <span class="clearfix"><input type="button" id="information_btn" value="my_information"></span>
             </div>
         </div>
         <div id="nav">
 
             <div class='post_issue'>
-                <button type="button" id="btn_post_issue" class="btn btn-lg btn-primary open-modal">
-    Add Issue</button>
+                <button type="button" id="btn_post_issue" class="btn btn-lg btn-primary open-modal">Add Issue</button>
                  {% block post_issue_block %}
                  {% endblock %}
             </div>
@@ -56,7 +79,7 @@
                         <h4 class="modal-title">Create A Issue Channel</h4>
                     </div>
                     <div class="modal-body">
-                        <form action="/issue/create" method="post">
+                        <form action="../../issue/create" method="post">
                         {% csrf_token %}
                         {{ issue_channel_form }}
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -68,16 +91,19 @@
             </div>
         </div>
 
-
-
         <div id="container">
             {% block container %}
             {% endblock %}
         </div>
     </div>
 
+    <div id="dialog" title="My Information">
+        <ul>
+            <li><a id="id_logout" href="/accounts/logout/">Logout</a></li>
+            <li><a id="id_change_password" href="../../password_change/">Change Password</a></li>
+        </ul>
+    </div>
 
 
 </body>
 </html>
-

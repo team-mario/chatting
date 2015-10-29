@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import IssueChannelForm
 from team.models import IssueChannel, UserInfo
+from django.http import HttpResponseRedirect
 
 
 def index(request):
@@ -11,7 +12,8 @@ def index(request):
     else:
         UserInfo.objects.create(user_id='JudeLee', user_password='bb')
     issue_channel_form = IssueChannelForm
-    return render(request, 'common/base.html', {'issue_channel_form': issue_channel_form, 'issue_channel': IssueChannel.objects.all()})
+    return render(request, 'common/base.html', {'issue_channel_form': issue_channel_form,
+                                                'issue_channel': IssueChannel.objects.all()})
 
 
 def channel_create(request):
@@ -21,7 +23,8 @@ def channel_create(request):
         channel_name = request.POST.get('channel_name')
         channel_content = request.POST.get('channel_content')
         IssueChannel.objects.create(user_id=user_info, channel_name=channel_name, channel_content=channel_content)
-    return redirect('/')
+
+    return HttpResponseRedirect('../accounts/profile/')
 
 
 def channel_detail(request, channel_name):
