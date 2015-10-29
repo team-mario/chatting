@@ -20,9 +20,12 @@ def message_list(request):
     else:
         last_primary_key = 0
 
+    last_send_date = messages_list[0].datetime
+
     context = {
         'messages': messages,
         'last_primary_key': last_primary_key,
+        'last_send_date': last_send_date,
     }
 
     return render(

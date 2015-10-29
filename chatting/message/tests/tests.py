@@ -11,7 +11,7 @@ fixtures_data_count = 5
 
 
 class TeamTest(TestCase):
-    fixtures = ['initial_data.json', ]
+    fixtures = ['message_data.json', ]
 
     # check  '/messages/issue'(url) is return 'message_list' function
     def test_issue_url_resolves_to_message_list(self):
@@ -27,20 +27,24 @@ class TeamTest(TestCase):
 
         response = self.client.get('/messages/project-plan')
         messages = response.context['messages']
-        message = messages[fixtures_data_count]
+        last_primary_key = response.context['last_primary_key']
+        last_send_date = response.context['last_send_date']
 
         # regex for check the time format (am/pm)
         time_regex_str = "([1]|[0-9]):[0-5][0-9](\\s)?(?i)(am|pm)"
 
-        self.assertEqual(message['sender'], 'mario')
-        self.assertEqual(message['content'], '우하하하하하')
-        self.assertRegex(message['time'], time_regex_str)
+        last_message = messages[fixtures_data_count]
+        self.assertEqual(last_message['sender'], 'mario')
+        self.assertEqual(last_message['content'], '우하하하하하')
+        self.assertRegex(last_message['time'], time_regex_str)
 
         messages_list = Message.objects.all().order_by('id')
-        last_primary_key = messages_list[len(messages_list) - 1].id
 
-        self.assertEqual(response.context['last_primary_key'],
-                         last_primary_key)
+        self.assertEqual(last_primary_key,
+                         messages_list[len(messages_list) - 1].id)
+
+        self.assertEqual(last_send_date,
+                         messages_list[0].datetime)
 
     def test_message_create_from_POST_data(self):
         request = HttpRequest()
@@ -91,12 +95,11 @@ class MessageModelTest(TestCase):
             sender='mario',
             content='wow',
         )
-        '''
+
         saved_messages = Message.objects.all()
 
-        # self.assertEqual(saved_messages.count(), 2)
+        self.assertEqual(saved_messages.count(), 2)
         self.assertEqual(saved_messages[0].sender, 'bbayoung7849')
         self.assertEqual(saved_messages[0].content, '우하하하하하')
         self.assertEqual(saved_messages[1].sender, 'mario')
         self.assertEqual(saved_messages[1].content, 'wow')
-        '''
