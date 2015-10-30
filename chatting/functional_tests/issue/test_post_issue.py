@@ -1,4 +1,3 @@
-from selenium.webdriver.support.ui import WebDriverWait
 from functional_tests.base import FunctionalTest
 import time
 
@@ -7,16 +6,6 @@ fixtures_data_count = 5
 
 class PostIssueTest(FunctionalTest):
     fixtures = ['initial_data.json', ]
-
-    def wait_for_element_with_id(self, element_id):
-        WebDriverWait(self.browser, timeout=30).until(
-            lambda b: b.find_element_by_id(element_id)
-        )
-
-    def wait_for_element_with_class(self, element_class):
-        WebDriverWait(self.browser, timeout=30).until(
-            lambda b: b.find_element_by_class_name(element_class)
-        )
 
     def test_can_post_issue(self):
         # User can see the "Add Issue" button in main page.
