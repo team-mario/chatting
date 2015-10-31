@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class UserInfo(models.Model):
@@ -8,6 +9,6 @@ class UserInfo(models.Model):
 
 
 class IssueChannel(models.Model):
-    user_id = models.ForeignKey(UserInfo, default=None)
+    user = models.ForeignKey(User, default=None)
     channel_name = models.CharField(max_length=30)
     channel_content = models.CharField(max_length=255, default='')

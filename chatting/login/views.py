@@ -8,7 +8,7 @@ from django.views.decorators.csrf import csrf_protect
 
 
 def index(request):
-    return HttpResponseRedirect('accounts/login/')
+    return HttpResponseRedirect('/accounts/login/')
 
 
 def logout_page(request):
