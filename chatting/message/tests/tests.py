@@ -1,16 +1,16 @@
 from django.test import TestCase
-from django.core.urlresolvers import resolve
 from message.views import message_list, message_create, message_receive
 from message.models import Message
 from django.http import HttpRequest
 import json
+import datetime
 
 
 #  Create your tests here.
 fixtures_data_count = 5
 
 
-class TeamTest(TestCase):
+class MessageTest(TestCase):
     fixtures = ['message_data.json', ]
 
     # check  '/messages/issue'(url) is return 'message_list' function
@@ -38,13 +38,14 @@ class TeamTest(TestCase):
         self.assertEqual(last_message['content'], '우하하하하하')
         self.assertRegex(last_message['time'], time_regex_str)
 
-        messages_list = Message.objects.all().order_by('id')
+        last_message_date = Message.objects.last().create_datetime.date()
+        messages_list = Message.objects.filter(create_datetime=last_message_date).order_by('id')
 
         self.assertEqual(last_primary_key,
                          messages_list[len(messages_list) - 1].id)
 
         self.assertEqual(last_send_date,
-                         messages_list[0].datetime)
+                         messages_list[0].create_datetime)
 
     def test_message_create_from_POST_data(self):
         request = HttpRequest()

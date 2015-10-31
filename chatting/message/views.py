@@ -11,7 +11,7 @@ def message_list(request):
     for data in messages_list:
             dic = {}
             dic['sender'] = data.sender
-            dic['time'] = data.datetime.strftime("%-I:%M %p")
+            dic['time'] = data.create_datetime.strftime("%-I:%M %p")
             dic['content'] = data.content
             messages.append(dic)
 
@@ -20,7 +20,7 @@ def message_list(request):
     else:
         last_primary_key = 0
 
-    last_send_date = messages_list[0].datetime
+    last_send_date = messages_list[0].create_datetime
 
     context = {
         'messages': messages,
@@ -57,7 +57,7 @@ def message_receive(request):
                     dic = {}
                     dic['id'] = data.id
                     dic['sender'] = data.sender
-                    dic['time'] = str(data.datetime.strftime("%-I:%M %p"))
+                    dic['time'] = str(data.create_datetime.strftime("%-I:%M %p"))
                     dic['content'] = data.content
                     messages.append(dic)
             messages = json.dumps(messages)
