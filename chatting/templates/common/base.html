@@ -64,7 +64,7 @@
                 <h2>Favourite Issues</h2>
                 <ul>
                     {% for channel in issue_channel.all %}
-                        <li>{{ channel.channel_name }}</li>
+                        <li><a href="{% url 'channel_detail' channel.channel_name %}">{{ channel.channel_name }}</a></li>
                     {% endfor %}
                 </ul>
                     <a href="/messages/project-plan" id="project-plan">project plan</a>

@@ -30,5 +30,6 @@ urlpatterns = [
         'django.contrib.auth.views.password_change_done'),
     url(r'^accounts/profile/', 'team.views.index'),
     url(r'^issue/create$', 'team.views.channel_create', name='channel_create'),
+    url(r'^issue/channel/(?P<channel_name>\S+?)', 'team.views.channel_detail', name='channel_detail'),
     url(r'^', 'login.views.index'),
 ]
