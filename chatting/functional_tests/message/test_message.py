@@ -6,7 +6,7 @@ fixtures_data_count = 5
 
 
 class NewVisitorTest(FunctionalTest):
-    fixtures = ['initial_data.json', ]
+    fixtures = ['message_data.json', ]
 
     def check_basic_layout(self):
         # check browser title
@@ -35,7 +35,6 @@ class NewVisitorTest(FunctionalTest):
         # check search button
         btn_search = self.browser.find_element_by_id('btn_search')
         self.assertEqual(btn_search.get_attribute('value'), 'Search')
-
 
     def test_new_visitor(self):
         # execute browser

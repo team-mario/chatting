@@ -2,6 +2,7 @@ from django.shortcuts import render
 from message.models import Message
 from django.http import HttpResponse
 import json
+import datetime
 
 
 # Create your views here.
@@ -17,10 +18,10 @@ def message_list(request):
 
     if len(messages_list) > 0:
         last_primary_key = messages_list[len(messages_list) - 1].id
+        last_send_date = messages_list[0].create_datetime
     else:
         last_primary_key = 0
-
-    last_send_date = messages_list[0].create_datetime
+        last_send_date = datetime.datetime.today()
 
     context = {
         'messages': messages,

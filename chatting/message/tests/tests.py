@@ -1,9 +1,9 @@
 from django.test import TestCase
 from message.views import message_list, message_create, message_receive
+from django.core.urlresolvers import resolve
 from message.models import Message
 from django.http import HttpRequest
 import json
-import datetime
 
 
 #  Create your tests here.
@@ -38,8 +38,7 @@ class MessageTest(TestCase):
         self.assertEqual(last_message['content'], '우하하하하하')
         self.assertRegex(last_message['time'], time_regex_str)
 
-        last_message_date = Message.objects.last().create_datetime.date()
-        messages_list = Message.objects.filter(create_datetime=last_message_date).order_by('id')
+        messages_list = Message.objects.all().order_by('id')
 
         self.assertEqual(last_primary_key,
                          messages_list[len(messages_list) - 1].id)
