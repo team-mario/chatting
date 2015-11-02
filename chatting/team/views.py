@@ -18,7 +18,7 @@ def index(request):
 def channel_create(request):
     if request.method == 'POST':
         # Below codes needs code refactoring.
-        user = User.objects.get(username=request.user.get_username())  # Need refactoring.
+        user = request.user
         channel_name = request.POST.get('channel_name')
         channel_content = request.POST.get('channel_content')
         IssueChannel.objects.create(user=user, channel_name=channel_name, channel_content=channel_content)
