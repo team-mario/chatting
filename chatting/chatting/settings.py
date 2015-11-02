@@ -34,6 +34,8 @@ FIXTURE_DIRS = (
     os.path.join(BASE_DIR, 'fixtures'),
 )
 
+LOGIN_REDIRECT_URL = "/issue/channel/"
+
 # Application definition
 INSTALLED_APPS = (
     # 'django.contrib.admin',
