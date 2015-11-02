@@ -17,9 +17,3 @@ class HashTag(models.Model):
 
     def __str__(self):
         return self.tag_name
-
-
-class ChannelFiles(models.Model):
-    title = models.CharField(max_length=30)
-    file = models.FileField(upload_to='channel_files')
-    channel = models.ForeignKey(IssueChannel, default=None)

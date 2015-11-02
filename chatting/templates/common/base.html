@@ -70,16 +70,6 @@
                     <a href="/messages/project-plan" id="project-plan">project plan</a>
             </div>
 
-            <br><br><br>
-            <div>
-                <form action="/issue/file/add" method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    {{ file_channel_form }}
-                    <button type="submit" class="btn btn-primary" id="btn_file_submit">Upload</button>
-                </form>
-
-            </div>
-
         </div>
          <div id="PostIssueChannelModal" class="modal fade">
             <div class="modal-dialog">
