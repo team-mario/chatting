@@ -112,7 +112,7 @@ body{
 }
 #messages_input_container{
     position:fixed;
-    height:44px;
+    height:64px;
     padding:10px 0;
     bottom:0px;
     left:260px;
