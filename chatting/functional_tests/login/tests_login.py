@@ -4,7 +4,7 @@ fixtures_data_count = 5
 
 
 class LoginTest(FunctionalTest):
-    fixtures = ['initial_data.json', ]
+    fixtures = ['message_data.json', ]
 
     def timeout(self, time_to_sleep):
         import time
