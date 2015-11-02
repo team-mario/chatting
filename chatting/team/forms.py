@@ -1,6 +1,6 @@
 __author__ = 'judelee'
 from django import forms
-from team.models import IssueChannel
+from team.models import IssueChannel, ChannelFiles
 
 
 class IssueChannelForm(forms.models.ModelForm):
@@ -9,3 +9,11 @@ class IssueChannelForm(forms.models.ModelForm):
     class Meta:
         model = IssueChannel
         fields = {'channel_name', 'channel_content'}
+
+
+class UploadFileForm(forms.models.ModelForm):
+
+    class Meta:
+        model = ChannelFiles
+        fields = {'title', 'file'}
+
