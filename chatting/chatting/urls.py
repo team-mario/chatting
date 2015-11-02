@@ -16,7 +16,6 @@ Including another URLconf
 from django.conf.urls import url
 
 urlpatterns = [
-    url(r'^messages/project-plan$', 'message.views.message_list'),
     url(r'^messages/create$', 'message.views.message_create'),
     url(r'^messages/receive$', 'message.views.message_receive'),
     url(r'^accounts/logout/$', 'django.contrib.auth.views.logout',
@@ -30,6 +29,6 @@ urlpatterns = [
         'django.contrib.auth.views.password_change_done'),
     url(r'^accounts/profile/', 'team.views.index'),
     url(r'^issue/create$', 'team.views.channel_create', name='channel_create'),
-    url(r'^issue/channel/(?P<channel_name>\S+?)', 'team.views.channel_detail', name='channel_detail'),
+    url(r'^issue/channel/(?P<channel_name>\S+?)', 'message.views.message_list', name='channel_detail'),
     url(r'^', 'login.views.index'),
 ]

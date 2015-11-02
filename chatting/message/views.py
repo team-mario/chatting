@@ -6,7 +6,7 @@ import datetime
 
 
 # Create your views here.
-def message_list(request):
+def message_list(request, channel_name):
     messages = []
     messages_list = Message.objects.all().order_by('id')
     for data in messages_list:

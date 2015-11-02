@@ -38,20 +38,19 @@ class NewVisitorTest(FunctionalTest):
     def test_new_visitor(self):
         # execute browser
         # self.browser.get(self.live_server_url)
-        self.login()
+        self.post_issue_channel()
 
         self.check_basic_layout()
 
-        # find element by id 'project plan' issue
-        issue_project_plan = self.browser.find_element_by_id('project-plan')
+        # find element by id 'first_issue' issue
+        issue_1 = self.browser.find_element_by_id('Test-Issue-01')
 
-        url_regex_str = '/messages/.+'
+        url_regex_str = '/issue/channel/.+'
 
         # check issue 'project plan' href
-        self.assertRegex(issue_project_plan.get_attribute('href'),
-                         url_regex_str)
+        self.assertRegex(issue_1.get_attribute('href'), url_regex_str)
 
-        issue_project_plan.click()
+        issue_1.click()
 
         # current browser url validation width regex
         self.assertRegex(self.browser.current_url, url_regex_str)
