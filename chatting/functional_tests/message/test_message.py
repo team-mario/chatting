@@ -1,7 +1,6 @@
 from functional_tests.base import FunctionalTest
 from selenium.webdriver.common.keys import Keys
 
-
 fixtures_data_count = 5
 
 
@@ -72,6 +71,8 @@ class NewVisitorTest(FunctionalTest):
         messages_input_box.send_keys('parkyoungwoo')
         messages_input_box.send_keys(Keys.ENTER)
 
+        import time
+        time.sleep(3)
         messages_list_container = \
             self.browser.find_element_by_id('messages_list_container')
 

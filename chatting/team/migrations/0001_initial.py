@@ -13,20 +13,24 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='IssueChannel',
+            name='HashTag',
             fields=[
-                ('id', models.AutoField(primary_key=True, verbose_name='ID', auto_created=True, serialize=False)),
-                ('channel_name', models.CharField(max_length=30)),
-                ('channel_content', models.CharField(default='', max_length=255)),
-                ('user', models.ForeignKey(default=None, to=settings.AUTH_USER_MODEL)),
+                ('id', models.AutoField(auto_created=True, primary_key=True, verbose_name='ID', serialize=False)),
+                ('tag_name', models.CharField(max_length=20)),
             ],
         ),
         migrations.CreateModel(
-            name='UserInfo',
+            name='IssueChannel',
             fields=[
-                ('user_id', models.CharField(primary_key=True, serialize=False, max_length=20)),
-                ('user_password', models.CharField(max_length=30)),
-                ('user_email', models.EmailField(default='', max_length=30)),
+                ('id', models.AutoField(auto_created=True, primary_key=True, verbose_name='ID', serialize=False)),
+                ('channel_name', models.CharField(max_length=30)),
+                ('channel_content', models.CharField(default='', max_length=255)),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, default=None)),
             ],
+        ),
+        migrations.AddField(
+            model_name='HashTag',
+            name='channels',
+            field=models.ManyToManyField(to='team.IssueChannel'),
         ),
     ]
