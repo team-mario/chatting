@@ -1,13 +1,25 @@
 from django.db import models
-
-
-class UserInfo(models.Model):
-    user_id = models.CharField(max_length=20, primary_key=True)
-    user_password = models.CharField(max_length=30)
-    user_email = models.EmailField(max_length=30, default='')
+from django.contrib.auth.models import User
 
 
 class IssueChannel(models.Model):
-    user_id = models.ForeignKey(UserInfo, default=None)
+    user = models.ForeignKey(User, default=None)
     channel_name = models.CharField(max_length=30)
     channel_content = models.CharField(max_length=255, default='')
+
+    def __str__(self):
+        return self.channel_name
+
+
+class HashTag(models.Model):
+    channels = models.ManyToManyField(IssueChannel)
+    tag_name = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.tag_name
+
+
+class RoomChannel(models.Model):
+    issue_id = models.ForeignKey(IssueChannel, default=None, null=True)
+    room_name = models.CharField(max_length=30, unique=True,
+                                 default='', null=False)

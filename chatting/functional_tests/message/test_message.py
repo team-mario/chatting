@@ -1,12 +1,11 @@
 from functional_tests.base import FunctionalTest
 from selenium.webdriver.common.keys import Keys
 
-
 fixtures_data_count = 5
 
 
 class NewVisitorTest(FunctionalTest):
-    fixtures = ['initial_data.json', ]
+    fixtures = ['message_data.json', ]
 
     def check_basic_layout(self):
         # check browser title
@@ -24,7 +23,7 @@ class NewVisitorTest(FunctionalTest):
         # check nav > h2 : sorted issue title
         self.assertEqual('Favourite Issues', h2.text)
 
-        # check the right class? (nav > div)
+        # check the correct class in (nav > div)
         self.assertIn('sorted_issue_list', div.get_attribute('class'))
 
         # check search input box
@@ -60,7 +59,8 @@ class NewVisitorTest(FunctionalTest):
         self.check_basic_layout()
 
         # start check message page
-        messages_input_container = self.browser.find_element_by_id('messages_input_container')
+        messages_input_container = \
+            self.browser.find_element_by_id('messages_input_container')
 
         # check messages input box
         messages_input_box = messages_input_container.find_element_by_id('msg')
@@ -72,9 +72,15 @@ class NewVisitorTest(FunctionalTest):
         messages_input_box.send_keys('parkyoungwoo')
         messages_input_box.send_keys(Keys.ENTER)
 
+        import time
+        time.sleep(3)
         messages_list_container = \
             self.browser.find_element_by_id('messages_list_container')
 
+        # view shows a date ? at least one date
+        date_regex_str = "(September|April|June|November)\s([0-2][0-9]|30|31)"
+        message_date = self.browser.find_element_by_class_name('message_date')
+        self.assertRegex(message_date.text, date_regex_str)
         # check message element
         messages = \
             messages_list_container.find_elements_by_class_name("message")

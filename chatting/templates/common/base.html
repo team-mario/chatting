@@ -37,53 +37,104 @@
             });
         });
     </script>
+    <script>
+        $(function(){
+            $("#room_dialog").dialog({
+                autoOpen:false,
+                position:[100,200],
+                modal:true,
+                resizable:false,
+
+                buttons:{
+                    "확인":function(){
+                        $(this).dialog("close");
+                    },"취소":function(){
+                        $(this).dialog("close");
+                    }
+                }
+            });
+
+            $("#room_btn").on("click",function(){
+                $("#room_dialog").dialog("open");
+                var ul = document.getElementById("list");
+                {% for room in room_list.all %}
+                    var text = '{{ room.room_name }}';
+                    var li = document.createElement("li");
+                    li.appendChild(document.createTextNode(text));
+                    li.setAttribute("id", "element4");
+                    ul.appendChild(li);
+                {% endfor %}
+            });
+        });
+    </script>
 </head>
 <body>
     <div id="wrap" class="clearfix">
         <div id="header" class="clearfix">
             <div class="logo">
                 <h1>TeamMario</h1>
-            </div>
-            <div class="search">
-                <span><input type="text" name="q" id="q" placeholder="search here"></span>
-                <span class="clearfix"><input type="button" id="btn_search" value="Search"></span>
-            </div>
-            <div class="my_information">
-                <span class="clearfix"><input type="button" id="information_btn" value="my_information"></span>
-            </div>
         </div>
+        <div>
+            <input type="button" id="room_btn" value="Select room">
+        </div>
+        <div class="search">
+            <span><input type="text" name="q" id="q" placeholder="search here"></span>
+            <span class="clearfix"><input type="button" id="btn_search" value="Search"></span>
+        </div>
+        <div class="my_information">
+            <span class="clearfix"><input type="button" id="information_btn" value="my_information"></span>
+        </div>
+    </div>
         <div id="nav">
-
             <div class='post_issue'>
+                <button type="button" id="btn_create_room" class="btn btn-lg btn-primary room-modal">Create Room</button>
                 <button type="button" id="btn_post_issue" class="btn btn-lg btn-primary open-modal">Add Issue</button>
-                 {% block post_issue_block %}
-                 {% endblock %}
+                {% block post_issue_block %}
+                {% endblock %}
             </div>
 
             <div class='sorted_issue_list'>
                 <h2>Favourite Issues</h2>
                 <ul>
                     {% for channel in issue_channel.all %}
-                        <li>{{ channel.channel_name }}</li>
+                        <li><a href="{% url 'channel_detail' channel.channel_name %}">{{ channel.channel_name }}</a></li>
                     {% endfor %}
                 </ul>
-                    <a href="/messages/project-plan" id="project-plan">project plan</a>
+                <a href="/messages/project-plan" id="project-plan">project plan</a>
             </div>
-
         </div>
-         <div id="PostIssueChannelModal" class="modal fade">
+        <div id="RoomModal" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width:10%;">&times;</button>
-                        <h4 class="modal-title">Create A Issue Channel</h4>
+                        <h4 id="room_title" class="modal-title">Create a Room</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form action="../../create/room" method="post">
+                            {% csrf_token %}
+                            {{ room_form }}
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" id="btn_room_submit">Create a room</button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div id="PostIssueChannelModal" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width:10%;">&times;</button>
+                        <h4 id="issue_title" class="modal-title">Create A Issue Channel</h4>
                     </div>
                     <div class="modal-body">
                         <form action="../../issue/create" method="post">
-                        {% csrf_token %}
-                        {{ issue_channel_form }}
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary" id="btn_post_submit">Create a channel</button>
+                            {% csrf_token %}
+                            {{ issue_channel_form }}
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" id="btn_post_submit">Create a channel</button>
                         </form>
                     </div>
 
@@ -104,6 +155,9 @@
         </ul>
     </div>
 
-
+<div id="room_dialog" title="Select room">
+    <ul id="list">
+    </ul>
+</div>
 </body>
 </html>
