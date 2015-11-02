@@ -16,4 +16,3 @@ class UploadFileForm(forms.models.ModelForm):
     class Meta:
         model = ChannelFiles
         fields = {'title', 'file'}
-
