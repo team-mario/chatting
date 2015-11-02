@@ -1,5 +1,4 @@
 from functional_tests.base import FunctionalTest
-from selenium.webdriver.common.keys import Keys
 
 
 fixtures_data_count = 5
