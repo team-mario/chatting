@@ -73,6 +73,9 @@
 </script>
 {% csrf_token %}
 <div id="messages_list_container">
+    <div class="message_date">
+        September 31
+    </div>
     {% for message in messages %}
         <div class="message">
             <div class="message_send_information">
