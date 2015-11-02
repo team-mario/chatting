@@ -1,12 +1,16 @@
 from django.shortcuts import render
 from message.models import Message
 from django.http import HttpResponse
+from team.forms import IssueChannelForm
+from team.models import IssueChannel
 import json
 import datetime
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
-def message_list(request, channel_name):
+@login_required(login_url='/accounts/login/')
+def message_list(request, channel_name=None):
     messages = []
     messages_list = Message.objects.all().order_by('id')
     for data in messages_list:
@@ -23,10 +27,13 @@ def message_list(request, channel_name):
         last_primary_key = 0
         last_send_date = datetime.datetime.today()
 
+    issue_channel_form = IssueChannelForm
     context = {
         'messages': messages,
         'last_primary_key': last_primary_key,
         'last_send_date': last_send_date,
+        'issue_channel_form': issue_channel_form,
+        'issue_channel': IssueChannel.objects.all(),
     }
 
     return render(

@@ -6,17 +6,6 @@ from django.contrib.auth.decorators import login_required
 
 
 @login_required(login_url='/accounts/login/')
-def index(request):
-    # Check limiting access
-    # if not request.user.is_authenticated():
-        # return redirect('/accounts/login/')
-
-    issue_channel_form = IssueChannelForm
-    return render(request, 'common/base.html', {'issue_channel_form': issue_channel_form,
-                                                'issue_channel': IssueChannel.objects.all()})
-
-
-@login_required(login_url='/accounts/login/')
 def channel_create(request):
     if request.method == 'POST':
         # Below codes needs code refactoring.
@@ -25,9 +14,4 @@ def channel_create(request):
         channel_content = request.POST.get('channel_content')
         IssueChannel.objects.create(user=user, channel_name=channel_name, channel_content=channel_content)
 
-    return HttpResponseRedirect('../accounts/profile/')
-
-
-@login_required(login_url='/accounts/login/')
-def channel_detail(request, channel_name):
-    return redirect('/messages/project-plan')
+    return HttpResponseRedirect('../issue/channel/')
