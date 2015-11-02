@@ -2,18 +2,21 @@ from django.shortcuts import render, redirect
 from .forms import IssueChannelForm
 from team.models import IssueChannel
 from django.http import HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
 
 
+@login_required(login_url='/accounts/login/')
 def index(request):
     # Check limiting access
-    if not request.user.is_authenticated():
-        return redirect('/accounts/login/')
+    # if not request.user.is_authenticated():
+        # return redirect('/accounts/login/')
 
     issue_channel_form = IssueChannelForm
     return render(request, 'common/base.html', {'issue_channel_form': issue_channel_form,
                                                 'issue_channel': IssueChannel.objects.all()})
 
 
+@login_required(login_url='/accounts/login/')
 def channel_create(request):
     if request.method == 'POST':
         # Below codes needs code refactoring.
@@ -25,5 +28,6 @@ def channel_create(request):
     return HttpResponseRedirect('../accounts/profile/')
 
 
+@login_required(login_url='/accounts/login/')
 def channel_detail(request, channel_name):
     return redirect('/messages/project-plan')
