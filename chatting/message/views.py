@@ -1,7 +1,7 @@
 from message.models import Message
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template.response import TemplateResponse
-from team.forms import IssueChannelForm, RoomForm
+from team.forms import IssueChannelForm, RoomForm, UploadFileForm
 from team.models import IssueChannel, RoomChannel
 import json
 import datetime
@@ -13,6 +13,7 @@ def message_list(request, channel_name=None):
     if not request.user.is_authenticated():
         return HttpResponseRedirect('../accounts/login/')
 
+    file_channel_form = UploadFileForm
     issue_channel_form = IssueChannelForm
     room_form = RoomForm
     room_list = RoomChannel.objects.values('room_name').distinct()
@@ -23,7 +24,7 @@ def message_list(request, channel_name=None):
     context['issue_channel'] = IssueChannel.objects.all()
     context['room_form'] = room_form
     context['room_list'] = room_list
-
+    context['file_channel_form'] = file_channel_form
     if channel_name is not None:
         issue = get_object_or_404(IssueChannel, channel_name=channel_name)
     else:
