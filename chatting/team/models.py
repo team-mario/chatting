@@ -26,3 +26,9 @@ class ChannelFiles(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class RoomChannel(models.Model):
+    issue_id = models.ForeignKey(IssueChannel, default=None, null=True)
+    room_name = models.CharField(max_length=30, unique=True,
+                                 default='', null=False)
