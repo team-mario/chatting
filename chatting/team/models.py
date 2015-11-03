@@ -17,3 +17,10 @@ class HashTag(models.Model):
 
     def __str__(self):
         return self.tag_name
+
+
+class RoomChannel(models.Model):
+    issue_id = models.ForeignKey(IssueChannel, default=None, null=True)
+    room_name = models.CharField(max_length=30, unique=True,
+                                 default='', null=False)
+    issue_list = models.TextField(default='', null=True)
