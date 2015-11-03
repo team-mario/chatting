@@ -19,6 +19,15 @@ class HashTag(models.Model):
         return self.tag_name
 
 
+class ChannelFiles(models.Model):
+    title = models.CharField(max_length=30)
+    file = models.FileField(upload_to='.')
+    channel = models.ForeignKey(IssueChannel, default=None)
+
+    def __str__(self):
+        return self.title
+
+
 class RoomChannel(models.Model):
     issue_id = models.ForeignKey(IssueChannel, default=None, null=True)
     room_name = models.CharField(max_length=30, unique=True,

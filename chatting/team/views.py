@@ -1,9 +1,7 @@
 from django.shortcuts import render, redirect
-from .forms import IssueChannelForm
-from team.models import IssueChannel
-from team.models import RoomChannel
+from team.models import IssueChannel, ChannelFiles, RoomChannel
 from django.http import HttpResponseRedirect
-from team.forms import RoomForm
+from team.forms import RoomForm, IssueChannelForm, UploadFileForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
@@ -11,9 +9,7 @@ from django.contrib.auth.models import User
 @login_required(login_url='/accounts/login/')
 def index(request):
     # Check limiting access
-    # if not request.user.is_authenticated():
-        # return redirect('/accounts/login/')
-
+    file_channel_form = UploadFileForm
     issue_channel_form = IssueChannelForm
     room_form = RoomForm
     room_list = RoomChannel.objects.values('room_name').distinct()
@@ -22,7 +18,8 @@ def index(request):
     return render(request, 'common/base.html', {'issue_channel_form': issue_channel_form,
                                                 'issue_channel': IssueChannel.objects.all(),
                                                 'room_form': room_form,
-                                                'room_list': room_list})
+                                                'room_list': room_list,
+                                                'file_channel_form': file_channel_form})
 
 
 @login_required(login_url='/accounts/login/')
@@ -53,6 +50,16 @@ def channel_detail(request, channel_name):
 
 
 @login_required(login_url='/accounts/login/')
+def channel_file_add(request):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        channel = IssueChannel.objects.get(pk=1)
+        ChannelFiles.objects.create(title=title, file=request.FILES['file'], channel=channel)
+        return redirect('/accounts/profile/')
+
+    return redirect('/accounts/login/')
+
+
 def create_room(request):
     if request.method == 'POST':
         room_name = request.POST.get('room_name')
