@@ -29,7 +29,7 @@ class FunctionalTest(StaticLiveServerTestCase):
         self.browser.find_element_by_id('id_email').send_keys('test@naver.com')
         self.browser.find_element_by_id('id_password1').send_keys('test')
         self.browser.find_element_by_id('id_password2').send_keys('test')
-        self.browser.find_element_by_id('retistration_btn').submit()
+        self.browser.find_element_by_id('registration_btn').submit()
 
         self.browser.find_element_by_id('id_username').send_keys('test')
         self.browser.find_element_by_id('id_password').send_keys('test')
@@ -64,5 +64,3 @@ class FunctionalTest(StaticLiveServerTestCase):
 
         self.make_issue_channel("Test-Issue-01")
         self.make_issue_channel("Test-Issue-02")
-
-

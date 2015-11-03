@@ -1,5 +1,3 @@
-from django.shortcuts import render, redirect
-from .forms import IssueChannelForm
 from team.models import IssueChannel
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
