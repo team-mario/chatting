@@ -5,6 +5,8 @@ from message.models import Message
 from team.models import IssueChannel
 from django.http import HttpRequest
 from django.contrib.auth.models import User
+from django.conf import settings
+from django.utils.importlib import import_module
 import json
 
 
@@ -24,9 +26,13 @@ class MessageTest(TestCase):
     def test_message_list_return_correct_data(self):
         issue = IssueChannel.objects.first()
 
+        engine = import_module(settings.SESSION_ENGINE)
+        session_key = None
+
         request = HttpRequest()
         request.method = 'GET'
         request.user = User.objects.first()
+        request.session = engine.SessionStore(session_key)
 
         response = message_list(request, issue.channel_name)
 

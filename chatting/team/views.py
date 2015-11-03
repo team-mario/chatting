@@ -1,7 +1,7 @@
+from django.shortcuts import redirect
 from team.models import IssueChannel
 from team.models import RoomChannel
 from django.http import HttpResponseRedirect
-from team.forms import RoomForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
@@ -25,12 +25,12 @@ def channel_create(request):
 
         issue_channel.save()
 
-    return HttpResponseRedirect('../issue/channel/')
+    return HttpResponseRedirect('/issue/channel/')
 
 
 @login_required(login_url='/accounts/login/')
 def channel_detail(request, channel_name):
-    return redirect('/messages/project-plan')
+    return redirect('/issue/channel/')
 
 
 @login_required(login_url='/accounts/login/')
@@ -44,4 +44,4 @@ def create_room(request):
         user_q.current_room = room_name
         request.session['cur_room'] = room_name
 
-    return HttpResponseRedirect('../issue/channel/')
+    return HttpResponseRedirect('/issue/channel/')

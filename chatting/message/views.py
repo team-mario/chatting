@@ -1,8 +1,8 @@
 from message.models import Message
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template.response import TemplateResponse
-from team.forms import IssueChannelForm
-from team.models import IssueChannel
+from team.forms import IssueChannelForm, RoomForm
+from team.models import IssueChannel, RoomChannel
 import json
 import datetime
 from django.shortcuts import get_object_or_404, render
@@ -14,10 +14,15 @@ def message_list(request, channel_name=None):
         return HttpResponseRedirect('../accounts/login/')
 
     issue_channel_form = IssueChannelForm
+    room_form = RoomForm
+    room_list = RoomChannel.objects.values('room_name').distinct()
+    request.session['cur_room'] = 'empty'
 
     context = {}
     context['issue_channel_form'] = issue_channel_form
     context['issue_channel'] = IssueChannel.objects.all()
+    context['room_form'] = room_form
+    context['room_list'] = room_list
 
     if channel_name is not None:
         issue = get_object_or_404(IssueChannel, channel_name=channel_name)
