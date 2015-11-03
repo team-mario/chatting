@@ -2,7 +2,9 @@ from django.test import TestCase
 from message.views import message_list, message_create, message_receive
 from django.core.urlresolvers import resolve
 from message.models import Message
+from team.models import IssueChannel
 from django.http import HttpRequest
+from django.contrib.auth.models import User
 import json
 
 
@@ -15,7 +17,7 @@ class MessageTest(TestCase):
 
     # check  '/messages/issue'(url) is return 'message_list' function
     def test_issue_url_resolves_to_message_list(self):
-        found = resolve('/messages/project-plan')
+        found = resolve('/issue/channel/')
         self.assertEqual(found.func, message_list)
 
     # check 'message_list' function
@@ -25,7 +27,7 @@ class MessageTest(TestCase):
             content='우하하하하하',
         )
 
-        response = self.client.get('/messages/project-plan')
+        response = self.client.get('/issue/channel/')
         messages = response.context['messages']
         last_primary_key = response.context['last_primary_key']
         last_send_date = response.context['last_send_date']
@@ -86,20 +88,44 @@ class MessageTest(TestCase):
 
 
 class MessageModelTest(TestCase):
-    def test_saving_and_retrieving_message(self):
+    def test_saving_and_retrieving_message_with_issue(self):
+        user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
+        issue_1 = IssueChannel.objects.create(
+            user=user,
+            channel_name='Issue01',
+            channel_content='issue01'
+        )
+        issue_2 = IssueChannel.objects.create(
+            user=user,
+            channel_name='Issue02',
+            channel_content='issue02'
+        )
+
         Message.objects.create(
+            issue=issue_1,
             sender='bbayoung7849',
             content='우하하하하하',
         )
         Message.objects.create(
+            issue=issue_1,
             sender='mario',
             content='wow',
         )
+        Message.objects.create(
+            issue=issue_2,
+            sender='tester',
+            content='what',
+        )
 
-        saved_messages = Message.objects.all()
+        saved_messages_in_issue_1 = Message.objects.filter(issue=issue_1)
+        saved_messages_in_issue_2 = Message.objects.filter(issue=issue_2)
 
-        self.assertEqual(saved_messages.count(), 2)
-        self.assertEqual(saved_messages[0].sender, 'bbayoung7849')
-        self.assertEqual(saved_messages[0].content, '우하하하하하')
-        self.assertEqual(saved_messages[1].sender, 'mario')
-        self.assertEqual(saved_messages[1].content, 'wow')
+        self.assertEqual(saved_messages_in_issue_1.count(), 2)
+        self.assertEqual(saved_messages_in_issue_1[0].sender, 'bbayoung7849')
+        self.assertEqual(saved_messages_in_issue_1[0].content, '우하하하하하')
+        self.assertEqual(saved_messages_in_issue_1[1].sender, 'mario')
+        self.assertEqual(saved_messages_in_issue_1[1].content, 'wow')
+
+        self.assertEqual(saved_messages_in_issue_2.count(), 1)
+        self.assertEqual(saved_messages_in_issue_2[0].sender, 'tester')
+        self.assertEqual(saved_messages_in_issue_2[0].content, 'what')

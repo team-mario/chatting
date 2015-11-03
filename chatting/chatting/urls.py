@@ -28,7 +28,7 @@ urlpatterns = [
     url(r'^password_change/done/$',
         'django.contrib.auth.views.password_change_done'),
     url(r'^issue/create$', 'team.views.channel_create', name='channel_create'),
-    url(r'^issue/channel/', 'message.views.message_list'),
-    url(r'^issue/channel/(?P<channel_name>\S+?)', 'message.views.message_list', name='channel_detail'),
+    url(r'^issue/channel/$', 'message.views.message_list'),
+    url(r'^issue/channel/(?P<channel_name>[\w-]+)', 'message.views.message_list', name='channel_detail'),
     url(r'^', 'login.views.index'),
 ]

@@ -6,13 +6,30 @@ from team.models import IssueChannel
 import json
 import datetime
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404
+from team.models import IssueChannel
 
 
 # Create your views here.
 @login_required(login_url='/accounts/login/')
 def message_list(request, channel_name=None):
+    issue_channel_form = IssueChannelForm
+
+    if channel_name is not None:
+        issue = get_object_or_404(IssueChannel, channel_name=channel_name)
+    else:
+        context = {
+            'issue_channel_form': issue_channel_form,
+            'issue_channel': IssueChannel.objects.all(),
+        }
+        return render(
+            request,
+            'message/default.html',
+            context
+        )
+
     messages = []
-    messages_list = Message.objects.all().order_by('id')
+    messages_list = Message.objects.filter(issue=issue).order_by('id')
     for data in messages_list:
             dic = {}
             dic['sender'] = data.sender
@@ -27,8 +44,8 @@ def message_list(request, channel_name=None):
         last_primary_key = 0
         last_send_date = datetime.datetime.today()
 
-    issue_channel_form = IssueChannelForm
     context = {
+        'issue': issue,
         'messages': messages,
         'last_primary_key': last_primary_key,
         'last_send_date': last_send_date,
@@ -44,31 +61,40 @@ def message_list(request, channel_name=None):
 
 
 def message_create(request):
+    request.method = 'POST'
     if request.method == 'POST':
-        Message.objects.create(
-            sender=request.POST.get('sender', ''),
-            content=request.POST.get('content', ''),
-        )
-        return HttpResponse("inserted")
+        channel_name = request.POST.get('channel_name', '')
+        issue = IssueChannel.objects.filter(channel_name=channel_name)
 
-    return HttpResponse("error")
+        if issue is not None:
+            Message.objects.create(
+                sender=request.POST.get('sender', ''),
+                content=request.POST.get('content', ''),
+                issue=issue[0],
+            )
+            return HttpResponse("inserted")
+
+    return HttpResponse("error request method.")
 
 
 def message_receive(request):
     if request.method == 'GET':
         last_primary_key = request.GET.get('last_primary_key', None)
+        channel_name = request.GET.get('channel_name', None)
 
         if last_primary_key is not None:
             messages = []
             last_key = int(last_primary_key)
-            for data in Message.objects.filter(id__gt=last_key).order_by('id'):
-                    dic = {}
-                    dic['id'] = data.id
-                    dic['sender'] = data.sender
-                    dic['time'] = str(data.create_datetime.strftime("%-I:%M %p"))
-                    dic['content'] = data.content
-                    messages.append(dic)
-            messages = json.dumps(messages)
-            return HttpResponse(messages, content_type='application/json')
+            issue = IssueChannel.objects.filter(channel_name=channel_name)
+            if issue is not None:
+                for data in Message.objects.filter(issue=issue, id__gt=last_key).order_by('id'):
+                        dic = {}
+                        dic['id'] = data.id
+                        dic['sender'] = data.sender
+                        dic['time'] = str(data.create_datetime.strftime("%-I:%M %p"))
+                        dic['content'] = data.content
+                        messages.append(dic)
+                messages = json.dumps(messages)
+                return HttpResponse(messages, content_type='application/json')
 
     return HttpResponse("error")

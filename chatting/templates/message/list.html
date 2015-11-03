@@ -23,7 +23,7 @@
             type: 'GET',
             contentType: 'application/json',
             url: '/messages/receive',
-            data: {'last_primary_key': last_primary_key},
+            data: {'last_primary_key': last_primary_key, 'channel_name': '{{ issue.channel_name }}' },
             cache: false,
             success: function(response){
                 append_messsage_to_div(response);
@@ -54,7 +54,7 @@
         $.ajax({
             type: 'POST',
             url: '/messages/create',
-            data: {content: msg, sender:'bbayoung7849'},
+            data: {content: msg, sender:'bbayoung7849', channel_name:'{{ issue.channel_name }}' },
             cache: false,
             beforeSend:function(xhr){
                 xhr.setRequestHeader("X-CSRFToken", csrftoken);
@@ -65,7 +65,8 @@
             failure: function(response) {
                 alert('sorry, insert error. please try again');
             },
-            complete: function(){
+            complete: function(response){
+                console.log(JSON.stringify(response));
                 $("#msg").val("");
             },
         });
