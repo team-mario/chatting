@@ -45,10 +45,11 @@ class FunctionalTest(StaticLiveServerTestCase):
 
         self.wait_for_element_with_class('modal-header')
 
-        h4 = self.browser.find_element_by_class_name('modal-title')
+        h4 = self.browser.find_element_by_id('issue_title')
         self.assertIn('Create', h4.text)
 
-        # When issue channel's title and contents is filled user can submit through button.
+        # When issue channel's title and contents is
+        # filled user can submit through button.
         self.browser.find_element_by_id(
             'id_channel_name'
         ).send_keys(issue_name)

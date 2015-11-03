@@ -57,7 +57,8 @@ class NewVisitorTest(FunctionalTest):
         self.check_basic_layout()
 
         # start check message page
-        messages_input_container = self.browser.find_element_by_id('messages_input_container')
+        messages_input_container = \
+            self.browser.find_element_by_id('messages_input_container')
 
         # check messages input box
         messages_input_box = messages_input_container.find_element_by_id('msg')
