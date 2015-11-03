@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
 from team.models import IssueChannel, ChannelFiles, RoomChannel
-from .forms import IssueChannelForm
 from django.http import HttpResponseRedirect
 from team.forms import RoomForm, IssueChannelForm, UploadFileForm
 from django.contrib.auth.decorators import login_required
