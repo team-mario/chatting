@@ -58,7 +58,8 @@ def message_receive(request):
                     dic = {}
                     dic['id'] = data.id
                     dic['sender'] = data.sender
-                    dic['time'] = str(data.create_datetime.strftime("%-I:%M %p"))
+                    dic['time'] = \
+                        str(data.create_datetime.strftime("%-I:%M %p"))
                     dic['content'] = data.content
                     messages.append(dic)
             messages = json.dumps(messages)
