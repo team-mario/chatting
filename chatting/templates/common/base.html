@@ -60,10 +60,22 @@
                 {% for room in room_list.all %}
                     var text = '{{ room.room_name }}';
                     var li = document.createElement("li");
-                    li.appendChild(document.createTextNode(text));
-                    li.setAttribute("id", "element4");
+                    li.setAttribute("id", "element");
+                    var a = document.createElement('a');
+                    var linkText = document.createTextNode(text);
+                    a.appendChild(linkText);
+                    a.title = text;
+                    var temp_href = "../../room/detail/";
+                    a.href = temp_href+text;
+                    li.appendChild(document.body.appendChild(a));
                     ul.appendChild(li);
                 {% endfor %}
+            });
+            $('#room_dialog').on('dialogclose', function(event) {
+                var ul = document.getElementById("list");
+                while(ul.firstChild ){
+                    ul.removeChild(ul.firstChild);
+                }
             });
         });
     </script>
@@ -73,9 +85,6 @@
         <div id="header" class="clearfix">
             <div class="logo">
                 <h1>TeamMario</h1>
-        </div>
-        <div>
-            <input type="button" id="room_btn" value="Select room">
         </div>
         <div class="search">
             <span><input type="text" name="q" id="q" placeholder="search here"></span>
@@ -89,6 +98,7 @@
             <div class='post_issue'>
                 <button type="button" id="btn_create_room" class="btn btn-lg btn-primary room-modal">Create Room</button>
                 <button type="button" id="btn_post_issue" class="btn btn-lg btn-primary open-modal">Add Issue</button>
+                <button type="button" id="room_btn" class="btn btn-lg btn-primary select-room-modal">Select room</button>
                 {% block post_issue_block %}
                 {% endblock %}
             </div>
@@ -96,8 +106,8 @@
             <div class='sorted_issue_list'>
                 <h2>Favourite Issues</h2>
                 <ul>
-                    {% for channel in issue_channel.all %}
-                        <li><a href="{% url 'channel_detail' channel.channel_name %}">{{ channel.channel_name }}</a></li>
+                    {% for channel in issue_channel %}
+                        <li><a href="{% url 'channel_detail' channel %}">{{ channel }}</a></li>
                     {% endfor %}
                 </ul>
                 <a href="/messages/project-plan" id="project-plan">project plan</a>

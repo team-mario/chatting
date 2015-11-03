@@ -10,12 +10,27 @@ class RoomTest(FunctionalTest):
         import time
         time.sleep(time_to_sleep)
 
-    def test_create_room(self):
+    def create_room(self):
         self.login()
         self.browser.find_element_by_id('btn_create_room').click()
         self.browser.find_element_by_id('id_room_name').send_keys('TestRoom')
         self.browser.find_element_by_id('btn_room_submit').click()
 
-        self.browser.find_element_by_id('room_btn').click()
+        self.timeout(2)
+
+    def add_issue(self):
+        self.create_room()
+        self.browser.find_element_by_id('btn_post_issue').click()
+        self.browser.find_element_by_id('id_channel_name').send_keys('Test')
+        self.browser.find_element_by_id('id_channel_content').send_keys('Test')
+        self.browser.find_element_by_id('btn_post_submit').click()
 
         self.timeout(2)
+
+    def select_room(self):
+        self.browser.find_element_by_id('room_btn').click()
+        self.browser.find_element_by_id('element').click()
+
+    def test_select_room(self):
+        self.add_issue()
+        self.select_room()
