@@ -83,7 +83,7 @@ class NewVisitorTest(FunctionalTest):
         messages = \
             messages_list_container.find_elements_by_class_name("message")
 
-        msg = messages[len(messages) - 1]
+        msg = messages[-1]
 
         msg_send_infor = \
             msg.find_element_by_class_name("message_send_information")
