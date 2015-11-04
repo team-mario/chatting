@@ -31,7 +31,6 @@ def channel_detail(request, channel_name):
 
 @login_required(login_url='/accounts/login/')
 def team_detail(request, team_name):
-    print('team_detail')
     request.session['cur_team'] = team_name
     return HttpResponseRedirect('/issue/channel/')
 

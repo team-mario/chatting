@@ -32,6 +32,6 @@ urlpatterns = [
     url(r'^issue/channel/(?P<channel_name>[\w-]+)', 'message.views.message_list', name='channel_detail'),
     url(r'^create/room', 'team.views.create_room'),
     url(r'^issue/file/add', 'team.views.channel_file_add'),
-    url(r'^R/detail/(?P<team_name>\S+)', 'team.views.team_detail'),
+    url(r'^room/detail/(?P<team_name>\S+)', 'team.views.team_detail'),
     url(r'^', 'login.views.index'),
 ]

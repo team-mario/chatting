@@ -31,6 +31,13 @@ class RoomTest(FunctionalTest):
         self.browser.find_element_by_id('room_btn').click()
         self.browser.find_element_by_id('element').click()
 
+        div = self.browser.find_element_by_id('default_view')
+        self.assertIn('default page', div.text)
+
+        url_regex_str = '/issue/channel/'
+
+        self.assertRegex(self.browser.current_url, url_regex_str)
+
     def test_select_room(self):
         self.add_issue()
         self.select_room()

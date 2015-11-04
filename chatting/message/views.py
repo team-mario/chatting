@@ -19,8 +19,6 @@ def message_list(request, channel_name=None):
     room_form = TeamForm
     room_list = TeamChannel.objects.values('team_name').distinct()
 
-    print('message_list')
-    print(room_list)
     default = 'default'
 
     if 'cur_team' in request.session:
