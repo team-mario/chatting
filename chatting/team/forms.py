@@ -1,5 +1,5 @@
 from django import forms
-from team.models import IssueChannel, RoomChannel, ChannelFiles
+from team.models import IssueChannel, TeamChannel, ChannelFiles
 
 
 class IssueChannelForm(forms.models.ModelForm):
@@ -15,7 +15,7 @@ class UploadFileForm(forms.models.ModelForm):
         fields = {'title', 'file'}
 
 
-class RoomForm(forms.models.ModelForm):
+class TeamForm(forms.models.ModelForm):
     class Meta:
-        model = RoomChannel
-        fields = {'room_name'}
+        model = TeamChannel
+        fields = {'team_name'}

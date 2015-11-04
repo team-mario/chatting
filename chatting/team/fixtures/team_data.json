@@ -1,1 +1,1 @@
-[{"pk": 1, "model": "team.issuechannel", "fields": {"channel_name": "1st", "channel_content": "", "user": 1}}, {"pk": 2, "model": "team.issuechannel", "fields": {"channel_name": "2nd", "channel_content": "", "user": 1}}]
+[{"pk": 1, "model": "team.issuechannel", "fields": {"channel_name": "1st", "channel_content": "", "user": 1, "team": 1}}, {"pk": 2, "model": "team.issuechannel", "fields": {"channel_name": "2nd", "channel_content": "", "user": 1, "team": 2}}]

@@ -1,57 +1,180 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!doctype html>
 <html>
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title>issue chat</title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="1348.17">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; color: #000000; -webkit-text-stroke: #000000}
-    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; color: #000000; -webkit-text-stroke: #000000; min-height: 14.0px}
-    p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 11.0px 'Helvetica Neue'; color: #000000; -webkit-text-stroke: #000000}
-    li.li1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; color: #000000; -webkit-text-stroke: #000000}
-    li.li5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; color: #0000ee; -webkit-text-stroke: #0000ee}
-    li.li8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; color: #000000}
-    span.s1 {font-kerning: none}
-    span.s2 {font: 11.0px 'Helvetica Neue'; font-kerning: none; background-color: #c0c0c0}
-    span.s3 {-webkit-text-stroke: 0px #000000}
-    span.s4 {text-decoration: underline ; font-kerning: none; color: #0000ee}
-    span.s5 {font-kerning: none; background-color: #c0c0c0}
-    ul.ul1 {list-style-type: disc}
-  </style>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>issue chat</title>
+    {% load staticfiles %}
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css">
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <script src="{% static 'js/custom.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script>
+        $(function(){
+            $("#dialog").dialog({
+                autoOpen:false,
+                position:[100,200],
+                modal:true,
+                resizable:false,
+                buttons:{
+                    "확인":function(){
+                        $(this).dialog("close");
+                    },"취소":function(){
+                        $(this).dialog("close");
+                    }
+                }
+            });
+            $("#information_btn").on("click",function(){
+                $("#dialog").dialog("open");
+            });
+        });
+    </script>
+    <script>
+        $(function(){
+            $("#room_dialog").dialog({
+                autoOpen:false,
+                position:[100,200],
+                modal:true,
+                resizable:false,
+                buttons:{
+                    "확인":function(){
+                        $(this).dialog("close");
+                    },"취소":function(){
+                        $(this).dialog("close");
+                    }
+                }
+            });
+            $("#room_btn").on("click",function(){
+                $("#room_dialog").dialog("open");
+                var ul = document.getElementById("list");
+                {% for room in room_list.all %}
+                    var text = '{{ room.team_name }}';
+                    var li = document.createElement("li");
+                    li.setAttribute("id", "element");
+                    var a = document.createElement('a');
+                    var linkText = document.createTextNode(text);
+                    a.appendChild(linkText);
+                    a.title = text;
+                    var temp_href = "../../room/detail/";
+                    a.href = temp_href+text;
+                    li.appendChild(document.body.appendChild(a));
+                    ul.appendChild(li);
+                {% endfor %}
+            });
+            $('#room_dialog').on('dialogclose', function(event) {
+                var ul = document.getElementById("list");
+                while(ul.firstChild ){
+                    ul.removeChild(ul.firstChild);
+                }
+            });
+        });
+    </script>
 </head>
 <body>
-<p class="p1"><span class="s1">{% load staticfiles %}</span></p>
-<h1 style="margin: 0.0px 0.0px 16.1px 0.0px; font: 24.0px Times; color: #000000; -webkit-text-stroke: #000000"><span class="s1"><b>TeamMario</b></span></h1>
-<p class="p3"><span class="s1"></span><br></p>
-<p class="p3"><span class="s1"></span><br></p>
-<p class="p1"><span class="s2">Create Room</span><span class="s1"> </span><span class="s2">Add Issue</span><span class="s1"> </span><span class="s2">Select room</span><span class="s1"> {% block post_issue_block %} {% endblock %}<span class="Apple-converted-space"> </span></span></p>
-<h2 style="margin: 0.0px 0.0px 14.9px 0.0px; font: 18.0px Times; color: #000000; -webkit-text-stroke: #000000"><span class="s1"><b>Favourite Issues</b></span></h2>
-<ul class="ul1">
-  <li class="li1"><span class="s3"></span><span class="s1">{% for channel in issue_channel %}</span></li>
-  <li class="li5"><span class="s3"><a href="file:///Users/janghuijeong/chatting/chatting/templates/common/%7B%25%20url%20'channel_detail'%20channel%20%25%7D"><span class="s4">{{ channel }}</span></a></span></li>
-  <li class="li1"><span class="s3"></span><span class="s1">{% for channel in issue_channel.all %}</span></li>
-  <li class="li5"><span class="s3"><a href="file:///Users/janghuijeong/chatting/chatting/templates/common/%7B%25%20url%20'channel_detail'%20channel.channel_name%20%25%7D"><span class="s4">{{ channel.channel_name }}</span></a></span></li>
-  <li class="li1"><span class="s3"></span><span class="s1">{% endfor %}<span class="Apple-converted-space"> </span></span></li>
-</ul>
-<p class="p6"><span class="s5">×</span></p>
-<h4 style="margin: 0.0px 0.0px 16.0px 0.0px; font: 12.0px Times; color: #000000; -webkit-text-stroke: #000000"><span class="s1"><b>Create a Room</b></span></h4>
-<p class="p1"><span class="s1">{% csrf_token %} {{ room_form }} </span><span class="s2">Close</span><span class="s1"> </span><span class="s2">Create a room</span><span class="s1"> with</span></p>
-<p class="p3"><span class="s1"></span><br></p>
-<p class="p3"><span class="s1"></span><br></p>
-<p class="p3"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">{% csrf_token %} {{ file_channel_form }} </span><span class="s2">Upload</span><span class="s1"><span class="Apple-converted-space"> </span></span></p>
-<p class="p6"><span class="s5">×</span></p>
-<h4 style="margin: 0.0px 0.0px 16.0px 0.0px; font: 12.0px Times; color: #000000; -webkit-text-stroke: #000000"><span class="s1"><b>Create A Issue Channel</b></span></h4>
-<p class="p1"><span class="s1">{% csrf_token %} {{ issue_channel_form }} </span><span class="s2">Close</span><span class="s1"> </span><span class="s2">Create a channel</span><span class="s1"><span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s1">{% block container %} {% endblock %}<span class="Apple-converted-space"> </span></span></p>
-<ul class="ul1">
-  <li class="li5"><span class="s3"><a href="file:///accounts/logout/"><span class="s4">Logout</span></a></span></li>
-  <li class="li5"><span class="s3"><a href="file:///Users/janghuijeong/chatting/chatting/password_change/"><span class="s4">Change Password</span></a></span></li>
-</ul>
-<ul class="ul1">
-  <li class="li8"></li>
-</ul>
+    <div id="wrap" class="clearfix">
+        <div id="header" class="clearfix">
+            <div class="logo">
+                <h1>TeamMario</h1>
+
+        </div>
+        <div class="search">
+            <span><input type="text" name="q" id="q" placeholder="search here"></span>
+            <span class="clearfix"><input type="button" id="btn_search" value="Search"></span>
+        </div>
+        <div class="my_information">
+            <span class="clearfix"><input type="button" id="information_btn" value="my_information"></span>
+        </div>
+    </div>
+        <div id="nav">
+            <div class='post_issue'>
+                <button type="button" id="btn_create_room" class="btn btn-lg btn-primary room-modal">Create Team</button>
+                <button type="button" id="btn_post_issue" class="btn btn-lg btn-primary open-modal">Add Issue</button>
+                <button type="button" id="room_btn" class="btn btn-lg btn-primary select-room-modal">Select Team</button>
+                {% block post_issue_block %}
+                {% endblock %}
+            </div>
+
+            <div class='sorted_issue_list'>
+                <h2>Favourite Issues</h2>
+                <ul>
+                    {% for channel in issue_channel.all %}
+                        <li><a href="{% url 'channel_detail' channel.channel_name %}" id="{{ channel.channel_name }}">{{ channel.channel_name }}</a></li>
+                    {% endfor %}
+                </ul>
+
+            </div>
+        </div>
+        <div id="RoomModal" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width:10%;">&times;</button>
+                        <h4 id="room_title" class="modal-title">Create a Room</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form action="../../create/room" method="post">
+                            {% csrf_token %}
+                            {{ room_form }}
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" id="btn_room_submit">Create a room</button>
+                        </form>
+                    </div>
+
+            <br><br><br>
+            <div>
+                <form action="/issue/file/add" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ file_channel_form }}
+                    <button type="submit" class="btn btn-primary" id="btn_file_submit">Upload</button>
+                </form>
+
+            </div>
+
+                </div>
+            </div>
+        </div>
+        <div id="PostIssueChannelModal" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width:10%;">&times;</button>
+                        <h4 id="issue_title" class="modal-title">Create A Issue Channel</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form action="../../issue/create" method="post">
+                            {% csrf_token %}
+                            {{ issue_channel_form }}
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" id="btn_post_submit">Create a channel</button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div id="container">
+            {% block container %}
+            {% endblock %}
+        </div>
+    </div>
+
+    <div id="dialog" title="My Information">
+        <ul>
+            <li><a id="id_logout" href="/accounts/logout/">Logout</a></li>
+            <li><a id="id_change_password" href="../../password_change/">Change Password</a></li>
+        </ul>
+    </div>
+
+<div id="room_dialog" title="Select Team">
+    <ul id="list">
+    </ul>
+</div>
 </body>
 </html>

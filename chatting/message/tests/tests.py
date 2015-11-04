@@ -7,6 +7,7 @@ from django.http import HttpRequest
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.utils.importlib import import_module
+from team.models import TeamChannel
 import json
 
 
@@ -15,7 +16,7 @@ fixtures_data_count = 5
 
 
 class MessageTest(TestCase):
-    fixtures = ['users.json', 'team_data.json', 'message_data.json', ]
+    fixtures = ['users.json', 'team_data.json', 'message_data.json', 'team_list.json']
 
     # check  '/issue/channel/'(url) is return 'message_list' function
     def test_issue_url_resolves_to_message_list(self):
@@ -102,15 +103,18 @@ class MessageTest(TestCase):
 class MessageModelTest(TestCase):
     def test_saving_and_retrieving_message_with_issue(self):
         user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
+        team = TeamChannel.objects.create(team_name='team')
         issue_1 = IssueChannel.objects.create(
             user=user,
             channel_name='Issue01',
-            channel_content='issue01'
+            channel_content='issue01',
+            team=team
         )
         issue_2 = IssueChannel.objects.create(
             user=user,
             channel_name='Issue02',
-            channel_content='issue02'
+            channel_content='issue01',
+            team=team
         )
 
         Message.objects.create(

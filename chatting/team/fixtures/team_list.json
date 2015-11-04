@@ -1,0 +1,1 @@
+[{"pk": 1, "model": "team.teamchannel", "fields": {"team_name": "room 1"}}, {"pk": 2, "model": "team.teamchannel", "fields": {"team_name": "room 2"}}]

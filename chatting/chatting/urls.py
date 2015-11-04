@@ -16,7 +16,6 @@ Including another URLconf
 from django.conf.urls import url
 
 urlpatterns = [
-    url(r'^messages/project-plan$', 'message.views.message_list'),
     url(r'^messages/create$', 'message.views.message_create'),
     url(r'^messages/receive$', 'message.views.message_receive'),
     url(r'^accounts/logout/$', 'django.contrib.auth.views.logout',
@@ -28,10 +27,11 @@ urlpatterns = [
         {'post_change_redirect': 'message.views.message_list'}),
     url(r'^password_change/done/$',
         'django.contrib.auth.views.password_change_done'),
-    url(r'^accounts/profile/', 'team.views.index'),
     url(r'^issue/create$', 'team.views.channel_create', name='channel_create'),
+    url(r'^issue/channel/$', 'message.views.message_list'),
+    url(r'^issue/channel/(?P<channel_name>[\w-]+)', 'message.views.message_list', name='channel_detail'),
     url(r'^create/room', 'team.views.create_room'),
-    url(r'^room/detail/(?P<room_name>\S+)', 'team.views.room_detail'),
-    url(r'^issue/channel/(?P<channel_name>\S+?)', 'team.views.channel_detail', name='channel_detail'),
+    url(r'^issue/file/add', 'team.views.channel_file_add'),
+    url(r'^R/detail/(?P<team_name>\S+)', 'team.views.team_detail'),
     url(r'^', 'login.views.index'),
 ]

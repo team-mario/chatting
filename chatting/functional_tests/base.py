@@ -61,7 +61,6 @@ class FunctionalTest(StaticLiveServerTestCase):
         self.browser.find_element_by_id('btn_post_submit').click()
 
     def post_issue_channel(self):
-        self.login()
 
         self.make_issue_channel("Test-Issue-01")
         self.make_issue_channel("Test-Issue-02")

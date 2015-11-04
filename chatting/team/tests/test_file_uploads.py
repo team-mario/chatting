@@ -1,7 +1,7 @@
 __author__ = 'judelee'
 from django.test import TestCase
 from django.conf import settings
-from team.models import IssueChannel, ChannelFiles
+from team.models import IssueChannel, ChannelFiles, TeamChannel
 from django.contrib.auth.models import User
 
 
@@ -12,7 +12,8 @@ class FileUploadTest(TestCase):
         User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
         user = User.objects.get(username='john')
 
-        IssueChannel.objects.create(user=user, channel_name='test', channel_content='test contents')
+        team = TeamChannel.objects.create(team_name='test')
+        IssueChannel.objects.create(user=user, channel_name='test', channel_content='test contents', team=team)
 
         title = 'Test_1'
         file = 'Test_File_1'

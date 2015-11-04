@@ -3,7 +3,7 @@ from selenium.webdriver.common.keys import Keys
 
 
 class NewVisitorTest(FunctionalTest):
-    fixtures = ['users.json', 'team_data.json', 'message_data.json', ]
+    fixtures = ['users.json', 'team_data.json', 'message_data.json', 'team_list.json']
 
     def check_basic_layout(self):
         # check browser title
@@ -39,6 +39,7 @@ class NewVisitorTest(FunctionalTest):
 
         self.check_basic_layout()
 
+        self.post_issue_channel()
         # find element by id 'first_issue' issue
         div = self.browser.find_element_by_class_name('sorted_issue_list')
         issue_channels = div.find_elements_by_tag_name('a')
