@@ -1,11 +1,9 @@
 from functional_tests.base import FunctionalTest
 from selenium.webdriver.common.keys import Keys
 
-fixtures_data_count = 5
-
 
 class NewVisitorTest(FunctionalTest):
-    fixtures = ['message_data.json', ]
+    fixtures = ['users.json', 'team_data.json', 'message_data.json', ]
 
     def check_basic_layout(self):
         # check browser title
@@ -37,21 +35,21 @@ class NewVisitorTest(FunctionalTest):
 
     def test_new_visitor(self):
         # execute browser
-        # self.browser.get(self.live_server_url)
         self.login()
 
         self.check_basic_layout()
 
-        # find element by id 'project plan' issue
-        issue_project_plan = self.browser.find_element_by_id('project-plan')
+        # find element by id 'first_issue' issue
+        div = self.browser.find_element_by_class_name('sorted_issue_list')
+        issue_channels = div.find_elements_by_tag_name('a')
+        issue_1 = issue_channels[0]
 
-        url_regex_str = '/messages/.+'
+        url_regex_str = '/issue/channel/.+'
 
         # check issue 'project plan' href
-        self.assertRegex(issue_project_plan.get_attribute('href'),
-                         url_regex_str)
+        self.assertRegex(issue_1.get_attribute('href'), url_regex_str)
 
-        issue_project_plan.click()
+        issue_1.click()
 
         # current browser url validation width regex
         self.assertRegex(self.browser.current_url, url_regex_str)
@@ -85,7 +83,7 @@ class NewVisitorTest(FunctionalTest):
         messages = \
             messages_list_container.find_elements_by_class_name("message")
 
-        msg = messages[fixtures_data_count]
+        msg = messages[-1]
 
         msg_send_infor = \
             msg.find_element_by_class_name("message_send_information")

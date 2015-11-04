@@ -4,7 +4,7 @@ fixtures_data_count = 5
 
 
 class RoomTest(FunctionalTest):
-    fixtures = ['message_data.json', ]
+    fixtures = ['users.json', 'team_data.json', 'message_data.json', ]
 
     def timeout(self, time_to_sleep):
         import time

@@ -1,14 +1,12 @@
-from django.shortcuts import render, redirect
-from .forms import IssueChannelForm
-from team.models import IssueChannel
-from team.models import RoomChannel
+from django.shortcuts import redirect
+from team.models import IssueChannel, ChannelFiles, RoomChannel
 from django.http import HttpResponseRedirect
-from team.forms import RoomForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
 
 @login_required(login_url='/accounts/login/')
+
 def index(request):
     # Check limiting access
     # if not request.user.is_authenticated():
@@ -67,12 +65,12 @@ def channel_create(request):
             room_q.issue_list = result_room
             room_q.save()
 
-    return HttpResponseRedirect('../accounts/profile/')
+    return HttpResponseRedirect('/issue/channel/')
 
 
 @login_required(login_url='/accounts/login/')
 def channel_detail(request, channel_name):
-    return redirect('/messages/project-plan')
+    return redirect('/issue/channel/')
 
 
 @login_required(login_url='/accounts/login/')
@@ -82,6 +80,16 @@ def room_detail(request, room_name):
 
 
 @login_required(login_url='/accounts/login/')
+def channel_file_add(request):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        channel = IssueChannel.objects.get(pk=1)
+        ChannelFiles.objects.create(title=title, file=request.FILES['file'], channel=channel)
+        return redirect('/accounts/profile/')
+
+    return redirect('/accounts/login/')
+
+
 def create_room(request):
     if request.method == 'POST':
         room_name = str(request.POST.get('room_name'))
@@ -91,4 +99,4 @@ def create_room(request):
         user_q.current_room = room_name
         request.session['cur_room'] = room_name
 
-    return HttpResponseRedirect('../accounts/profile/')
+    return HttpResponseRedirect('/issue/channel/')
