@@ -73,23 +73,6 @@
     }
 </script>
 {% csrf_token %}
-
-    <div id="messages_list_container">
-    <div class="message_date">
-
-        September 31
-    </div>
-    {% for message in messages %}
-        <div class="message">
-            <div class="message_send_information">
-                <span class="message_sender">{{ message.sender }}</span>
-                <span class="message_time">{{ message.time }}</span>
-            </div>
-            <div class="message_content">{{ message.content }}</div>
-        </div>
-    {% endfor %}
-    </div>
-
 <div id="messages_list_container">
     <div class="message_date">
         September 31
