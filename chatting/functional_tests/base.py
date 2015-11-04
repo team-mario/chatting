@@ -29,15 +29,13 @@ class FunctionalTest(StaticLiveServerTestCase):
         self.browser.find_element_by_id('id_email').send_keys('test@naver.com')
         self.browser.find_element_by_id('id_password1').send_keys('test')
         self.browser.find_element_by_id('id_password2').send_keys('test')
-        self.browser.find_element_by_id('retistration_btn').submit()
+        self.browser.find_element_by_id('registration_btn').submit()
 
         self.browser.find_element_by_id('id_username').send_keys('test')
         self.browser.find_element_by_id('id_password').send_keys('test')
         self.browser.find_element_by_id('login_btn').submit()
 
-    def post_issue_channel(self):
-        self.login()
-
+    def make_issue_channel(self, issue_name):
         self.wait_for_element_with_id('btn_post_issue')
 
         self.browser.find_element_by_id('btn_post_issue').click()
@@ -54,10 +52,16 @@ class FunctionalTest(StaticLiveServerTestCase):
         # filled user can submit through button.
         self.browser.find_element_by_id(
             'id_channel_name'
-        ).send_keys('Test Issue')
+        ).send_keys(issue_name)
 
         self.browser.find_element_by_id(
             'id_channel_content'
         ).send_keys('test contents')
 
         self.browser.find_element_by_id('btn_post_submit').click()
+
+    def post_issue_channel(self):
+        self.login()
+
+        self.make_issue_channel("Test-Issue-01")
+        self.make_issue_channel("Test-Issue-02")
