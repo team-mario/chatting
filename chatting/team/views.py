@@ -1,8 +1,10 @@
 from django.shortcuts import redirect
+from django.http import HttpResponse
 from team.models import IssueChannel, ChannelFiles, TeamChannel
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+import json
 
 
 @login_required(login_url='/accounts/login/')
@@ -53,3 +55,19 @@ def create_room(request):
         TeamChannel.objects.create(team_name=team_name)
 
     return HttpResponseRedirect('/issue/channel/')
+
+
+def search_issue(request):
+    if request.method == 'POST':
+        search_text = request.POST.get('content', None)
+        issue_channel = IssueChannel.objects.all()
+        result_msg = []
+        for content in issue_channel.all():
+            value = content.channel_content
+            if value.find(str(search_text)) is not -1:
+                dic = {}
+                dic['channel_name'] = content.channel_name
+                result_msg.append(dic)
+
+        result_msg = json.dumps(result_msg)
+    return HttpResponse(result_msg, content_type='application/json')
