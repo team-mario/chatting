@@ -36,6 +36,7 @@ def message_list(request, channel_name=None):
 
     messages = []
     messages_list = Message.objects.filter(issue=issue).order_by('id')
+
     for data in messages_list:
             dic = {}
             dic['sender'] = data.sender

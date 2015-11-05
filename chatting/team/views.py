@@ -17,12 +17,11 @@ def channel_create(request):
         issue_channel = IssueChannel(channel_name=channel_name, channel_content=channel_content)
         user = User.objects.get(username=user_name)
         issue_channel.user = user
+        issue_channel.save()
 
         if cur_room != 'empty':
             room_q = RoomChannel.objects.get(room_name=cur_room, issue_id=issue_channel.id)
             room_q.save()
-
-        issue_channel.save()
 
     return HttpResponseRedirect('/issue/channel/')
 

@@ -92,6 +92,14 @@
                 {% block post_issue_block %}
                 {% endblock %}
             </div>
+            <div>
+                <form action="/issue/file/add" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ file_channel_form }}
+                    <button type="submit" class="btn btn-primary" id="btn_file_submit">Upload</button>
+                </form>
+
+            </div>
 
             <div class='sorted_issue_list'>
                 <h2>Favourite Issues</h2>
@@ -119,14 +127,7 @@
                     </div>
 
             <br><br><br>
-            <div>
-                <form action="/issue/file/add" method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    {{ file_channel_form }}
-                    <button type="submit" class="btn btn-primary" id="btn_file_submit">Upload</button>
-                </form>
 
-            </div>
 
                 </div>
             </div>
