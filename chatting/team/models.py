@@ -27,7 +27,6 @@ class HashTag(models.Model):
 class ChannelFiles(models.Model):
     title = models.CharField(max_length=30)
     file = models.FileField(upload_to='.')
-    channel = models.ForeignKey(IssueChannel, default=None)
     user = models.ForeignKey(User, default=None)
 
     def __str__(self):

@@ -103,4 +103,25 @@
         <input type="text" name="msg" id="msg" class="messages_input_box">
     </span>
 </div>
+
+
+<div id="FileUploadModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width:10%;">&times;</button>
+                <h4 id="issue_title" class="modal-title">File Upload</h4>
+            </div>
+            <div class="modal-body">
+                <form action="/issue/file/add" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ file_channel_form }}
+                    <button type="submit" class="btn btn-primary" id="btn_file_submit">Upload</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 {% endblock %}
