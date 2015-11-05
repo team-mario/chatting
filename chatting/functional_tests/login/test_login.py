@@ -22,5 +22,5 @@ class LoginTest(FunctionalTest):
         self.browser.find_element_by_id('id_old_password').send_keys('test')
         self.browser.find_element_by_id('id_new_password1').send_keys('test1')
         self.browser.find_element_by_id('id_new_password2').send_keys('test1')
-        self.browser.find_element_by_id('btn_change_password').click()
+        self.browser.find_element_by_id('btn_change_password_submit').click()
         self.timeout(1)
