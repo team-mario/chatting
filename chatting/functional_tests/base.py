@@ -53,7 +53,7 @@ class FunctionalTest(StaticLiveServerTestCase):
         self.browser.find_element_by_id('id_issue_name').send_keys(issue_name)
         self.browser.find_element_by_id('id_issue_content').send_keys('content')
 
-        self.browser.find_element_by_id('btn_post_submit').click()
+        self.browser.find_element_by_id('btn_create_issue_submit').click()
 
     def create_issues(self):
         self.create_issue("Test-Issue-01")

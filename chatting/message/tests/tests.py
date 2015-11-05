@@ -1,5 +1,5 @@
 from django.test import TestCase
-from message.views import get_message_list, create_message, get_message
+from message.views import get_messages, create_message, get_message
 from django.core.urlresolvers import resolve
 from message.models import Message
 from team.models import Issue
@@ -18,13 +18,13 @@ fixtures_data_count = 5
 class MessageTest(TestCase):
     fixtures = ['users.json', 'team_data.json', 'message_data.json', 'team_list.json']
 
-    # check  '/issue/'(url) is return 'get_message_list' function
+    # check  '/issue/'(url) is return 'get_messages' function
     def test_issue_url_resolves_to_message_list(self):
         found = resolve('/issue/')
-        self.assertEqual(found.func, get_message_list)
+        self.assertEqual(found.func, get_messages)
 
-    # check 'get_message_list' function
-    def test_get_message_list_return_correct_data(self):
+    # check 'get_messages' function
+    def test_get_messages_return_correct_data(self):
         issue = Issue.objects.first()
 
         engine = import_module(settings.SESSION_ENGINE)
@@ -35,7 +35,7 @@ class MessageTest(TestCase):
         request.user = User.objects.first()
         request.session = engine.SessionStore(session_key)
 
-        response = get_message_list(request, issue.issue_name)
+        response = get_messages(request, issue.issue_name)
 
         messages = response.context_data['messages']
         last_primary_key = response.context_data['last_primary_key']
@@ -58,7 +58,7 @@ class MessageTest(TestCase):
         self.assertEqual(last_send_date,
                          messages_list[0].create_datetime)
 
-    def test_message_create_from_POST_data(self):
+    def test_create_message_from_POST_data(self):
         request = HttpRequest()
         request.method = 'POST'
         request.POST['issue_name'] = Issue.objects.first().issue_name

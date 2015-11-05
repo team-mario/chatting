@@ -37,7 +37,7 @@
     </script>
     <script>
         $(function(){
-            $("#team_dialog").dialog({
+            $("#team_select_dialog").dialog({
                 autoOpen:false,
                 position:[100,200],
                 modal:true,
@@ -51,7 +51,7 @@
                 }
             });
             $("#btn_select_team").on("click",function(){
-                $("#team_dialog").dialog("open");
+                $("#team_select_dialog").dialog("open");
                 var ul = document.getElementById("list");
                 {% for team in teams.all %}
                     var text = '{{ team.team_name }}';
@@ -67,7 +67,7 @@
                     ul.appendChild(li);
                 {% endfor %}
             });
-            $('#team_dialog').on('dialogclose', function(event) {
+            $('#team_select_dialog').on('dialogclose', function(event) {
                 var ul = document.getElementById("list");
                 while(ul.firstChild ){
                     ul.removeChild(ul.firstChild);
@@ -139,10 +139,10 @@
 
         </div>
         <div id="nav">
-            <div class='post_issue'>
-                <button type="button" id="btn_create_team" class="btn btn-lg btn-primary create-team-modal">Create Team</button>
-                <button type="button" id="btn_create_issue" class="btn btn-lg btn-primary create-issue-modal">Add Issue</button>
-                <button type="button" id="btn_select_team" class="btn btn-lg btn-primary select-team-modal">Select Team</button>
+            <div class='btns'>
+                <button type="button" id="btn_create_team" class="btn btn-lg btn-primary">Create Team</button>
+                <button type="button" id="btn_create_issue" class="btn btn-lg btn-primary">Add Issue</button>
+                <button type="button" id="btn_select_team" class="btn btn-lg btn-primary">Select Team</button>
                 {% block post_issue_block %}
                 {% endblock %}
             </div>
@@ -157,7 +157,7 @@
 
             </div>
         </div>
-        <div id="teamModal" class="modal fade">
+        <div id="create-team-modal" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -169,24 +169,21 @@
                             {% csrf_token %}
                             {{ team_form }}
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary" id="btn_team_submit">Create a team</button>
+                            <button type="submit" class="btn btn-primary" id="btn_create_team_submit">Create a team</button>
                         </form>
                     </div>
-
-            <br><br><br>
-            <div>
-                <form action="/issue/file/add" method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    {{ file_form }}
-                    <button type="submit" class="btn btn-primary" id="btn_file_submit">Upload</button>
-                </form>
-
-            </div>
-
+                    <br><br><br>
+                    <div>
+                        <form action="/issue/file/add" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ file_form }}
+                            <button type="submit" class="btn btn-primary" id="btn_file_submit">Upload</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-        <div id="createIssueModal" class="modal fade">
+        <div id="create-issue-modal" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -198,7 +195,7 @@
                             {% csrf_token %}
                             {{ issue_form }}
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary" id="btn_post_submit">Create a issue</button>
+                            <button type="submit" class="btn btn-primary" id="btn_create_issue_submit">Create a issue</button>
                         </form>
                     </div>
 
@@ -221,7 +218,7 @@
         </ul>
     </div>
 
-<div id="team_dialog" title="Select Team">
+<div id="team_select_dialog" title="Select Team">
     <ul id="list">
     </ul>
 </div>

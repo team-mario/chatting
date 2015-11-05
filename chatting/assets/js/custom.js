@@ -1,8 +1,8 @@
 $(function () {
-    $('.create-issue-modal').click(function(){
-        $('#createIssueModal').modal('toggle');
+    $('#btn_create_issue').click(function(){
+        $('#create-issue-modal').modal('toggle');
     });
-    $('.create-team-modal').click(function(){
-        $('#teamModal').modal('toggle');
+    $('#btn_create_team').click(function(){
+        $('#create-team-modal').modal('toggle');
     });
 });

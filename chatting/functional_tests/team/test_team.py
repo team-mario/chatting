@@ -11,7 +11,7 @@ class TeamTest(FunctionalTest):
     def create_team(self):
         self.browser.find_element_by_id('btn_create_team').click()
         self.browser.find_element_by_id('id_team_name').send_keys('TestTeam')
-        self.browser.find_element_by_id('btn_team_submit').click()
+        self.browser.find_element_by_id('btn_create_team_submit').click()
 
         self.timeout(2)
 
@@ -19,7 +19,7 @@ class TeamTest(FunctionalTest):
         self.browser.find_element_by_id('btn_create_issue').click()
         self.browser.find_element_by_id('id_issue_name').send_keys('Test')
         self.browser.find_element_by_id('id_issue_content').send_keys('Test')
-        self.browser.find_element_by_id('btn_post_submit').click()
+        self.browser.find_element_by_id('btn_create_issue_submit').click()
 
         self.timeout(2)
 

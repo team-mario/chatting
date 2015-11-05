@@ -9,7 +9,7 @@ from django.shortcuts import get_object_or_404, render
 
 
 # Create your views here.
-def get_message_list(request, issue_name=None):
+def get_messages(request, issue_name=None):
     if not request.user.is_authenticated():
         return HttpResponseRedirect('../accounts/login/')
     cur_team = ''
