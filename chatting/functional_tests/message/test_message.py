@@ -3,7 +3,7 @@ from selenium.webdriver.common.keys import Keys
 
 
 class NewVisitorTest(FunctionalTest):
-    fixtures = ['users.json', 'team_data.json', 'message_data.json', ]
+    fixtures = ['users.json', 'team_data.json', 'message_data.json', 'team_list.json']
 
     def check_basic_layout(self):
         # check browser title
@@ -39,6 +39,7 @@ class NewVisitorTest(FunctionalTest):
 
         self.check_basic_layout()
 
+        self.post_issue_channel()
         # find element by id 'first_issue' issue
         div = self.browser.find_element_by_class_name('sorted_issue_list')
         issue_channels = div.find_elements_by_tag_name('a')
@@ -100,3 +101,18 @@ class NewVisitorTest(FunctionalTest):
         self.assertEqual(msg_sender.text, 'bbayoung7849')
         self.assertEqual(msg_content.text, 'parkyoungwoo')
         self.assertRegex(msg_time.text, time_regex_str)
+
+        # check popup menu
+        popup_menu = self.browser.find_element_by_id('popup_menu')
+        self.assertEqual('popup_menu', popup_menu.get_attribute('class'))
+        self.assertIn('display: none;', popup_menu.get_attribute('style'))
+        self.browser.find_element_by_id('btn_plus').click()
+        self.assertEqual('', popup_menu.get_attribute('style'))
+
+        # check popup menu items
+        self.browser.find_element_by_id('item_upload_file').click()
+        self.browser.find_element_by_id('item_add_hash_tags').click()
+
+        # popup menu hide
+        self.browser.find_element_by_id('btn_plus').click()
+        self.assertIn('display: none;', popup_menu.get_attribute('style'))

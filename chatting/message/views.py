@@ -1,8 +1,8 @@
 from message.models import Message
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template.response import TemplateResponse
-from team.forms import IssueChannelForm, RoomForm, UploadFileForm
-from team.models import IssueChannel, RoomChannel
+from team.forms import IssueChannelForm, TeamForm, UploadFileForm
+from team.models import IssueChannel, TeamChannel
 import json
 import datetime
 from django.shortcuts import get_object_or_404, render
@@ -12,16 +12,34 @@ from django.shortcuts import get_object_or_404, render
 def message_list(request, channel_name=None):
     if not request.user.is_authenticated():
         return HttpResponseRedirect('../accounts/login/')
-
+    cur_team = ''
+    team = ''
     file_channel_form = UploadFileForm
     issue_channel_form = IssueChannelForm
-    room_form = RoomForm
-    room_list = RoomChannel.objects.values('room_name').distinct()
-    request.session['cur_room'] = 'empty'
+    room_form = TeamForm
+    room_list = TeamChannel.objects.values('team_name').distinct()
+
+    default = 'default'
+
+    if 'cur_team' in request.session:
+        cur_team = request.session['cur_team']
+    else:
+        cur_team = default
+        request.session['cur_team'] = default
+
+    channel_name_list = []
+    issue_list = ''
+    try:
+        team = TeamChannel.objects.get(team_name=cur_team)
+        issue_list = IssueChannel.objects.filter(team=team.id)
+        for issue in issue_list.all():
+            channel_name_list.append(issue)
+    except:
+        TeamChannel.objects.create(team_name=default)
 
     context = {}
     context['issue_channel_form'] = issue_channel_form
-    context['issue_channel'] = IssueChannel.objects.all()
+    context['issue_channel'] = issue_list
     context['room_form'] = room_form
     context['room_list'] = room_list
     context['file_channel_form'] = file_channel_form

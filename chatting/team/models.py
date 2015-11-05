@@ -2,14 +2,13 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-class RoomChannel(models.Model):
-    room_name = models.CharField(max_length=30, unique=True,
-                                 default='', null=False)
+class TeamChannel(models.Model):
+    team_name = models.CharField(max_length=30, unique=True)
 
 
 class IssueChannel(models.Model):
     user = models.ForeignKey(User, default=None)
-    team = models.ForeignKey(RoomChannel, default=None)
+    team = models.ForeignKey(TeamChannel, default=None)
     channel_name = models.CharField(max_length=30)
     channel_content = models.CharField(max_length=255, default='')
 
@@ -33,6 +32,3 @@ class ChannelFiles(models.Model):
 
     def __str__(self):
         return self.title
-
-
-

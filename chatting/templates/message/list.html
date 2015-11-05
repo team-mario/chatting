@@ -9,6 +9,9 @@
                 send_message($("#msg").val());
             }
         });
+        $("#btn_plus").click(function(){
+            $("#popup_menu").toggle();
+        });
         scroll_to_bottom('direct');
         setInterval(get_message, 3000);
     });
@@ -67,7 +70,7 @@
             },
             complete: function(response){
                 console.log(JSON.stringify(response));
-                $("#msg").val("");
+                $("#q").val("");
             },
         });
     }
@@ -89,6 +92,15 @@
 </div>
 
 <div id="messages_input_container">
-    <input type="text" name="msg" id="msg" class="messages_input_box">
+    <div id="popup_menu" class="popup_menu" style="display:none">
+        <ul class="menu_items">
+            <li><a href="#" onclick="return false" id="item_upload_file">Upload a file</a></li>
+            <li><a href="#" onclick="return false" id="item_add_hash_tags">Add Hash Tags</a></li>
+        </ul>
+    </div>
+    <span id="btn_plus" class="messages_input_plus">+</span>
+    <span class="messages_input_area">
+        <input type="text" name="msg" id="msg" class="messages_input_box">
+    </span>
 </div>
 {% endblock %}
