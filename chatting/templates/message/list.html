@@ -25,8 +25,8 @@
         $.ajax({
             type: 'GET',
             contentType: 'application/json',
-            url: '/messages/receive',
-            data: {'last_primary_key': last_primary_key, 'channel_name': '{{ issue.channel_name }}' },
+            url: '/message/get',
+            data: {'last_primary_key': last_primary_key, 'issue_name': '{{ issue.issue_name }}' },
             cache: false,
             success: function(response){
                 append_messsage_to_div(response);
@@ -46,7 +46,7 @@
             var content = messages[key].content;
             var message_tag = '<div class="message"><div class="message_send_information"><span class="message_sender">' + sender + '</span><span class="message_time">' + time + '</span></div><div class="message_content">' + content + '</div></div>';
 
-            $("#messages_list_container").append(message_tag);
+            $("#messages_container").append(message_tag);
             last_primary_key = messages[key].id;
             scroll_to_bottom('smooth');
         });
@@ -56,8 +56,8 @@
 
         $.ajax({
             type: 'POST',
-            url: '/messages/create',
-            data: {content: msg, sender:'bbayoung7849', channel_name:'{{ issue.channel_name }}' },
+            url: '/message/create',
+            data: {content: msg, sender:'bbayoung7849', issue_name:'{{ issue.issue_name }}' },
             cache: false,
             beforeSend:function(xhr){
                 xhr.setRequestHeader("X-CSRFToken", csrftoken);
@@ -76,7 +76,7 @@
     }
 </script>
 {% csrf_token %}
-<div id="messages_list_container">
+<div id="messages_container">
     <div class="message_date">
         September 31
     </div>
@@ -91,16 +91,16 @@
     {% endfor %}
 </div>
 
-<div id="messages_input_container">
+<div id="message_input_container">
     <div id="popup_menu" class="popup_menu" style="display:none">
         <ul class="menu_items">
             <li><a href="#" onclick="return false" id="item_upload_file">Upload a file</a></li>
-            <li><a href="#" onclick="return false" id="item_add_hash_tags">Add Hash Tags</a></li>
+            <li><a href="#" onclick="return false" id="item_add_hash_tag">Add Hash Tags</a></li>
         </ul>
     </div>
-    <span id="btn_plus" class="messages_input_plus">+</span>
-    <span class="messages_input_area">
-        <input type="text" name="msg" id="msg" class="messages_input_box">
+    <span id="btn_plus" class="message_input_plus">+</span>
+    <span class="message_input_area">
+        <input type="text" name="msg" id="msg" class="message_input_box">
     </span>
 </div>
 {% endblock %}

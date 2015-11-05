@@ -1,11 +1,8 @@
 $(function () {
-    $('.open-modal').click(function(){
-        $('#PostIssueChannelModal').modal('toggle');
+    $('.create-issue-modal').click(function(){
+        $('#createIssueModal').modal('toggle');
     });
-});
-
-$(function () {
-    $('.room-modal').click(function(){
-        $('#RoomModal').modal('toggle');
+    $('.create-team-modal').click(function(){
+        $('#teamModal').modal('toggle');
     });
 });
