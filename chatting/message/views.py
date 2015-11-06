@@ -1,23 +1,23 @@
 from message.models import Message
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template.response import TemplateResponse
-from team.forms import IssueChannelForm, TeamForm, UploadFileForm
-from team.models import IssueChannel, TeamChannel
+from team.forms import IssueForm, TeamForm, UploadFileForm
+from team.models import Issue, Team
 import json
 import datetime
 from django.shortcuts import get_object_or_404, render
 
 
 # Create your views here.
-def message_list(request, channel_name=None):
+def get_messages(request, issue_name=None):
     if not request.user.is_authenticated():
         return HttpResponseRedirect('../accounts/login/')
     cur_team = ''
     team = ''
-    file_channel_form = UploadFileForm
-    issue_channel_form = IssueChannelForm
-    room_form = TeamForm
-    room_list = TeamChannel.objects.values('team_name').distinct()
+    file_form = UploadFileForm
+    issue_form = IssueForm
+    team_form = TeamForm
+    teams = Team.objects.values('team_name').distinct()
 
     default = 'default'
 
@@ -27,24 +27,24 @@ def message_list(request, channel_name=None):
         cur_team = default
         request.session['cur_team'] = default
 
-    channel_name_list = []
-    issue_list = ''
+    issue_name_list = []
+    issues = ''
     try:
-        team = TeamChannel.objects.get(team_name=cur_team)
-        issue_list = IssueChannel.objects.filter(team=team.id)
-        for issue in issue_list.all():
-            channel_name_list.append(issue)
+        team = Team.objects.get(team_name=cur_team)
+        issues = Issue.objects.filter(team=team.id)
+        for issue in issues.all():
+            issue_name_list.append(issue)
     except:
-        TeamChannel.objects.create(team_name=default)
+        Team.objects.create(team_name=default)
 
     context = {}
-    context['issue_channel_form'] = issue_channel_form
-    context['issue_channel'] = issue_list
-    context['room_form'] = room_form
-    context['room_list'] = room_list
-    context['file_channel_form'] = file_channel_form
-    if channel_name is not None:
-        issue = get_object_or_404(IssueChannel, channel_name=channel_name)
+    context['issue_form'] = issue_form
+    context['issues'] = issues
+    context['team_form'] = team_form
+    context['teams'] = teams
+    context['file_form'] = file_form
+    if issue_name is not None:
+        issue = get_object_or_404(Issue, issue_name=issue_name)
     else:
         return render(
             request,
@@ -53,17 +53,17 @@ def message_list(request, channel_name=None):
         )
 
     messages = []
-    messages_list = Message.objects.filter(issue=issue).order_by('id')
-    for data in messages_list:
+    received_messages = Message.objects.filter(issue=issue).order_by('id')
+    for data in received_messages:
             dic = {}
             dic['sender'] = data.sender
             dic['time'] = data.create_datetime.strftime("%-I:%M %p")
             dic['content'] = data.content
             messages.append(dic)
 
-    if len(messages_list) > 0:
-        last_primary_key = messages_list[len(messages_list) - 1].id
-        last_send_date = messages_list[0].create_datetime
+    if len(received_messages) > 0:
+        last_primary_key = received_messages[len(received_messages) - 1].id
+        last_send_date = received_messages[0].create_datetime
     else:
         last_primary_key = 0
         last_send_date = datetime.datetime.today()
@@ -80,12 +80,12 @@ def message_list(request, channel_name=None):
     )
 
 
-def message_create(request):
+def create_message(request):
     request.method = 'POST'
     if request.method == 'POST':
-        channel_name = request.POST.get('channel_name', None)
-        if channel_name is not None:
-            issue = IssueChannel.objects.filter(channel_name=channel_name)
+        issue_name = request.POST.get('issue_name', None)
+        if issue_name is not None:
+            issue = Issue.objects.filter(issue_name=issue_name)
             if issue is not None:
                 Message.objects.create(
                     sender=request.POST.get('sender', ''),
@@ -97,15 +97,15 @@ def message_create(request):
     return HttpResponse("error request method.")
 
 
-def message_receive(request):
+def get_message(request):
     if request.method == 'GET':
         last_primary_key = request.GET.get('last_primary_key', None)
-        channel_name = request.GET.get('channel_name', None)
+        issue_name = request.GET.get('issue_name', None)
 
-        if last_primary_key is not None and channel_name is not None:
+        if last_primary_key is not None and issue_name is not None:
             messages = []
             last_key = int(last_primary_key)
-            issue = IssueChannel.objects.filter(channel_name=channel_name)
+            issue = Issue.objects.filter(issue_name=issue_name)
             if issue is not None:
                 for data in Message.objects.filter(issue=issue, id__gt=last_key).order_by('id'):
                         dic = {}

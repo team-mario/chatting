@@ -9,12 +9,12 @@
     {% csrf_token %}
     <p><label for="userID">ID</label> {{ form.username }}</p>
     <p><label for="userPWD">Password</label> {{ form.password }}</p>
-    <input id="login_btn" type="submit" value="Login" />
+    <input id="btn_login" type="submit" value="Login" />
 </form>
 
-<form method="POST" action="../../register/">
+<form method="POST" action="/register/">
     {% csrf_token %}
-    <input id="registration_btn" type="submit" value="Registration" />
+    <input id="btn_registration" type="submit" value="Registration" />
 </form>
 
 {% if form.errors %}

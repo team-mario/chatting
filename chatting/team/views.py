@@ -1,6 +1,6 @@
 from django.shortcuts import redirect
 from django.http import HttpResponse
-from team.models import IssueChannel, ChannelFiles, TeamChannel
+from team.models import Issue, AttachedFile, Team
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -8,65 +8,65 @@ import json
 
 
 @login_required(login_url='/accounts/login/')
-def channel_create(request):
+def create_issue(request):
     if request.method == 'POST':
         # Below codes needs code refactoring.
         cur_team = request.session['cur_team']
         user_name = request.user.get_username()
 
-        channel_name = request.POST.get('channel_name')
-        channel_content = request.POST.get('channel_content')
+        issue_name = request.POST.get('issue_name')
+        issue_content = request.POST.get('issue_content')
 
-        team_channel = TeamChannel.objects.get(team_name=cur_team)
-        issue_channel = IssueChannel(channel_name=channel_name, channel_content=channel_content, team=team_channel)
+        team = Team.objects.get(team_name=cur_team)
+        issue = Issue(issue_name=issue_name, issue_content=issue_content, team=team)
         user = User.objects.get(username=user_name)
-        issue_channel.user = user
-        issue_channel.save()
+        issue.user = user
+        issue.save()
 
-    return HttpResponseRedirect('/issue/channel/')
+    return HttpResponseRedirect('/issue/')
 
 
 @login_required(login_url='/accounts/login/')
-def channel_detail(request, channel_name):
-    return redirect('/issue/channel/')
+def issue_detail(request, issue_name):
+    return redirect('/issue/')
 
 
 @login_required(login_url='/accounts/login/')
 def team_detail(request, team_name):
     request.session['cur_team'] = team_name
-    return HttpResponseRedirect('/issue/channel/')
+    return HttpResponseRedirect('/issue/')
 
 
 @login_required(login_url='/accounts/login/')
-def channel_file_add(request):
+def add_file(request):
     if request.method == 'POST':
-        title = request.POST.get('title')
-        channel = IssueChannel.objects.get(pk=1)
-        ChannelFiles.objects.create(title=title, file=request.FILES['file'], channel=channel)
+        file_name = request.POST.get('file_name')
+        issue = Issue.objects.get(pk=1)
+        AttachedFile.objects.create(file_name=file_name, file=request.FILES['file'], issue=issue)
         return redirect('/accounts/profile/')
 
     return redirect('/accounts/login/')
 
 
-def create_room(request):
+def create_team(request):
     if request.method == 'POST':
         team_name = str(request.POST.get('team_name'))
         request.session['cur_team'] = team_name
-        TeamChannel.objects.create(team_name=team_name)
+        Team.objects.create(team_name=team_name)
 
-    return HttpResponseRedirect('/issue/channel/')
+    return HttpResponseRedirect('/issue/')
 
 
 def search_issue(request):
     if request.method == 'POST':
         search_text = request.POST.get('content', None)
-        issue_channel = IssueChannel.objects.all()
+        issue = Issue.objects.all()
         result_msg = []
-        for content in issue_channel.all():
-            value = content.channel_content
+        for content in issue.all():
+            value = content.issue_content
             if value.find(str(search_text)) is not -1:
                 dic = {}
-                dic['channel_name'] = content.channel_name
+                dic['issue_name'] = content.issue_name
                 result_msg.append(dic)
 
         result_msg = json.dumps(result_msg)

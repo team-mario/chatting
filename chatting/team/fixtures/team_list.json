@@ -1,1 +1,1 @@
-[{"pk": 1, "model": "team.teamchannel", "fields": {"team_name": "room 1"}}, {"pk": 2, "model": "team.teamchannel", "fields": {"team_name": "room 2"}}]
+[{"pk": 1, "model": "team.team", "fields": {"team_name": "room 1"}}, {"pk": 2, "model": "team.team", "fields": {"team_name": "room 2"}}]
