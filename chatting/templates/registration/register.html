@@ -7,7 +7,7 @@
 <form method="post" action=".">
     {% csrf_token %}
     {{ form.as_p }}
-    <input id="registration_btn" type="submit" value="Registration" />
+    <input type="submit" id="btn_registration" value="Registration" />
 </form>
 {% if form.errors %}
     <p>Invalid id or password</p>

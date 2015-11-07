@@ -30,14 +30,14 @@
                     }
                 }
             });
-            $("#information_btn").on("click",function(){
+            $("#btn_information").on("click",function(){
                 $("#dialog").dialog("open");
             });
         });
     </script>
     <script>
         $(function(){
-            $("#room_dialog").dialog({
+            $("#team_select_dialog").dialog({
                 autoOpen:false,
                 position:[100,200],
                 modal:true,
@@ -50,24 +50,24 @@
                     }
                 }
             });
-            $("#room_btn").on("click",function(){
-                $("#room_dialog").dialog("open");
+            $("#btn_select_team").on("click",function(){
+                $("#team_select_dialog").dialog("open");
                 var ul = document.getElementById("list");
-                {% for room in room_list.all %}
-                    var text = '{{ room.team_name }}';
+                {% for team in teams.all %}
+                    var text = '{{ team.team_name }}';
                     var li = document.createElement("li");
                     li.setAttribute("id", "element");
                     var a = document.createElement('a');
                     var linkText = document.createTextNode(text);
                     a.appendChild(linkText);
                     a.title = text;
-                    var temp_href = "../../team/detail/";
+                    var temp_href = "/team/detail/";
                     a.href = temp_href+text;
                     li.appendChild(document.body.appendChild(a));
                     ul.appendChild(li);
                 {% endfor %}
             });
-            $('#room_dialog').on('dialogclose', function(event) {
+            $('#team_select_dialog').on('dialogclose', function(event) {
                 var ul = document.getElementById("list");
                 while(ul.firstChild ){
                     ul.removeChild(ul.firstChild);
@@ -88,16 +88,16 @@
                 <span class="clearfix"><input type="button" id="btn_search" value="Search"></span>
             </div>
             <div class="my_information">
-                <span class="clearfix"><input type="button" id="information_btn" value="my_information"></span>
+                <span class="clearfix"><input type="button" id="btn_information" value="my_information"></span>
             </div>
             <script type="text/javascript">
                 var csrftoken;
                 $(function() {
                     $('#btn_search').click(function(){
-                        send_message($("#q").val());
+                        send_search($("#q").val());
                     });
                 });
-                function send_message(msg){
+                function send_search(msg){
                     csrftoken = $("input[name*='csrfmiddlewaretoken']").val();
 
                     $.ajax({
@@ -112,7 +112,7 @@
                             var ul = document.getElementById("search_list");
                             console.log(response.length);
                             for(var cnt=0; cnt<response.length; cnt++) {
-                                var text = response[cnt].channel_name;
+                                var text = response[cnt].issue_name;
                                 var li = document.createElement("li");
                                 var element_id = "element"+cnt;
                                 li.setAttribute("id", element_id);
@@ -120,7 +120,7 @@
                                 var linkText = document.createTextNode(text);
                                 a.appendChild(linkText);
                                 a.title = text;
-                                var temp_href = "../../team/detail/";
+                                var temp_href = "/team/detail/";
                                 a.href = temp_href+text;
                                 li.appendChild(document.body.appendChild(a));
                                 ul.appendChild(li);
@@ -131,7 +131,7 @@
                         },
                         complete: function(response){
                             console.log(JSON.stringify(response));
-                            $("#msg").val("");
+                            $("#q").val("");
                         },
                     });
                 }
@@ -139,60 +139,66 @@
 
         </div>
         <div id="nav">
-            <div class='post_issue'>
-                <button type="button" id="btn_create_room" class="btn btn-lg btn-primary room-modal">Create Team</button>
-                <button type="button" id="btn_post_issue" class="btn btn-lg btn-primary open-modal">Add Issue</button>
-                <button type="button" id="room_btn" class="btn btn-lg btn-primary select-room-modal">Select Team</button>
+            <div class='btns'>
+                <button type="button" id="btn_create_team" class="btn btn-lg btn-primary">Create Team</button>
+                <button type="button" id="btn_create_issue" class="btn btn-lg btn-primary">Add Issue</button>
+                <button type="button" id="btn_select_team" class="btn btn-lg btn-primary">Select Team</button>
                 {% block post_issue_block %}
                 {% endblock %}
             </div>
 
-
-            <div class='sorted_issue_list'>
+            <div class='sorted_issues'>
                 <h2>Favourite Issues</h2>
                 <ul>
-                    {% for channel in issue_channel.all %}
-                        <li><a href="{% url 'channel_detail' channel.channel_name %}" id="{{ channel.channel_name }}">{{ channel.channel_name }}</a></li>
+                    {% for issue in issues.all %}
+                        <li><a href="{% url 'issue_detail' issue.issue_name %}" id="{{ issue.issue_name }}">{{ issue.issue_name }}</a></li>
                     {% endfor %}
                 </ul>
 
             </div>
         </div>
-        <div id="RoomModal" class="modal fade">
+        <div id="create-team-modal" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width:10%;">&times;</button>
-                        <h4 id="room_title" class="modal-title">Create a Room</h4>
+                        <h4 id="team_title" class="modal-title">Create a team</h4>
                     </div>
                     <div class="modal-body">
                         <form action="../../team/create" method="post">
                             {% csrf_token %}
-                            {{ room_form }}
+                            {{ team_form }}
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary" id="btn_room_submit">Create a room</button>
+                            <button type="submit" class="btn btn-primary" id="btn_create_team_submit">Create a team</button>
+                        </form>
+                    </div>
+                    <br><br><br>
+                    <div>
+                        <form action="/issue/file/add" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ file_form }}
+                            <button type="submit" class="btn btn-primary" id="btn_file_submit">Upload</button>
                         </form>
                     </div>
 
             <br><br><br>
 
-
                 </div>
             </div>
         </div>
-        <div id="PostIssueChannelModal" class="modal fade">
+        <div id="create-issue-modal" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width:10%;">&times;</button>
-                        <h4 id="issue_title" class="modal-title">Create A Issue Channel</h4>
+                        <h4 id="issue_title" class="modal-title">Create A Issue</h4>
                     </div>
                     <div class="modal-body">
                         <form action="../../issue/create" method="post">
                             {% csrf_token %}
-                            {{ issue_channel_form }}
+                            {{ issue_form }}
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary" id="btn_post_submit">Create a channel</button>
+                            <button type="submit" class="btn btn-primary" id="btn_create_issue_submit">Create a issue</button>
                         </form>
                     </div>
 
@@ -210,12 +216,12 @@
 
     <div id="dialog" title="My Information">
         <ul>
-            <li><a id="id_logout" href="/accounts/logout/">Logout</a></li>
-            <li><a id="id_change_password" href="../../password_change/">Change Password</a></li>
+            <li><a id="btn_logout" href="/accounts/logout/">Logout</a></li>
+            <li><a id="btn_change_password" href="/accounts/change_password/">Change Password</a></li>
         </ul>
     </div>
 
-<div id="room_dialog" title="Select Team">
+<div id="team_select_dialog" title="Select Team">
     <ul id="list">
     </ul>
 </div>

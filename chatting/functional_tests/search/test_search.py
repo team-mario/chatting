@@ -1,7 +1,5 @@
 from functional_tests.base import FunctionalTest
 
-fixtures_data_count = 5
-
 
 class SearchTest(FunctionalTest):
     fixtures = ['users.json', 'team_data.json', 'message_data.json', 'team_list.json']
@@ -12,8 +10,8 @@ class SearchTest(FunctionalTest):
 
     def test_search(self):
         self.login()
-        self.post_issue_channel()
-        self.browser.find_element_by_id('q').send_keys('test contents')
+        self.create_issues()
+        self.browser.find_element_by_id('q').send_keys('content')
         self.browser.find_element_by_id('btn_search').click()
         search_1 = self.browser.find_element_by_id('element0')
         search_2 = self.browser.find_element_by_id('element1')
