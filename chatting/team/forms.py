@@ -14,6 +14,10 @@ class UploadFileForm(forms.models.ModelForm):
         fields = {'file_name', 'file'}
 
 
+class SearchForm(forms.Form):
+    content = forms.CharField(max_length=100, label="", widget=forms.TextInput(attrs={'placeholder': 'search here'}))
+
+
 class TeamForm(forms.models.ModelForm):
     class Meta:
         model = Team
