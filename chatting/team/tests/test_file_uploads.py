@@ -12,14 +12,10 @@ class FileUploadTest(TestCase):
         User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
         user = User.objects.get(username='john')
 
-        team = TeamChannel.objects.create(team_name='test')
-        IssueChannel.objects.create(user=user, channel_name='test', channel_content='test contents', team=team)
-
         title = 'Test_1'
         file = 'Test_File_1'
-        channel = IssueChannel.objects.get(channel_name='test')
 
-        ChannelFiles.objects.create(title=title, file=file, channel=channel)
+        ChannelFiles.objects.create(title=title, file=file, user=user)
 
         # Check if created file is exists in /media/channel_files directory.
         created_file = ChannelFiles.objects.get(pk=1)

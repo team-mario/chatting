@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 
 
 class TeamChannel(models.Model):
@@ -28,6 +29,9 @@ class ChannelFiles(models.Model):
     title = models.CharField(max_length=30)
     file = models.FileField(upload_to='.')
     user = models.ForeignKey(User, default=None)
+
+    def get_absolute_url(self):
+        return reverse('channel_detail')
 
     def __str__(self):
         return self.title

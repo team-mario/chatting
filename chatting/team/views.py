@@ -41,11 +41,13 @@ def team_detail(request, team_name):
 def channel_file_add(request):
     if request.method == 'POST':
         title = request.POST.get('title')
-        channel = IssueChannel.objects.get(pk=1)
-        ChannelFiles.objects.create(title=title, file=request.FILES['file'], channel=channel)
-        return redirect('/accounts/profile/')
+        user = request.user
+        channel_files = ChannelFiles.objects.create(title=title, file=request.FILES['file'], user=user)
+        channel_files.save()
+        channel_name = request.sessoin['channel_name']
+        return redirect(channel_files, channel_name)
 
-    return redirect('/accounts/login/')
+    return HttpResponse("File upload is failed")
 
 
 def create_room(request):

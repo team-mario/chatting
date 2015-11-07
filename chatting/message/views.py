@@ -21,6 +21,8 @@ def message_list(request, channel_name=None):
 
     default = 'default'
 
+    request.session['channel_name'] = channel_name
+
     if 'cur_team' in request.session:
         cur_team = request.session['cur_team']
     else:
