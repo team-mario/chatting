@@ -1,10 +1,10 @@
 from django.shortcuts import redirect
-from django.http import HttpResponse
 from team.models import Issue, AttachedFile, Team
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-import json
+from team.forms import IssueForm, TeamForm, UploadFileForm, SearchForm
+from django.shortcuts import render
 
 
 @login_required(login_url='/accounts/login/')
@@ -58,16 +58,49 @@ def create_team(request):
 
 
 def search_issue(request):
-    if request.method == 'POST':
-        search_text = request.POST.get('content', None)
-        issue = Issue.objects.all()
-        result_msg = []
-        for content in issue.all():
-            value = content.issue_content
-            if value.find(str(search_text)) is not -1:
-                dic = {}
-                dic['issue_name'] = content.issue_name
-                result_msg.append(dic)
+    current_team = ''
+    file_form = UploadFileForm
+    issue_form = IssueForm
+    team_form = TeamForm
+    search_form = SearchForm
+    teams = Team.objects.values('team_name').distinct()
 
-        result_msg = json.dumps(result_msg)
-    return HttpResponse(result_msg, content_type='application/json')
+    default = 'default'
+    search_text = request.POST.get('content', None)
+
+    if not search_text:
+        is_empty = True
+    else:
+        is_empty = False
+
+    if 'cur_team' in request.session:
+        current_team = request.session['cur_team']
+    else:
+        current_team = default
+        request.session['cur_team'] = default
+
+    searched_list = []
+    issues = ''
+    try:
+        team = Team.objects.get(team_name=current_team)
+        issues = Issue.objects.filter(team=team.id)
+        for issue in issues.all():
+            issue_content = issue.issue_content
+            if issue_content.find(str(search_text)) is not -1 and is_empty is False:
+                searched_list.append(issue)
+    except:
+        Team.objects.create(team_name=default)
+
+    print(searched_list)
+
+    context = {}
+    context['issue_form'] = issue_form
+    context['issues'] = issues
+    context['team_form'] = team_form
+    context['teams'] = teams
+    context['file_form'] = file_form
+
+    context['search_form'] = search_form
+    context['searched_list'] = searched_list
+
+    return render(request, 'search/search.html', context)
