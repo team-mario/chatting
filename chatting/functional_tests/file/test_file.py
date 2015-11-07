@@ -2,6 +2,7 @@ from functional_tests.base import FunctionalTest
 import os
 import time
 
+
 class FileTest(FunctionalTest):
 
     def test_can_save_file_in_message(self):
@@ -22,8 +23,11 @@ class FileTest(FunctionalTest):
 
         file_upload_btn = self.browser.find_element_by_id('item_upload_file')
         file_upload_btn.click()
-        wait.until(lambda
+
         # When file upload button is clicked, the form is showed.
+        self.wait_for_element_with_id('id_file_name')
+        self.browser.execute_script("document.getElementById('id_file_name').style.visibility = 'visible' ")
+        self.browser.execute_script("document.getElementById('id_file_name').click() ")
         file_name = self.browser.find_element_by_id('id_file_name')
         file_name.send_keys('Test_File_Upload')
 

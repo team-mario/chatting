@@ -48,8 +48,8 @@ def add_file(request):
         AttachedFile.objects.create(file_name=file_name, file=request.FILES['file'], user=user, issue=issue)
         print('멍미')
         print(issue_name)
-        # return redirect(reverse('issue_detail', kwargs={'issue_name': issue_name}))
-        return HttpResponse('File upload is success')
+        return redirect(reverse('issue_detail', kwargs={'issue_name': issue_name}))
+        # return HttpResponse('File upload is success')
 
     return HttpResponse("File upload is failed")
 
