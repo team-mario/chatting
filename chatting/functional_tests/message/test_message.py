@@ -25,7 +25,7 @@ class NewVisitorTest(FunctionalTest):
         self.assertIn('sorted_issues', div.get_attribute('class'))
 
         # check search input box
-        input_search = self.browser.find_element_by_id('q')
+        input_search = self.browser.find_element_by_id('id_content')
         self.assertEqual(input_search.get_attribute('placeholder'),
                          'search here')
 
