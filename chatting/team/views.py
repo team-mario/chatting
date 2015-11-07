@@ -42,7 +42,7 @@ def team_detail(request, team_name):
 def add_file(request):
     if request.method == 'POST':
         user = request.user
-        issue_name = request.sessoin.get('issue_name')
+        issue_name = request.session.get('issue_name')
         file_name = request.POST.get('file_name')
         issue = Issue.objects.get(issue_name=issue_name)
         AttachedFile.objects.create(file_name=file_name, file=request.FILES['file'], user=user, issue=issue)

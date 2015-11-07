@@ -58,3 +58,8 @@ class FunctionalTest(StaticLiveServerTestCase):
     def create_issues(self):
         self.create_issue("Test-Issue-01")
         self.create_issue("Test-Issue-02")
+
+    def wait_for_element_with_id(self, element_id):
+        WebDriverWait(self.browser, timeout=30).until(
+            lambda b: b.find_element_by_id(element_id)
+        )
