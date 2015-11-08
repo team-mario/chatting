@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from django.utils.importlib import import_module
 from team.models import Team
+from datetime import datetime
 import json
 
 
@@ -128,16 +129,19 @@ class MessageModelTest(TestCase):
             issue=issue_1,
             user=user_1,
             content='우하하하하하',
+            # create_datetime=datetime.now().strftime("%-I:%M %p")
         )
         Message.objects.create(
             issue=issue_1,
             user=user_2,
             content='wow',
+            # create_datetime=datetime.now().strftime("%-I:%M %p")
         )
         Message.objects.create(
             issue=issue_2,
             user=user_1,
             content='what',
+            # create_datetime=datetime.now().strftime("%-I:%M %p")
         )
 
         saved_message_in_issue_1 = Message.objects.filter(issue=issue_1)

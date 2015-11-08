@@ -76,6 +76,7 @@
     }
 </script>
 {% csrf_token %}
+
 <div id="messages_container">
     <div class="message_date">
         September 31
@@ -83,8 +84,8 @@
     {% for message in messages %}
         <div class="message">
             <div class="message_send_information">
-                <span class="message_username">{{ message.username }}</span>
-                <span class="message_time">{{ message.time }}</span>
+                <span class="message_username">{{ message.user.username }}</span>
+                <span class="message_time">{{ message.create_datetime }}</span>
             </div>
             <div class="message_content">{{ message.content }}</div>
         </div>

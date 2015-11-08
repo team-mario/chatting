@@ -4,9 +4,9 @@ from django.template.response import TemplateResponse
 from team.forms import IssueForm, TeamForm, UploadFileForm, SearchForm
 from team.models import Issue, Team
 import json
-import datetime
 from django.shortcuts import get_object_or_404, render
-
+from datetime import datetime
+from django.forms import model_to_dict
 
 # Create your views here.
 def get_messages(request, issue_name=None):
@@ -59,20 +59,15 @@ def get_messages(request, issue_name=None):
     messages = []
     received_messages = Message.objects.filter(issue=issue).order_by('id')
     for data in received_messages:
-        dic = {}
-        dic['message_id'] = data.id
-        dic['user_id'] = data.user.id
-        dic['username'] = data.user.get_username()
-        dic['time'] = data.create_datetime.strftime("%-I:%M %p")
-        dic['content'] = data.content
-        messages.append(dic)
+        model_to_dict(data)
+        messages.append(data)
 
     if len(received_messages) > 0:
         last_primary_key = received_messages[len(received_messages) - 1].id
         last_send_date = received_messages[0].create_datetime
     else:
         last_primary_key = 0
-        last_send_date = datetime.datetime.today()
+        last_send_date = datetime.today()
 
     context['issue'] = issue
     context['messages'] = messages
@@ -113,14 +108,8 @@ def get_message(request):
             issue = Issue.objects.filter(issue_name=issue_name)
             if issue is not None:
                 for data in Message.objects.filter(issue=issue, id__gt=last_key).order_by('id'):
-                    dic = {}
-                    dic['message_id'] = data.id
-                    dic['user_id'] = data.user.id
-                    dic['username'] = data.user.get_username()
-                    dic['time'] = str(data.create_datetime.strftime("%-I:%M %p"))
-                    dic['content'] = data.content
-                    messages.append(dic)
-                messages = json.dumps(messages)
+                    model_to_dict(data)
+                    messages.append(data)
                 return HttpResponse(messages, content_type='application/json')
 
     return HttpResponse("error")
