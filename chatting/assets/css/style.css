@@ -96,7 +96,7 @@ body{
 #messages_container .message{
     padding-top:20px;
 }
-#messages_container .message_sender{
+#messages_container .message_username{
     font-weight:bold;
     color:#333;
     font-size:15px;
