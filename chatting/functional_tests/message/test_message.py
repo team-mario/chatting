@@ -1,5 +1,6 @@
 from functional_tests.base import FunctionalTest
 from selenium.webdriver.common.keys import Keys
+from django.contrib.auth.models import User
 
 
 class NewVisitorTest(FunctionalTest):
@@ -25,7 +26,7 @@ class NewVisitorTest(FunctionalTest):
         self.assertIn('sorted_issues', div.get_attribute('class'))
 
         # check search input box
-        input_search = self.browser.find_element_by_id('q')
+        input_search = self.browser.find_element_by_id('id_content')
         self.assertEqual(input_search.get_attribute('placeholder'),
                          'search here')
 
@@ -87,8 +88,8 @@ class NewVisitorTest(FunctionalTest):
 
         msg_send_infor = \
             msg.find_element_by_class_name("message_send_information")
-        msg_sender = \
-            msg_send_infor.find_element_by_class_name("message_sender")
+        msg_username = \
+            msg_send_infor.find_element_by_class_name("message_username")
         msg_time = \
             msg_send_infor.find_element_by_class_name("message_time")
         msg_content = msg.find_element_by_class_name("message_content")
@@ -97,7 +98,7 @@ class NewVisitorTest(FunctionalTest):
         time_regex_str = "([1]|[0-9]):[0-5][0-9](\\s)?(?i)(am|pm)"
 
         # check compate send message to display message
-        self.assertEqual(msg_sender.text, 'bbayoung7849')
+        self.assertEqual(msg_username.text, User.objects.last().get_username())
         self.assertEqual(msg_content.text, 'parkyoungwoo')
         self.assertRegex(msg_time.text, time_regex_str)
 

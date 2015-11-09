@@ -1,7 +1,7 @@
 from message.models import Message
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template.response import TemplateResponse
-from team.forms import IssueForm, TeamForm, UploadFileForm
+from team.forms import IssueForm, TeamForm, UploadFileForm, SearchForm
 from team.models import Issue, Team
 import json
 import datetime
@@ -15,6 +15,7 @@ def get_messages(request, issue_name=None):
     file_form = UploadFileForm
     issue_form = IssueForm
     team_form = TeamForm
+    search_form = SearchForm
     teams = Team.objects.values('team_name').distinct()
 
     default = 'default'
@@ -34,6 +35,7 @@ def get_messages(request, issue_name=None):
         issues = Issue.objects.filter(team=team.id)
         for issue in issues.all():
             issue_name_list.append(issue)
+
     except:
         Team.objects.create(team_name=default)
 
@@ -43,6 +45,8 @@ def get_messages(request, issue_name=None):
     context['team_form'] = team_form
     context['teams'] = teams
     context['file_form'] = file_form
+    context['search_form'] = search_form
+
     if issue_name is not None:
         issue = get_object_or_404(Issue, issue_name=issue_name)
     else:
@@ -55,11 +59,13 @@ def get_messages(request, issue_name=None):
     messages = []
     received_messages = Message.objects.filter(issue=issue).order_by('id')
     for data in received_messages:
-            dic = {}
-            dic['sender'] = data.sender
-            dic['time'] = data.create_datetime.strftime("%-I:%M %p")
-            dic['content'] = data.content
-            messages.append(dic)
+        dic = {}
+        dic['message_id'] = data.id
+        dic['user_id'] = data.user.id
+        dic['username'] = data.user.get_username()
+        dic['time'] = data.create_datetime.strftime("%-I:%M %p")
+        dic['content'] = data.content
+        messages.append(dic)
 
     if len(received_messages) > 0:
         last_primary_key = received_messages[len(received_messages) - 1].id
@@ -81,14 +87,13 @@ def get_messages(request, issue_name=None):
 
 
 def create_message(request):
-    request.method = 'POST'
     if request.method == 'POST':
         issue_name = request.POST.get('issue_name', None)
         if issue_name is not None:
             issue = Issue.objects.filter(issue_name=issue_name)
-            if issue is not None:
+            if issue is not None and request.user is not None:
                 Message.objects.create(
-                    sender=request.POST.get('sender', ''),
+                    user=request.user,
                     content=request.POST.get('content', ''),
                     issue=issue[0],
                 )
@@ -108,12 +113,13 @@ def get_message(request):
             issue = Issue.objects.filter(issue_name=issue_name)
             if issue is not None:
                 for data in Message.objects.filter(issue=issue, id__gt=last_key).order_by('id'):
-                        dic = {}
-                        dic['id'] = data.id
-                        dic['sender'] = data.sender
-                        dic['time'] = str(data.create_datetime.strftime("%-I:%M %p"))
-                        dic['content'] = data.content
-                        messages.append(dic)
+                    dic = {}
+                    dic['message_id'] = data.id
+                    dic['user_id'] = data.user.id
+                    dic['username'] = data.user.get_username()
+                    dic['time'] = str(data.create_datetime.strftime("%-I:%M %p"))
+                    dic['content'] = data.content
+                    messages.append(dic)
                 messages = json.dumps(messages)
                 return HttpResponse(messages, content_type='application/json')
 

@@ -25,13 +25,13 @@ class FunctionalTest(StaticLiveServerTestCase):
     def login(self):
         self.browser.get(self.live_server_url)
         self.browser.find_element_by_id('btn_registration').click()
-        self.browser.find_element_by_id('id_username').send_keys('test')
+        self.browser.find_element_by_id('id_username').send_keys("Teammario")
         self.browser.find_element_by_id('id_email').send_keys('test@naver.com')
         self.browser.find_element_by_id('id_password1').send_keys('test')
         self.browser.find_element_by_id('id_password2').send_keys('test')
         self.browser.find_element_by_id('btn_registration').submit()
 
-        self.browser.find_element_by_id('id_username').send_keys('test')
+        self.browser.find_element_by_id('id_username').send_keys('Teammario')
         self.browser.find_element_by_id('id_password').send_keys('test')
         self.browser.find_element_by_id('btn_login').submit()
 
