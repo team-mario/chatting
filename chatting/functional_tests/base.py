@@ -8,6 +8,7 @@ class FunctionalTest(StaticLiveServerTestCase):
     def setUp(self):
         self.browser = webdriver.Firefox()
         self.browser.implicitly_wait(3)
+        self.browser.get(self.live_server_url)
 
     def tearDown(self):
         self.browser.quit()
@@ -22,18 +23,18 @@ class FunctionalTest(StaticLiveServerTestCase):
             lambda b: b.find_element_by_class_name(element_class)
         )
 
-    def login(self):
-        self.browser.get(self.live_server_url)
-        self.browser.find_element_by_id('btn_registration').click()
-        self.browser.find_element_by_id('id_username').send_keys('test')
-        self.browser.find_element_by_id('id_email').send_keys('test@naver.com')
-        self.browser.find_element_by_id('id_password1').send_keys('test')
-        self.browser.find_element_by_id('id_password2').send_keys('test')
-        self.browser.find_element_by_id('btn_registration').submit()
-
+    def base_login(self):
         self.browser.find_element_by_id('id_username').send_keys('test')
         self.browser.find_element_by_id('id_password').send_keys('test')
         self.browser.find_element_by_id('btn_login').submit()
+
+    def base_create_issues(self):
+        self.create_issue("Test-Issue-01")
+        self.create_issue("Test-Issue-02")
+
+    def base_timeout(self, time_to_sleep):
+        import time
+        time.sleep(time_to_sleep)
 
     def create_issue(self, issue_name):
         self.wait_for_element_with_id('btn_create_issue')
@@ -55,6 +56,3 @@ class FunctionalTest(StaticLiveServerTestCase):
 
         self.browser.find_element_by_id('btn_create_issue_submit').click()
 
-    def create_issues(self):
-        self.create_issue("Test-Issue-01")
-        self.create_issue("Test-Issue-02")

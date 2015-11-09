@@ -1,0 +1,32 @@
+[
+{
+    "pk": 1,
+    "model": "team.issue",
+    "fields": {
+        "issue_content": "what",
+        "user": 1,
+        "team": 1,
+        "issue_name": "login_error"
+    }
+},
+{
+    "pk": 2,
+    "model": "team.issue",
+    "fields": {
+        "issue_content": "content",
+        "user": 1,
+        "team": 1,
+        "issue_name": "project_plan"
+    }
+},
+{
+    "pk": 2,
+    "model": "team.issue",
+    "fields": {
+        "issue_content": "test",
+        "user": 1,
+        "team": 1,
+        "issue_name": "design"
+    }
+}
+]

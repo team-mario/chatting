@@ -4,12 +4,8 @@ from functional_tests.base import FunctionalTest
 class SearchTest(FunctionalTest):
     fixtures = ['users.json', 'team_data.json', 'message_data.json', 'team_list.json']
 
-    def timeout(self, time_to_sleep):
-        import time
-        time.sleep(time_to_sleep)
-
     def test_search(self):
-        self.login()
+        self.base_login()
         self.create_issues()
         self.browser.find_element_by_id('id_content').send_keys('test contents')
         self.browser.find_element_by_id('btn_search').click()
@@ -27,4 +23,4 @@ class SearchTest(FunctionalTest):
 
         self.assertRegex(issue_1.get_attribute('href'), url_regex_str)
 
-        self.timeout(2)
+        self.timeout(1)

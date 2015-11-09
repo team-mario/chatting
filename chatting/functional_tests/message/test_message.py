@@ -71,7 +71,7 @@ class NewVisitorTest(FunctionalTest):
         message_input_box.send_keys(Keys.ENTER)
 
         import time
-        time.sleep(3)
+        time.sleep(1)
         messages_container = \
             self.browser.find_element_by_id('messages_container')
 
