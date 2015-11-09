@@ -47,7 +47,8 @@ class MessageTest(TestCase):
         for idx, data in enumerate(Message.objects.filter(issue=issue).order_by('id')):
             message = messages[idx]
             self.assertEqual(message['content'], data.content)
-            self.assertEqual(message['sender'], data.sender)
+            self.assertEqual(message['user_id'], data.user.id)
+            self.assertEqual(message['username'], data.user.get_username())
             self.assertRegex(message['time'], time_regex_str)
 
         messages_list = Message.objects.filter(issue=issue).order_by('id')
@@ -59,27 +60,30 @@ class MessageTest(TestCase):
                          messages_list[0].create_datetime)
 
     def test_create_message_from_POST_data(self):
+        user = User.objects.create_user('testing_goat', 'lennon@thebeatles.com', 'johnpassword')
+
         request = HttpRequest()
         request.method = 'POST'
+        request.user = user
         request.POST['issue_name'] = Issue.objects.first().issue_name
-        request.POST['sender'] = 'testing_goat'
         request.POST['content'] = 'wow_wow'
 
         create_message(request)
 
         self.assertEqual(Message.objects.count(), fixtures_data_count + 1)
         new_message = Message.objects.last()
-        self.assertEqual(new_message.sender, 'testing_goat')
+        self.assertEqual(new_message.user.get_username(), 'testing_goat')
         self.assertEqual(new_message.content, 'wow_wow')
 
     # check 'get_message' function
     def test_get_message_return_correct_json_data(self):
+        user = User.objects.create_user('tester', 'lennon@thebeatles.com', 'johnpassword')
         last_primary_key = Message.objects.last().id
 
         request = HttpRequest()
         request.method = 'POST'
+        request.user = user
         request.POST['issue_name'] = Issue.objects.first().issue_name
-        request.POST['sender'] = 'tester'
         request.POST['content'] = 'test contest'
         create_message(request)
 
@@ -93,25 +97,28 @@ class MessageTest(TestCase):
 
         time_regex_str = "([1]|[0-9]):[0-5][0-9](\\s)?(?i)(am|pm)"
 
-        for data in messages:
-            self.assertTrue(data['id'] > 0)
-            self.assertEqual(data['sender'], 'tester')
-            self.assertEqual(data['content'], 'test contest')
-            self.assertRegex(data['time'], time_regex_str)
+        received_message = messages[0]
+        self.assertEqual(received_message['user_id'], user.id)
+        self.assertEqual(received_message['username'], user.get_username())
+        self.assertEqual(received_message['content'], 'test contest')
+        self.assertRegex(received_message['time'], time_regex_str)
 
 
 class MessageModelTest(TestCase):
     def test_saving_and_retrieving_message_with_issue(self):
-        user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
         team = Team.objects.create(team_name='team')
+
+        user_1 = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
+        user_2 = User.objects.create_user('park', 'lennon@thebeatles.com', 'johnpassword')
+
         issue_1 = Issue.objects.create(
-            user=user,
+            user=user_1,
             issue_name='Issue01',
             issue_content='issue01',
             team=team
         )
         issue_2 = Issue.objects.create(
-            user=user,
+            user=user_2,
             issue_name='Issue02',
             issue_content='issue01',
             team=team
@@ -119,17 +126,17 @@ class MessageModelTest(TestCase):
 
         Message.objects.create(
             issue=issue_1,
-            sender='bbayoung7849',
+            user=user_1,
             content='우하하하하하',
         )
         Message.objects.create(
             issue=issue_1,
-            sender='mario',
+            user=user_2,
             content='wow',
         )
         Message.objects.create(
             issue=issue_2,
-            sender='tester',
+            user=user_1,
             content='what',
         )
 
@@ -137,11 +144,11 @@ class MessageModelTest(TestCase):
         saved_message_in_issue_2 = Message.objects.filter(issue=issue_2)
 
         self.assertEqual(saved_message_in_issue_1.count(), 2)
-        self.assertEqual(saved_message_in_issue_1[0].sender, 'bbayoung7849')
+        self.assertEqual(saved_message_in_issue_1[0].user, user_1)
         self.assertEqual(saved_message_in_issue_1[0].content, '우하하하하하')
-        self.assertEqual(saved_message_in_issue_1[1].sender, 'mario')
+        self.assertEqual(saved_message_in_issue_1[1].user, user_2)
         self.assertEqual(saved_message_in_issue_1[1].content, 'wow')
 
         self.assertEqual(saved_message_in_issue_2.count(), 1)
-        self.assertEqual(saved_message_in_issue_2[0].sender, 'tester')
+        self.assertEqual(saved_message_in_issue_2[0].user, user_1)
         self.assertEqual(saved_message_in_issue_2[0].content, 'what')

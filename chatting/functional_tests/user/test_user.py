@@ -2,8 +2,6 @@ from functional_tests.base import FunctionalTest
 
 
 class UserTest(FunctionalTest):
-    fixtures = ['users.json', 'team_data.json', 'message_data.json', 'team_list.json']
-
     def registration(self):
         self.browser.find_element_by_id('btn_registration').click()
         self.browser.find_element_by_id('id_username').send_keys("new_user")

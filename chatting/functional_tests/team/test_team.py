@@ -2,8 +2,6 @@ from functional_tests.base import FunctionalTest
 
 
 class TeamTest(FunctionalTest):
-    fixtures = ['users.json', 'team_data.json', 'message_data.json', 'team_list.json']
-
     def create_team(self):
         self.browser.find_element_by_id('btn_create_team').click()
         self.browser.find_element_by_id('id_team_name').send_keys('TestTeam')
@@ -31,7 +29,7 @@ class TeamTest(FunctionalTest):
         self.assertRegex(self.browser.current_url, url_regex_str)
 
     def test_team(self):
-        self.login()
+        self.base_login()
         self.create_team()
         self.add_issue()
         self.select_team()

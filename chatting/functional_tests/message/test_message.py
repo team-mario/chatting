@@ -1,10 +1,10 @@
 from functional_tests.base import FunctionalTest
 from selenium.webdriver.common.keys import Keys
+from django.contrib.auth.models import User
 
 
 class NewVisitorTest(FunctionalTest):
-    fixtures = ['users.json', 'team_data.json', 'message_data.json', 'team_list.json']
-
+    fixtures = ['users.json', 'message_data.json', 'team_list.json', 'issue_data.json']
     def check_basic_layout(self):
         # check browser title
         self.assertIn('issue chat', self.browser.title)
@@ -34,10 +34,8 @@ class NewVisitorTest(FunctionalTest):
         self.assertEqual(btn_search.get_attribute('value'), 'Search')
 
     def test_new_visitor(self):
-        # execute browser
-        self.login()
+        self.base_login()
         self.check_basic_layout()
-        self.create_issues()
 
         # find element by id 'first_issue' issue
         div = self.browser.find_element_by_class_name('sorted_issues')
@@ -87,8 +85,8 @@ class NewVisitorTest(FunctionalTest):
 
         msg_send_infor = \
             msg.find_element_by_class_name("message_send_information")
-        msg_sender = \
-            msg_send_infor.find_element_by_class_name("message_sender")
+        msg_username = \
+            msg_send_infor.find_element_by_class_name("message_username")
         msg_time = \
             msg_send_infor.find_element_by_class_name("message_time")
         msg_content = msg.find_element_by_class_name("message_content")
@@ -97,7 +95,7 @@ class NewVisitorTest(FunctionalTest):
         time_regex_str = "([1]|[0-9]):[0-5][0-9](\\s)?(?i)(am|pm)"
 
         # check compate send message to display message
-        self.assertEqual(msg_sender.text, 'bbayoung7849')
+        self.assertEqual(msg_username.text, User.objects.last().get_username())
         self.assertEqual(msg_content.text, 'parkyoungwoo')
         self.assertRegex(msg_time.text, time_regex_str)
 

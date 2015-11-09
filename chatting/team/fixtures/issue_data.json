@@ -20,7 +20,7 @@
     }
 },
 {
-    "pk": 2,
+    "pk": 3,
     "model": "team.issue",
     "fields": {
         "issue_content": "test",

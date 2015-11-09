@@ -2,11 +2,9 @@ from functional_tests.base import FunctionalTest
 
 
 class SearchTest(FunctionalTest):
-    fixtures = ['users.json', 'team_data.json', 'message_data.json', 'team_list.json']
-
     def test_search(self):
         self.base_login()
-        self.create_issues()
+        self.base_create_issues()
         self.browser.find_element_by_id('id_content').send_keys('test contents')
         self.browser.find_element_by_id('btn_search').click()
         search_1 = self.browser.find_element_by_id('Test-Issue-01')

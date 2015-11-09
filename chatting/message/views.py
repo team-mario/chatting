@@ -35,7 +35,6 @@ def get_messages(request, issue_name=None):
         issues = Issue.objects.filter(team=team.id)
         for issue in issues.all():
             issue_name_list.append(issue)
-
     except:
         Team.objects.create(team_name=default)
 
@@ -60,7 +59,9 @@ def get_messages(request, issue_name=None):
     received_messages = Message.objects.filter(issue=issue).order_by('id')
     for data in received_messages:
         dic = {}
-        dic['sender'] = data.sender
+        dic['message_id'] = data.id
+        dic['user_id'] = data.user.id
+        dic['username'] = data.user.get_username()
         dic['time'] = data.create_datetime.strftime("%-I:%M %p")
         dic['content'] = data.content
         messages.append(dic)
@@ -85,14 +86,13 @@ def get_messages(request, issue_name=None):
 
 
 def create_message(request):
-    request.method = 'POST'
     if request.method == 'POST':
         issue_name = request.POST.get('issue_name', None)
         if issue_name is not None:
             issue = Issue.objects.filter(issue_name=issue_name)
-            if issue is not None:
+            if issue is not None and request.user is not None:
                 Message.objects.create(
-                    sender=request.POST.get('sender', ''),
+                    user=request.user,
                     content=request.POST.get('content', ''),
                     issue=issue[0],
                 )
@@ -113,8 +113,9 @@ def get_message(request):
             if issue is not None:
                 for data in Message.objects.filter(issue=issue, id__gt=last_key).order_by('id'):
                     dic = {}
-                    dic['id'] = data.id
-                    dic['sender'] = data.sender
+                    dic['message_id'] = data.id
+                    dic['user_id'] = data.user.id
+                    dic['username'] = data.user.get_username()
                     dic['time'] = str(data.create_datetime.strftime("%-I:%M %p"))
                     dic['content'] = data.content
                     messages.append(dic)
