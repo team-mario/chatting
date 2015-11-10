@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from team.forms import IssueForm, TeamForm, UploadFileForm, SearchForm
+from message.models import Message
 
 
 @login_required(login_url='/accounts/login/')
@@ -44,13 +45,31 @@ def add_file(request):
         issue_name = request.session.get('issue_name')
         file_name = request.POST.get('file_name')
         issue = Issue.objects.get(issue_name=issue_name)
-        AttachedFile.objects.create(file_name=file_name, file=request.FILES['file'], user=user, issue=issue)
-        print('멍미')
-        print(issue_name)
+        created_file = AttachedFile(file_name=file_name, file=request.FILES['file'], user=user, issue=issue)
+        created_file.save()
+
+        Message.objects.create(
+            user=user,
+            content=file_name,
+            issue=issue,
+            file=created_file
+        )
         return redirect(reverse('issue_detail', kwargs={'issue_name': issue_name}))
         # return HttpResponse('File upload is success')
+        # return redirect('/message/get', kwargs={'issue_name': issue_name})
 
     return HttpResponse("File upload is failed")
+
+
+def send_file(request, id):
+    file_obj = AttachedFile.objects.get(id=id)
+    response = HttpResponse()
+    response['Content-Type'] = 'application/octet-stream'
+    response['Content-Disposition'] = 'attachment; filename="%s"' % file_obj.file_name
+    with open(file_obj.file.path, 'rb') as file_p:
+        response.write(file_p.read())
+
+    return response
 
 
 def create_team(request):

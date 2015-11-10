@@ -12,11 +12,6 @@ class FunctionalTest(StaticLiveServerTestCase):
     def tearDown(self):
         self.browser.quit()
 
-    def wait_for_element_with_id(self, element_id):
-        WebDriverWait(self.browser, timeout=30).until(
-            lambda b: b.find_element_by_id(element_id)
-        )
-
     def wait_for_element_with_class(self, element_class):
         WebDriverWait(self.browser, timeout=30).until(
             lambda b: b.find_element_by_class_name(element_class)

@@ -1,5 +1,5 @@
 from django.db import models
-from team.models import Issue
+from team.models import Issue, AttachedFile
 from django.contrib.auth.models import User
 
 
@@ -9,4 +9,4 @@ class Message(models.Model):
     user = models.ForeignKey(User, default=None)
     content = models.TextField(default=None)
     create_datetime = models.DateTimeField(auto_now_add=True)
-    # file = models.ForeignKey(ChannelFiles, default=None)
+    file = models.ForeignKey(AttachedFile, blank=True, null=True)

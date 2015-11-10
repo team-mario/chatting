@@ -18,10 +18,10 @@ class FileUploadTest(TestCase):
         file = 'Test_File_1'
         issue = Issue.objects.get(issue_name='test')
 
-        AttachedFile.objects.create(file_name=file_name, file=file, user=user, issue=issue)
+        created_file = AttachedFile(file_name=file_name, file=file, user=user, issue=issue)
+        created_file.save()
 
         # Check if created file is exists in /media/issue_files directory.
-        created_file = AttachedFile.objects.get(pk=1)
         created_path = created_file.file.path
         expected_path = settings.MEDIA_ROOT + '/Test_File_1'
 

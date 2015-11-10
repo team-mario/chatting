@@ -65,6 +65,8 @@ def get_messages(request, issue_name=None):
         dic['username'] = data.user.get_username()
         dic['time'] = data.create_datetime.strftime("%-I:%M %p")
         dic['content'] = data.content
+        dic['file'] = data.file
+
         messages.append(dic)
 
     if len(received_messages) > 0:

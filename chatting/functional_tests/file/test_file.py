@@ -1,6 +1,5 @@
 from functional_tests.base import FunctionalTest
 import os
-import time
 
 
 class FileTest(FunctionalTest):
@@ -32,7 +31,7 @@ class FileTest(FunctionalTest):
         file_name.send_keys('Test_File_Upload')
 
         file_select_btn = self.browser.find_element_by_id('id_file')
-        file_select_btn.send_keys(os.getcwd()+'/test_file')
+        file_select_btn.send_keys(os.getcwd() + '/test_file')
 
         # If submit button the file is uploaded into message.
         btn_file_submit = self.browser.find_element_by_id('btn_file_submit')

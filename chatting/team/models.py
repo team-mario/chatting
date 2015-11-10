@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+import os
+from django.conf import settings
 
 
 class Team(models.Model):
@@ -32,3 +34,10 @@ class AttachedFile(models.Model):
 
     def __str__(self):
         return self.file_name
+
+    def filename(self):
+        return os.path.basename(self.file.name)
+
+    @property
+    def relative_path(self):
+        return os.path.relpath(self.path, settings.MEDIA_ROOT)
