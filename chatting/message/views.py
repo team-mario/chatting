@@ -3,10 +3,11 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template.response import TemplateResponse
 from team.forms import IssueForm, TeamForm, UploadFileForm, SearchForm
 from team.models import Issue, Team
-import json
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from datetime import datetime
-from django.forms import model_to_dict
+from django.contrib.auth.models import User
+import json
+
 
 # Create your views here.
 def get_messages(request, issue_name=None):
@@ -39,6 +40,9 @@ def get_messages(request, issue_name=None):
     except:
         Team.objects.create(team_name=default)
 
+    user_list = User.objects.filter(groups__name=cur_team)
+    print(user_list)
+
     context = {}
     context['issue_form'] = issue_form
     context['issues'] = issues
@@ -46,6 +50,7 @@ def get_messages(request, issue_name=None):
     context['teams'] = teams
     context['file_form'] = file_form
     context['search_form'] = search_form
+    context['user_list'] = user_list
 
     if issue_name is not None:
         issue = get_object_or_404(Issue, issue_name=issue_name)
@@ -59,8 +64,13 @@ def get_messages(request, issue_name=None):
     messages = []
     received_messages = Message.objects.filter(issue=issue).order_by('id')
     for data in received_messages:
-        model_to_dict(data)
-        messages.append(data)
+        dic = {}
+        dic['message_id'] = data.id
+        dic['user_id'] = data.user.id
+        dic['username'] = data.user.get_username()
+        dic['time'] = data.create_datetime
+        dic['content'] = data.content
+        messages.append(dic)
 
     if len(received_messages) > 0:
         last_primary_key = received_messages[len(received_messages) - 1].id
@@ -108,8 +118,29 @@ def get_message(request):
             issue = Issue.objects.filter(issue_name=issue_name)
             if issue is not None:
                 for data in Message.objects.filter(issue=issue, id__gt=last_key).order_by('id'):
-                    model_to_dict(data)
-                    messages.append(data)
+                    dic = {}
+                    dic['message_id'] = data.id
+                    dic['user_id'] = data.user.id
+                    dic['username'] = data.user.get_username()
+                    dic['time'] = data.create_datetime
+                    dic['content'] = data.content
+                    messages.append(dic)
+                messages = json.dumps(messages)
                 return HttpResponse(messages, content_type='application/json')
-
     return HttpResponse("error")
+
+
+def change_status(request):
+    print('change_status change_status')
+    if request.method == 'POST':
+        status = request.POST.get('status')
+        assignment = request.POST.get('assignment')
+        issue_name = request.POST.get('issue')
+
+        user = User.objects.filter(username=assignment)
+        issue_object = Issue.objects.filter(issue_name=issue_name)
+        issue_object.user = user
+        issue_object.status = status
+
+        return redirect('/accounts/profile/')
+    return redirect('/accounts/login/')

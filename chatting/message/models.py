@@ -13,7 +13,4 @@ class Message(models.Model):
 
     def save(self, *args, **kwargs):
         self.create_datetime = datetime.now().strftime("%-I:%M %p")
-        print('model;')
-        print(self.create_datetime)
         super(Message, self).save(*args, **kwargs)
-

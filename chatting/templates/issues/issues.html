@@ -1,0 +1,23 @@
+{% extends "common/base.html" %}
+
+{% block container %}
+    <div id="test">
+        <ul id="issue_list">
+            {% for issue in searched_list %}
+                <li><a href="{% url 'issue_detail' issue.issue_name %}" id="{{ issue.issue_name }}">{{ issue.issue_name }}</a></li>
+            {% endfor %}
+        </ul>
+
+        <ul id="issue_list">
+            {% for issue in searched_list %}
+                <li><a href="{% url 'issue_detail' issue.issue_name %}" id="{{ issue.issue_name }}">{{ issue.issue_name }}</a></li>
+            {% endfor %}
+        </ul>
+
+        <ul id="issue_list">
+            {% for issue in searched_list %}
+                <li><a href="{% url 'issue_detail' issue.issue_name %}" id="{{ issue.issue_name }}">{{ issue.issue_name }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

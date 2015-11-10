@@ -8,7 +8,6 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from django.utils.importlib import import_module
 from team.models import Team
-from datetime import datetime
 import json
 
 
@@ -42,15 +41,12 @@ class MessageTest(TestCase):
         last_primary_key = response.context_data['last_primary_key']
         last_send_date = response.context_data['last_send_date']
 
-        # regex for check the time format (am/pm)
-        time_regex_str = "([1]|[0-9]):[0-5][0-9](\\s)?(?i)(am|pm)"
-
         for idx, data in enumerate(Message.objects.filter(issue=issue).order_by('id')):
             message = messages[idx]
             self.assertEqual(message['content'], data.content)
             self.assertEqual(message['user_id'], data.user.id)
             self.assertEqual(message['username'], data.user.get_username())
-            self.assertRegex(message['time'], time_regex_str)
+            self.assertRegex(message['time'], data.create_datetime)
 
         messages_list = Message.objects.filter(issue=issue).order_by('id')
 
@@ -129,19 +125,16 @@ class MessageModelTest(TestCase):
             issue=issue_1,
             user=user_1,
             content='우하하하하하',
-            # create_datetime=datetime.now().strftime("%-I:%M %p")
         )
         Message.objects.create(
             issue=issue_1,
             user=user_2,
             content='wow',
-            # create_datetime=datetime.now().strftime("%-I:%M %p")
         )
         Message.objects.create(
             issue=issue_2,
             user=user_1,
             content='what',
-            # create_datetime=datetime.now().strftime("%-I:%M %p")
         )
 
         saved_message_in_issue_1 = Message.objects.filter(issue=issue_1)

@@ -2,7 +2,7 @@ from django.shortcuts import redirect
 from team.models import Issue, AttachedFile, Team
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from team.forms import IssueForm, TeamForm, UploadFileForm, SearchForm
 from django.shortcuts import render
 
@@ -18,7 +18,7 @@ def create_issue(request):
         issue_content = request.POST.get('issue_content')
 
         team = Team.objects.get(team_name=cur_team)
-        issue = Issue(issue_name=issue_name, issue_content=issue_content, team=team)
+        issue = Issue(issue_name=issue_name, issue_content=issue_content, team=team, status=0)
         user = User.objects.get(username=user_name)
         issue.user = user
         issue.save()
@@ -34,6 +34,9 @@ def issue_detail(request, issue_name):
 @login_required(login_url='/accounts/login/')
 def team_detail(request, team_name):
     request.session['cur_team'] = team_name
+
+    group = Group.objects.get(name=team_name)
+    request.user.groups.add(group)
     return HttpResponseRedirect('/issue/')
 
 
@@ -53,6 +56,10 @@ def create_team(request):
         team_name = str(request.POST.get('team_name'))
         request.session['cur_team'] = team_name
         Team.objects.create(team_name=team_name)
+
+        group = Group(name=team_name)
+        group.save()
+        request.user.groups.add(group)
 
     return HttpResponseRedirect('/issue/')
 
