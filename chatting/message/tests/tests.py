@@ -16,7 +16,7 @@ fixtures_data_count = 5
 
 
 class MessageTest(TestCase):
-    fixtures = ['users.json', 'team_data.json', 'message_data.json', 'team_list.json']
+    fixtures = ['users.json', 'message_data.json', 'team_list.json', 'issue_data.json']
 
     # check  '/issue/'(url) is return 'get_messages' function
     def test_issue_url_resolves_to_message_list(self):
@@ -77,7 +77,7 @@ class MessageTest(TestCase):
 
     # check 'get_message' function
     def test_get_message_return_correct_json_data(self):
-        user = User.objects.create_user('tester', 'lennon@thebeatles.com', 'johnpassword')
+        user = User.objects.create_user('new_tester', 'lennon@thebeatles.com', 'johnpassword')
         last_primary_key = Message.objects.last().id
 
         request = HttpRequest()

@@ -1,7 +1,7 @@
 from functional_tests.base import FunctionalTest
 
 
-class UserTest(FunctionalTest):
+class LoginTest(FunctionalTest):
     def registration(self):
         self.browser.find_element_by_id('btn_registration').click()
         self.browser.find_element_by_id('id_username').send_keys("new_user")
@@ -23,19 +23,17 @@ class UserTest(FunctionalTest):
         self.browser.find_element_by_id('id_new_password1').send_keys('test1')
         self.browser.find_element_by_id('id_new_password2').send_keys('test1')
         self.browser.find_element_by_id('btn_change_password_submit').click()
-        self.timeout(1)
 
     def logout(self):
         self.browser.find_element_by_id('btn_information').click()
         self.browser.find_element_by_id('btn_logout').click()
-        self.timeout(1)
 
     def limit_access_in_main_page(self):
         self.browser.get(self.live_server_url + '/issue/')
         # The anonymous user is redirected to login page.
         self.browser.find_element_by_id('btn_registration')
 
-    def test_user(self):
+    def test_login(self):
         self.registration()
         self.login()
         self.change_password()

@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 
 class NewVisitorTest(FunctionalTest):
     fixtures = ['users.json', 'message_data.json', 'team_list.json', 'issue_data.json']
+
     def check_basic_layout(self):
         # check browser title
         self.assertIn('issue chat', self.browser.title)

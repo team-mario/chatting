@@ -3,7 +3,7 @@
     "pk": 1,
     "model": "team.issue",
     "fields": {
-        "issue_content": "what",
+        "issue_content": "test contents",
         "user": 1,
         "team": 1,
         "issue_name": "login_error"
@@ -23,7 +23,7 @@
     "pk": 3,
     "model": "team.issue",
     "fields": {
-        "issue_content": "test",
+        "issue_content": "test contents",
         "user": 1,
         "team": 1,
         "issue_name": "design"

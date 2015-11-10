@@ -6,6 +6,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 class FunctionalTest(StaticLiveServerTestCase):
     fixtures = ['users.json', 'message_data.json', 'team_list.json', 'issue_data.json']
+
     def setUp(self):
         self.browser = webdriver.Firefox()
         self.browser.implicitly_wait(3)
@@ -31,4 +32,3 @@ class FunctionalTest(StaticLiveServerTestCase):
 
     def timeout(self, time_to_sleep):
         time.sleep(time_to_sleep)
-

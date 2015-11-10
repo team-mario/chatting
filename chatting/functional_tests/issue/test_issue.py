@@ -1,5 +1,4 @@
 from functional_tests.base import FunctionalTest
-import time
 
 
 class IssueTest(FunctionalTest):
@@ -7,10 +6,9 @@ class IssueTest(FunctionalTest):
         self.wait_for_element_with_id('btn_create_issue')
 
         self.browser.find_element_by_id('btn_create_issue').click()
-        time.sleep(2)
+        self.timeout(1)
 
         # If user click the button then modal is pop up.
-
         self.wait_for_element_with_class('modal-header')
 
         h4 = self.browser.find_element_by_id('issue_title')
@@ -30,5 +28,9 @@ class IssueTest(FunctionalTest):
 
         sorted_issue_list = self.browser.find_element_by_class_name('sorted_issues')
         ul_list = sorted_issue_list.find_element_by_tag_name('ul')
-        li_list = ul_list.find_element_by_tag_name('li')
-        li_list.click()
+        issue_1 = ul_list.find_element_by_id('Test-Issue-01')
+
+        issue_1.click()
+
+        url_regex_str = '/issue/Test-Issue-01'
+        self.assertRegex(self.browser.current_url, url_regex_str)
