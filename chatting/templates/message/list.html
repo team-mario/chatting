@@ -44,20 +44,29 @@
             var username = messages[key].username;
             var time = messages[key].time;
             var content = messages[key].content;
-            var message_tag = '<div class="message"><div class="message_send_information"><span class="message_username">' + username + '</span><span class="message_time">' + time + '</span></div><div class="message_content">' + content + '</div></div>';
-
+            var file = messages[key].file;
+            var message_tag = null;
+            message_tag = '<div class="message"><div class="message_send_information"><span class="message_username">' + username + '</span><span class="message_time">' + time + '</span></div><div class="message_content">' + content + '</div></div>';
             $("#messages_container").append(message_tag);
             last_primary_key = messages[key].id;
             scroll_to_bottom('smooth');
+
+            // In case of hash tag
+            if(content.indexOf('#') != -1){
+                var splited_string = content.split('#');
+                splited_string = splited_string[1];
+                splited_string = splited_string.split(" ");
+                hash_tag = '<span class="message_hash_tag_name">' + '#'+ splited_string[0] + '</span>';
+                $("#message_hash_container").append(hash_tag);
+            }
         });
     }
     function send_message(msg){
         csrftoken = $("input[name*='csrfmiddlewaretoken']").val();
-
         $.ajax({
             type: 'POST',
             url: '/message/create',
-            data: {content: msg, issue_name:'{{ issue.issue_name }}' },
+            data: {content: msg, issue_name:'{{ issue.issue_name }}'},
             cache: false,
             beforeSend:function(xhr){
                 xhr.setRequestHeader("X-CSRFToken", csrftoken);
@@ -87,8 +96,21 @@
                 <span class="message_time">{{ message.time }}</span>
             </div>
             <div class="message_content">{{ message.content }}</div>
+            <div class="message_content">
+                {% if message.file %}
+                    <a href ="{% url 'send_file' message.file.id %}">{{ message.file.file_name }}</a>
+                {% endif %}
+            </div>
+
         </div>
     {% endfor %}
+</div>
+
+<div id="message_hash_container">
+    {% for hash_tag in hash_tags %}
+        <span class="message_hash_tag_name">#{{ hash_tag.hash_tag_name }}</span>
+    {% endfor %}
+
 </div>
 
 <div id="message_input_container">
@@ -102,5 +124,43 @@
     <span class="message_input_area">
         <input type="text" name="msg" id="msg" class="message_input_box">
     </span>
+</div>
+
+
+<div id="FileUploadModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width:10%;">&times;</button>
+                <h4 id="issue_title" class="modal-title">File Upload</h4>
+            </div>
+            <div class="modal-body">
+                <form action="/issue/file/add" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ file_form }}
+                    <button type="submit" class="btn btn-primary" id="btn_file_submit">Upload</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div id="HashTagAddModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width:10%;">&times;</button>
+                <h4 id="issue_title" class="modal-title">Add Hash Tags</h4>
+            </div>
+            <div class="modal-body">
+                <form action="/issue/hash_tag/add" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ hash_tag_form }}
+                    <button type="submit" class="btn btn-primary" id="btn_hash_tag_submit">Upload</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
 </div>
 {% endblock %}

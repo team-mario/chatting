@@ -16,7 +16,7 @@ fixtures_data_count = 5
 
 
 class MessageTest(TestCase):
-    fixtures = ['users.json', 'team_data.json', 'message_data.json', 'team_list.json']
+    fixtures = ['users.json', 'message_data.json', 'team_list.json', 'issue_data.json']
 
     # check  '/issue/'(url) is return 'get_messages' function
     def test_issue_url_resolves_to_message_list(self):
@@ -41,12 +41,15 @@ class MessageTest(TestCase):
         last_primary_key = response.context_data['last_primary_key']
         last_send_date = response.context_data['last_send_date']
 
+        # regex for check the time format (am/pm)
+        time_regex_str = "([1]|[0-9]):[0-5][0-9](\\s)?(?i)(am|pm)"
+
         for idx, data in enumerate(Message.objects.filter(issue=issue).order_by('id')):
             message = messages[idx]
             self.assertEqual(message['content'], data.content)
             self.assertEqual(message['user_id'], data.user.id)
             self.assertEqual(message['username'], data.user.get_username())
-            self.assertRegex(message['time'], data.create_datetime)
+            self.assertRegex(message['time'], time_regex_str)
 
         messages_list = Message.objects.filter(issue=issue).order_by('id')
 
@@ -74,7 +77,7 @@ class MessageTest(TestCase):
 
     # check 'get_message' function
     def test_get_message_return_correct_json_data(self):
-        user = User.objects.create_user('tester', 'lennon@thebeatles.com', 'johnpassword')
+        user = User.objects.create_user('new_tester', 'lennon@thebeatles.com', 'johnpassword')
         last_primary_key = Message.objects.last().id
 
         request = HttpRequest()

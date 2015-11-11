@@ -1,26 +1,28 @@
 from message.models import Message
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template.response import TemplateResponse
-from team.forms import IssueForm, TeamForm, UploadFileForm, SearchForm
-from team.models import Issue, Team
 from django.shortcuts import get_object_or_404, render, redirect
-from datetime import datetime
 from django.contrib.auth.models import User
+from team.forms import IssueForm, TeamForm, UploadFileForm, SearchForm, HashTagForm
+from team.models import Issue, Team, HashTag
+
 import json
+import datetime
 
 
 # Create your views here.
 def get_messages(request, issue_name=None):
     if not request.user.is_authenticated():
         return HttpResponseRedirect('../accounts/login/')
-    cur_team = ''
-    team = ''
     file_form = UploadFileForm
+    hash_tag_form = HashTagForm
     issue_form = IssueForm
     team_form = TeamForm
     search_form = SearchForm
 
     default = 'default'
+
+    request.session['issue_name'] = issue_name
 
     if 'cur_team' in request.session:
         cur_team = request.session['cur_team']
@@ -35,7 +37,6 @@ def get_messages(request, issue_name=None):
         issues = Issue.objects.filter(team=team.id)
         for issue in issues.all():
             issue_name_list.append(issue)
-
     except:
         Team.objects.create(team_name=default)
 
@@ -47,6 +48,7 @@ def get_messages(request, issue_name=None):
     context['issues'] = issues
     context['team_form'] = team_form
     context['file_form'] = file_form
+    context['hash_tag_form'] = hash_tag_form
     context['search_form'] = search_form
     context['user_list'] = user_list
     context['my_teams'] = my_teams
@@ -67,8 +69,10 @@ def get_messages(request, issue_name=None):
         dic['message_id'] = data.id
         dic['user_id'] = data.user.id
         dic['username'] = data.user.get_username()
-        dic['time'] = data.create_datetime
+        dic['time'] = data.create_datetime.strftime("%-I:%M %p")
         dic['content'] = data.content
+        dic['file'] = data.file
+
         messages.append(dic)
 
     if len(received_messages) > 0:
@@ -76,10 +80,19 @@ def get_messages(request, issue_name=None):
         last_send_date = received_messages[0].create_datetime
     else:
         last_primary_key = 0
-        last_send_date = datetime.today()
+        last_send_date = datetime.datetime.today()
+
+    hash_tags = []
+    added_hash_tags = HashTag.objects.filter(issues=issue).order_by('id')
+    for data in added_hash_tags:
+        dic = {}
+        dic['hash_tag_id'] = data.id
+        dic['hash_tag_name'] = data.tag_name
+        hash_tags.append(dic)
 
     context['issue'] = issue
     context['messages'] = messages
+    context['hash_tags'] = hash_tags
     context['last_primary_key'] = last_primary_key
     context['last_send_date'] = last_send_date
 
@@ -101,7 +114,17 @@ def create_message(request):
                     content=request.POST.get('content', ''),
                     issue=issue[0],
                 )
-                return HttpResponse("inserted")
+                # Adding hash tag in message contents.
+                content_list = request.POST.get('content', '')
+                content_list = content_list.split(' ')
+                for content in content_list:
+                    if content.find("#") != -1:
+                        splited_content = content.split('#')
+                        created_hash_tag = HashTag(tag_name=splited_content[1])
+                        created_hash_tag.save()
+                        created_hash_tag.issues.add(issue[0])
+
+                return HttpResponse("Inserted.")
 
     return HttpResponse("error request method.")
 
@@ -121,7 +144,7 @@ def get_message(request):
                     dic['message_id'] = data.id
                     dic['user_id'] = data.user.id
                     dic['username'] = data.user.get_username()
-                    dic['time'] = data.create_datetime
+                    dic['time'] = str(data.create_datetime.strftime("%-I:%M %p"))
                     dic['content'] = data.content
                     messages.append(dic)
                 messages = json.dumps(messages)

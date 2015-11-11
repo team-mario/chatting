@@ -11,7 +11,6 @@ class FileUploadTest(TestCase):
         # Save file into media
         User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
         user = User.objects.get(username='john')
-
         team = Team.objects.create(team_name='test')
         Issue.objects.create(user=user, issue_name='test', issue_content='test contents', team=team)
 
@@ -19,10 +18,10 @@ class FileUploadTest(TestCase):
         file = 'Test_File_1'
         issue = Issue.objects.get(issue_name='test')
 
-        AttachedFile.objects.create(file_name=file_name, file=file, issue=issue)
+        created_file = AttachedFile(file_name=file_name, file=file, user=user, issue=issue)
+        created_file.save()
 
         # Check if created file is exists in /media/issue_files directory.
-        created_file = AttachedFile.objects.get(pk=1)
         created_path = created_file.file.path
         expected_path = settings.MEDIA_ROOT + '/Test_File_1'
 

@@ -1,1 +1,0 @@
-[{"pk": 1, "model": "team.issue", "fields": {"issue_name": "1st", "issue_content": "", "user": 1, "team": 1, "status": 1}}, {"pk": 2, "model": "team.issue", "fields": {"issue_name": "2nd", "issue_content": "", "user": 1, "team": 2, "status": 2}}]
