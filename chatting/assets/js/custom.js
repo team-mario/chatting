@@ -6,3 +6,8 @@ $(function () {
         $('#create-team-modal').modal('toggle');
     });
 });
+$(function (){
+    $('#item_upload_file').click(function(){
+        $('#FileUploadModal').modal('toggle');
+    });
+});

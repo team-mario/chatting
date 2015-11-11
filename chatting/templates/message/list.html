@@ -44,8 +44,18 @@
             var username = messages[key].username;
             var time = messages[key].time;
             var content = messages[key].content;
-            var message_tag = '<div class="message"><div class="message_send_information"><span class="message_username">' + username + '</span><span class="message_time">' + time + '</span></div><div class="message_content">' + content + '</div></div>';
-
+            var file = messages[key].file;
+            console.log('파일');
+            console.log(file);
+            var message_tag = null;
+            /*
+            if(file == undefined){
+                message_tag = '<div class="message"><div class="message_send_information"><span class="message_username">' + username + '</span><span class="message_time">' + time + '</span></div><div class="message_content">' + content + '</div></div>';
+            }
+            else{
+                message_tag = 'sex';
+            }*/
+            message_tag = '<div class="message"><div class="message_send_information"><span class="message_username">' + username + '</span><span class="message_time">' + time + '</span></div><div class="message_content">' + content + '</div></div>';
             $("#messages_container").append(message_tag);
             last_primary_key = messages[key].id;
             scroll_to_bottom('smooth');
@@ -53,11 +63,10 @@
     }
     function send_message(msg){
         csrftoken = $("input[name*='csrfmiddlewaretoken']").val();
-
         $.ajax({
             type: 'POST',
             url: '/message/create',
-            data: {content: msg, issue_name:'{{ issue.issue_name }}' },
+            data: {content: msg, issue_name:'{{ issue.issue_name }}'},
             cache: false,
             beforeSend:function(xhr){
                 xhr.setRequestHeader("X-CSRFToken", csrftoken);
@@ -87,6 +96,12 @@
                 <span class="message_time">{{ message.time }}</span>
             </div>
             <div class="message_content">{{ message.content }}</div>
+            <div class="message_content">
+                {% if message.file %}
+                    <a href ="{% url 'send_file' message.file.id %}">{{ message.file.file_name }}</a>
+                {% endif %}
+            </div>
+
         </div>
     {% endfor %}
 </div>
@@ -103,4 +118,25 @@
         <input type="text" name="msg" id="msg" class="message_input_box">
     </span>
 </div>
+
+
+<div id="FileUploadModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width:10%;">&times;</button>
+                <h4 id="issue_title" class="modal-title">File Upload</h4>
+            </div>
+            <div class="modal-body">
+                <form action="/issue/file/add" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ file_form }}
+                    <button type="submit" class="btn btn-primary" id="btn_file_submit">Upload</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 {% endblock %}

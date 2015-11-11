@@ -1,10 +1,11 @@
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from team.models import Issue, AttachedFile, Team
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 from team.forms import IssueForm, TeamForm, UploadFileForm, SearchForm
-from django.shortcuts import render
+from message.models import Message
 
 
 @login_required(login_url='/accounts/login/')
@@ -40,12 +41,35 @@ def team_detail(request, team_name):
 @login_required(login_url='/accounts/login/')
 def add_file(request):
     if request.method == 'POST':
+        user = request.user
+        issue_name = request.session.get('issue_name')
         file_name = request.POST.get('file_name')
-        issue = Issue.objects.get(pk=1)
-        AttachedFile.objects.create(file_name=file_name, file=request.FILES['file'], issue=issue)
-        return redirect('/accounts/profile/')
+        issue = Issue.objects.get(issue_name=issue_name)
+        created_file = AttachedFile(file_name=file_name, file=request.FILES['file'], user=user, issue=issue)
+        created_file.save()
 
-    return redirect('/accounts/login/')
+        Message.objects.create(
+            user=user,
+            content=file_name,
+            issue=issue,
+            file=created_file
+        )
+        return redirect(reverse('issue_detail', kwargs={'issue_name': issue_name}))
+        # return HttpResponse('File upload is success')
+        # return redirect('/message/get', kwargs={'issue_name': issue_name})
+
+    return HttpResponse("File upload is failed")
+
+
+def send_file(request, id):
+    file_obj = AttachedFile.objects.get(id=id)
+    response = HttpResponse()
+    response['Content-Type'] = 'application/octet-stream'
+    response['Content-Disposition'] = 'attachment; filename="%s"' % file_obj.file_name
+    with open(file_obj.file.path, 'rb') as file_p:
+        response.write(file_p.read())
+
+    return response
 
 
 def create_team(request):
@@ -58,7 +82,6 @@ def create_team(request):
 
 
 def search_issue(request):
-    current_team = ''
     file_form = UploadFileForm
     issue_form = IssueForm
     team_form = TeamForm

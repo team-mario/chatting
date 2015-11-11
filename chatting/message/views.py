@@ -12,8 +12,6 @@ from django.shortcuts import get_object_or_404, render
 def get_messages(request, issue_name=None):
     if not request.user.is_authenticated():
         return HttpResponseRedirect('../accounts/login/')
-    cur_team = ''
-    team = ''
     file_form = UploadFileForm
     issue_form = IssueForm
     team_form = TeamForm
@@ -21,6 +19,8 @@ def get_messages(request, issue_name=None):
     teams = Team.objects.values('team_name').distinct()
 
     default = 'default'
+
+    request.session['issue_name'] = issue_name
 
     if 'cur_team' in request.session:
         cur_team = request.session['cur_team']
@@ -65,6 +65,8 @@ def get_messages(request, issue_name=None):
         dic['username'] = data.user.get_username()
         dic['time'] = data.create_datetime.strftime("%-I:%M %p")
         dic['content'] = data.content
+        dic['file'] = data.file
+
         messages.append(dic)
 
     if len(received_messages) > 0:
