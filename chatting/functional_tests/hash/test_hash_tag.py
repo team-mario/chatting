@@ -64,4 +64,4 @@ class HashTagTest(FunctionalTest):
 
         message_hash_container = self.browser.find_element_by_id('message_hash_container')
         hash_content = message_hash_container.find_element_by_class_name('message_hash_tag_name')
-        self.assertEqual(hash_content.text, '#Hash_Tag_1 LOL')
+        self.assertEqual(hash_content.text, '#Hash_Tag_1')

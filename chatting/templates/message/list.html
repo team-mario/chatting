@@ -55,7 +55,8 @@
             if(content.indexOf('#') != -1){
                 var splited_string = content.split('#');
                 splited_string = splited_string[1];
-                hash_tag = '<span class="message_hash_tag_name">' + '#'+ splited_string + '</span>';
+                splited_string = splited_string.split(" ");
+                hash_tag = '<span class="message_hash_tag_name">' + '#'+ splited_string[0] + '</span>';
                 $("#message_hash_container").append(hash_tag);
             }
         });
