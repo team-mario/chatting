@@ -1,6 +1,7 @@
 from functional_tests.base import FunctionalTest
 from selenium.webdriver.common.keys import Keys
 
+
 class HashTagTest(FunctionalTest):
 
     def test_can_save_hash_tag_in_message(self):
@@ -62,8 +63,5 @@ class HashTagTest(FunctionalTest):
         self.assertEqual(msg_content.text, '#Hash_Tag_1 LOL')
 
         message_hash_container = self.browser.find_element_by_id('message_hash_container')
-        hashes = message_hash_container.find_element_by_class_name('message_hash_tag_name')
-        hash_content = hashes[-1]
-        self.assertEqual(hash_content.text, '#Hash_Tag_1')
-
-        pass
+        hash_content = message_hash_container.find_element_by_class_name('message_hash_tag_name')
+        self.assertEqual(hash_content.text, '#Hash_Tag_1 LOL')

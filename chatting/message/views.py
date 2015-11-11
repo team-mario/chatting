@@ -109,7 +109,17 @@ def create_message(request):
                     content=request.POST.get('content', ''),
                     issue=issue[0],
                 )
-                return HttpResponse("inserted")
+                # Adding hash tag in message contents.
+                content_list = request.POST.get('content', '')
+                content_list = content_list.split(' ')
+                for content in content_list:
+                    if content.find("#") != -1:
+                        splited_content = content.split('#')
+                        created_hash_tag = HashTag(tag_name=splited_content[1])
+                        created_hash_tag.save()
+                        created_hash_tag.issues.add(issue[0])
+
+                return HttpResponse("Inserted.")
 
     return HttpResponse("error request method.")
 
