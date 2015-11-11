@@ -1,5 +1,5 @@
 from django import forms
-from team.models import Issue, Team, AttachedFile
+from team.models import Issue, Team, AttachedFile, HashTag
 
 
 class IssueForm(forms.models.ModelForm):
@@ -22,3 +22,9 @@ class TeamForm(forms.models.ModelForm):
     class Meta:
         model = Team
         fields = {'team_name'}
+
+
+class HashTagForm(forms.models.ModelForm):
+    class Meta:
+        model = HashTag
+        fields = {'tag_name'}
