@@ -23,17 +23,14 @@ class IssueTest(FunctionalTest):
 
     def test_can_move_to_own_issue_in_list(self):
         self.base_login()
-        self.create_issue("Test-Issue-01")
-        self.create_issue("Test-Issue-02")
 
         sorted_issue_list = self.browser.find_element_by_class_name('sorted_issues')
         ul_list = sorted_issue_list.find_element_by_tag_name('ul')
-        self.timeout(5)
-        issue_1 = ul_list.find_element_by_id('Test-Issue-01')
+        issue_1 = ul_list.find_element_by_id('login_error')
 
         issue_1.click()
 
-        url_regex_str = '/issue/Test-Issue-01'
+        url_regex_str = '/issue/login_error'
         self.assertRegex(self.browser.current_url, url_regex_str)
         self.timeout(3)
 
