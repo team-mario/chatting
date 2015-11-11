@@ -106,6 +106,12 @@
     {% endfor %}
 </div>
 
+<div id="message_hash_container">
+    {% for hash_tag in hash_tags %}
+        <span class="message_hash_tag_name">#{{ hash_tag.hash_tag_name }}</span>
+    {% endfor %}
+</div>
+
 <div id="message_input_container">
     <div id="popup_menu" class="popup_menu" style="display:none">
         <ul class="menu_items">
@@ -138,5 +144,22 @@
         </div>
     </div>
 </div>
+<div id="HashTagAddModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width:10%;">&times;</button>
+                <h4 id="issue_title" class="modal-title">Add Hash Tags</h4>
+            </div>
+            <div class="modal-body">
+                <form action="/issue/hash_tag/add" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ hash_tag_form }}
+                    <button type="submit" class="btn btn-primary" id="btn_hash_tag_submit">Upload</button>
+                </form>
+            </div>
 
+        </div>
+    </div>
+</div>
 {% endblock %}

@@ -24,7 +24,14 @@ class HashTagTest(FunctionalTest):
         hash_tag_btn.click()
 
         # If the user click add hash tag button hash tag form is showed.
+        self.wait_for_element_with_id('id_tag_name')
+        tag_name = self.browser.find_element_by_id('id_tag_name')
+        tag_name.send_keys('Test_Hash_1')
 
         # If user add hash tag then hash tag is created at the message view.
+        btn_hash_tag_submit = self.browser.find_element_by_id('btn_hash_tag_submit')
+        btn_hash_tag_submit.click()
 
-        pass
+        message_hash_container = self.browser.find_element_by_id('message_hash_container')
+        hash_content = message_hash_container.find_element_by_class_name('message_hash_tag_name')
+        self.assertEqual(hash_content.text, '#Test_Hash_1')
