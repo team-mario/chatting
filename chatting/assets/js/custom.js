@@ -6,3 +6,14 @@ $(function () {
         $('#create-team-modal').modal('toggle');
     });
 });
+$(function (){
+    $('#item_upload_file').click(function(){
+        $('#FileUploadModal').modal('toggle');
+    });
+});
+
+$(function (){
+    $('#item_add_hash_tag').click(function(){
+        $('#HashTagAddModal').modal('toggle');
+    });
+});

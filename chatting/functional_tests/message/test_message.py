@@ -107,10 +107,6 @@ class NewVisitorTest(FunctionalTest):
         self.browser.find_element_by_id('btn_plus').click()
         self.assertEqual('', popup_menu.get_attribute('style'))
 
-        # check popup menu items
-        self.browser.find_element_by_id('item_upload_file').click()
-        self.browser.find_element_by_id('item_add_hash_tag').click()
-
         # popup menu hide
         self.browser.find_element_by_id('btn_plus').click()
         self.assertIn('display: none;', popup_menu.get_attribute('style'))

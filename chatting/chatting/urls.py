@@ -29,10 +29,12 @@ urlpatterns = [
         'django.contrib.auth.views.password_change_done'),
     url(r'^issue/create$', 'team.views.create_issue', name='create_issue'),
     url(r'^issue/$', 'message.views.get_messages'),
+    url(r'^issue/file/add$', 'team.views.add_file'),
+    url(r'^issue/hash_tag/add$', 'team.views.add_hash_tag'),
+    url(r'^media/(?P<id>\S+)', 'team.views.send_file', name='send_file'),
     url(r'^issue/(?P<issue_name>[\w-]+)', 'message.views.get_messages', name='issue_detail'),
     url(r'^team/create', 'team.views.create_team'),
     url(r'^team/search$', 'team.views.search_issue'),
-    url(r'^issue/file/add', 'team.views.add_file'),
     url(r'^team/detail/(?P<team_name>\S+)', 'team.views.team_detail'),
     url(r'^', 'login.views.index'),
 ]

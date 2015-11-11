@@ -1,8 +1,8 @@
 from message.models import Message
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template.response import TemplateResponse
-from team.forms import IssueForm, TeamForm, UploadFileForm, SearchForm
-from team.models import Issue, Team
+from team.forms import IssueForm, TeamForm, UploadFileForm, SearchForm, HashTagForm
+from team.models import Issue, Team, HashTag
 import json
 import datetime
 from django.shortcuts import get_object_or_404, render
@@ -12,15 +12,16 @@ from django.shortcuts import get_object_or_404, render
 def get_messages(request, issue_name=None):
     if not request.user.is_authenticated():
         return HttpResponseRedirect('../accounts/login/')
-    cur_team = ''
-    team = ''
     file_form = UploadFileForm
+    hash_tag_form = HashTagForm
     issue_form = IssueForm
     team_form = TeamForm
     search_form = SearchForm
     teams = Team.objects.values('team_name').distinct()
 
     default = 'default'
+
+    request.session['issue_name'] = issue_name
 
     if 'cur_team' in request.session:
         cur_team = request.session['cur_team']
@@ -44,6 +45,7 @@ def get_messages(request, issue_name=None):
     context['team_form'] = team_form
     context['teams'] = teams
     context['file_form'] = file_form
+    context['hash_tag_form'] = hash_tag_form
     context['search_form'] = search_form
 
     if issue_name is not None:
@@ -64,6 +66,8 @@ def get_messages(request, issue_name=None):
         dic['username'] = data.user.get_username()
         dic['time'] = data.create_datetime.strftime("%-I:%M %p")
         dic['content'] = data.content
+        dic['file'] = data.file
+
         messages.append(dic)
 
     if len(received_messages) > 0:
@@ -73,8 +77,19 @@ def get_messages(request, issue_name=None):
         last_primary_key = 0
         last_send_date = datetime.datetime.today()
 
+    hash_tags = []
+    added_hash_tags = HashTag.objects.filter(issues=issue).order_by('id')
+    for data in added_hash_tags:
+        dic = {}
+        dic['hash_tag_id'] = data.id
+        dic['hash_tag_name'] = data.tag_name
+        print('해쉬')
+        print(data)
+        hash_tags.append(dic)
+
     context['issue'] = issue
     context['messages'] = messages
+    context['hash_tags'] = hash_tags
     context['last_primary_key'] = last_primary_key
     context['last_send_date'] = last_send_date
 
