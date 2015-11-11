@@ -11,3 +11,9 @@ $(function (){
         $('#FileUploadModal').modal('toggle');
     });
 });
+
+$(function (){
+    $('#item_add_hash_tag').click(function(){
+        $('#HashTagAddModal').modal('toggle');
+    });
+});

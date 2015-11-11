@@ -1,5 +1,5 @@
 from django.shortcuts import redirect, render
-from team.models import Issue, AttachedFile, Team
+from team.models import Issue, AttachedFile, Team, HashTag
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -59,6 +59,21 @@ def add_file(request):
         # return redirect('/message/get', kwargs={'issue_name': issue_name})
 
     return HttpResponse("File upload is failed")
+
+
+@login_required(login_url='/accounts/login')
+def add_hash_tag(request):
+    if request.method == 'POST':
+        issue_name = request.session.get('issue_name')
+        issue = Issue.objects.get(issue_name=issue_name)
+        tag_name = request.POST.get('tag_name')
+        created_hash_tag = HashTag(tag_name=tag_name)
+        created_hash_tag.save()
+        created_hash_tag.issues.add(issue)
+
+        return redirect(reverse('issue_detail', kwargs={'issue_name': issue_name}))
+
+    return HttpResponse('Adding Hash Tag is failed')
 
 
 def send_file(request, id):

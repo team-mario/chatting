@@ -113,6 +113,13 @@ body{
     font-size:15px;
     color:#666;
 }
+
+#message_hash_container{
+    position:fixed;
+    padding:5px 0;
+    bottom:7%;
+    left:80%;
+}
 #message_input_container{
     position:fixed;
     height:64px;
