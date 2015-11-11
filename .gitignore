@@ -70,3 +70,6 @@ Django
 
 #Mac os files
 .DS_Store
+
+#media
+media/
