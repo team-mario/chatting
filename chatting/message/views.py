@@ -36,7 +36,6 @@ def get_messages(request, issue_name=None):
         issues = Issue.objects.filter(team=team.id)
         for issue in issues.all():
             issue_name_list.append(issue)
-
     except:
         Team.objects.create(team_name=default)
 
@@ -84,8 +83,6 @@ def get_messages(request, issue_name=None):
         dic = {}
         dic['hash_tag_id'] = data.id
         dic['hash_tag_name'] = data.tag_name
-        print('해쉬')
-        print(data)
         hash_tags.append(dic)
 
     context['issue'] = issue

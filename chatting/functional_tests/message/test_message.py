@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 
 class NewVisitorTest(FunctionalTest):
-    fixtures = ['users.json', 'team_data.json', 'message_data.json', 'team_list.json']
+    fixtures = ['users.json', 'message_data.json', 'team_list.json', 'issue_data.json']
 
     def check_basic_layout(self):
         # check browser title
@@ -35,10 +35,8 @@ class NewVisitorTest(FunctionalTest):
         self.assertEqual(btn_search.get_attribute('value'), 'Search')
 
     def test_new_visitor(self):
-        # execute browser
-        self.login()
+        self.base_login()
         self.check_basic_layout()
-        self.create_issues()
 
         # find element by id 'first_issue' issue
         div = self.browser.find_element_by_class_name('sorted_issues')
@@ -72,7 +70,7 @@ class NewVisitorTest(FunctionalTest):
         message_input_box.send_keys(Keys.ENTER)
 
         import time
-        time.sleep(3)
+        time.sleep(1)
         messages_container = \
             self.browser.find_element_by_id('messages_container')
 

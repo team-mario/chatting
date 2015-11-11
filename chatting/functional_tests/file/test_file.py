@@ -5,14 +5,13 @@ import os
 class FileTest(FunctionalTest):
 
     def test_can_save_file_in_message(self):
-        # execute browser
-        self.login()
+        self.base_login()
 
-        self.create_issues()
         div = self.browser.find_element_by_class_name('sorted_issues')
         issue_channels = div.find_elements_by_tag_name('a')
         issue_1 = issue_channels[0]
         issue_1.click()
+
         # User can check + Button in message view and if the user click + button, file upload button is showed
         message_input_container = \
             self.browser.find_element_by_id('message_input_container')
