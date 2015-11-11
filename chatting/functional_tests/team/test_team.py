@@ -39,3 +39,16 @@ class TeamTest(FunctionalTest):
         self.create_team()
         self.add_issue()
         self.select_team()
+
+    def test_invite_user(self):
+        self.login()
+        self.create_team()
+        self.browser.find_element_by_id('btn_invite').click()
+        self.browser.find_element_by_id('btn_my_teams').click()
+
+        self.browser.find_element_by_id('TestTeam').click()
+        self.browser.find_element_by_id('btn_add_users').click()
+        self.browser.find_element_by_id('user_01').click()
+        self.browser.find_element_by_id('btn_invite_submit').click()
+
+        self.timeout(5)

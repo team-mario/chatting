@@ -33,6 +33,7 @@ urlpatterns = [
     url(r'^issue/change$', 'message.views.change_status'),
     url(r'^issue/(?P<issue_name>[\w-]+)', 'message.views.get_messages', name='issue_detail'),
     url(r'^team/create', 'team.views.create_team'),
+    url(r'^team/get_users', 'team.views.get_users'),
     url(r'^team/search$', 'team.views.search_issue'),
     url(r'^team/invite', 'team.views.invite_user'),
     url(r'^issue/file/add', 'team.views.add_file'),

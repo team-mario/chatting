@@ -56,8 +56,8 @@
             $("#btn_select_team").on("click",function(){
                 $("#team_select_dialog").dialog("open");
                 var ul = document.getElementById("list");
-                {% for team in teams.all %}
-                    var text = '{{ team.team_name }}';
+                {% for team in my_teams.all %}
+                    var text = '{{ team }}';
                     var li = document.createElement("li");
                     li.setAttribute("id", "element");
                     var a = document.createElement('a');
@@ -173,25 +173,53 @@
                         $(function(){
                             var team;
                             var user;
+                            function update_user(users) {
+                                $.each(users, function(key){
+                                    var username = users[key].user;
+                                    var ul_tag = '<li id=' +username+ '><a role="menuitem" tabindex="-1">' + username + '</a></li>';
+                                    $("#ul_users").append(ul_tag);
+                                });
+                            }
                             $('#ul_my_teams').on("click", 'li', function (event) {
-                                issue = $(event.target).text();
-                                $('#my_teams_title').text(issue);
-                                team = issue;
+                                team = $(event.target).text();
+                                $('#my_teams_title').text(team);
+                                get_users(team);
                             });
                             $('#ul_users').on("click", 'li', function (event) {
-                                issue = $(event.target).text();
-                                $('#add_user_title').text(issue);
-                                user = issue;
+                                user = $(event.target).text();
+                                $('#add_user_title').text(user);
                             });
                             $('#btn_invite_submit').click(function(){
                                 if(team != null && user != null) {
-                                    $('#create-invite-modal').modal('hide') // jang4427
+                                    $('#create-invite-modal').modal('hide')
                                     invite_user(team, user);
                                 }
                                 else {
-                                    alert("Select item")
+                                    alert("Select item");
                                 }
                             });
+                            function get_users(team){
+                                csrftoken = $("input[name*='csrfmiddlewaretoken']").val();
+
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '/team/get_users',
+                                    data: {team: team},
+                                    cache: false,
+                                    beforeSend:function(xhr){
+                                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                                    },
+                                    success: function(response) {
+                                        update_user(response);
+                                    },
+                                    failure: function(response) {
+                                        alert('sorry, insert error. please try again');
+                                    },
+                                    complete: function(response){
+                                        console.log(JSON.stringify(response));
+                                    },
+                                });
+                            }
                             function invite_user(team, user){
                                 csrftoken = $("input[name*='csrfmiddlewaretoken']").val();
 
@@ -226,9 +254,6 @@
                             <span class="caret"></span>
                         </button>
                         <ul id="ul_users" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                            {% for user in invite_user %}
-                                <li id="{{ user }}" ><a role="menuitem" tabindex="-1">{{ user }}</a></li>
-                            {% endfor %}
                         </ul>
                     </div>
                     <br><br>
