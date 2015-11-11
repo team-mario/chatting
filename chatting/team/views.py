@@ -18,7 +18,7 @@ def create_issue(request):
         issue_content = request.POST.get('issue_content')
 
         team = Team.objects.get(team_name=cur_team)
-        issue = Issue(issue_name=issue_name, issue_content=issue_content, team=team, status=0)
+        issue = Issue(issue_name=issue_name, issue_content=issue_content, team=team, status="대기중")
         user = User.objects.get(username=user_name)
         issue.user = user
         issue.save()
@@ -97,8 +97,6 @@ def search_issue(request):
                 searched_list.append(issue)
     except:
         Team.objects.create(team_name=default)
-
-    print(searched_list)
 
     context = {}
     context['issue_form'] = issue_form

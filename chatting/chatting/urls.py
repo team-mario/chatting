@@ -29,6 +29,7 @@ urlpatterns = [
         'django.contrib.auth.views.password_change_done'),
     url(r'^issue/create$', 'team.views.create_issue', name='create_issue'),
     url(r'^issue/$', 'message.views.get_messages'),
+    url(r'^issue/list$', 'message.views.show_issues'),
     url(r'^issue/change$', 'message.views.change_status'),
     url(r'^issue/(?P<issue_name>[\w-]+)', 'message.views.get_messages', name='issue_detail'),
     url(r'^team/create', 'team.views.create_team'),

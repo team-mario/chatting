@@ -41,7 +41,6 @@ def get_messages(request, issue_name=None):
         Team.objects.create(team_name=default)
 
     user_list = User.objects.filter(groups__name=cur_team)
-    print(user_list)
 
     context = {}
     context['issue_form'] = issue_form
@@ -131,16 +130,83 @@ def get_message(request):
 
 
 def change_status(request):
-    print('change_status change_status')
     if request.method == 'POST':
         status = request.POST.get('status')
         assignment = request.POST.get('assignment')
         issue_name = request.POST.get('issue')
+        current_team = request.session['cur_team']
 
-        user = User.objects.filter(username=assignment)
-        issue_object = Issue.objects.filter(issue_name=issue_name)
-        issue_object.user = user
-        issue_object.status = status
-
+        team = Team.objects.filter(team_name=current_team)
+        user = User.objects.get(username=assignment)
+        Issue.objects.filter(issue_name=issue_name, team=team).update(user=user, status=status)
         return redirect('/accounts/profile/')
     return redirect('/accounts/login/')
+
+
+def show_issues(request):
+    current_team = ''
+    file_form = UploadFileForm
+    issue_form = IssueForm
+    team_form = TeamForm
+    search_form = SearchForm
+    teams = Team.objects.values('team_name').distinct()
+
+    default = 'default'
+    search_text = request.POST.get('content', None)
+
+    if not search_text:
+        is_empty = True
+    else:
+        is_empty = False
+
+    if 'cur_team' in request.session:
+        current_team = request.session['cur_team']
+    else:
+        current_team = default
+        request.session['cur_team'] = default
+
+    searched_list = []
+    issues = ''
+    waiting = []
+    complete = []
+    fixing = []
+    user_list = ''
+
+    try:
+        team = Team.objects.filter(team_name=current_team)
+        issues = Issue.objects.filter(team=team)
+        user_list = User.objects.filter(groups__name=current_team)
+
+        for issue in issues.all():
+            issue_content = issue.issue_content
+            if issue.status == "대기중":
+                waiting.append(issue)
+            elif issue.status == "수정중":
+                fixing.append(issue)
+            elif issue.status == "완료":
+                complete.append(issue)
+
+            if issue_content.find(str(search_text)) is not -1 and is_empty is False:
+                searched_list.append(issue)
+    except:
+        Team.objects.create(team_name=default)
+
+    context = {}
+    context['issue_form'] = issue_form
+    context['issues'] = issues
+    context['team_form'] = team_form
+    context['teams'] = teams
+    context['file_form'] = file_form
+    context['search_form'] = search_form
+    context['searched_list'] = searched_list
+    context['user_list'] = user_list
+
+    context['waiting'] = waiting
+    context['fixing'] = fixing
+    context['complete'] = complete
+
+    return render(
+        request,
+        'message/issues.html',
+        context
+    )

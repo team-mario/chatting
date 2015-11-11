@@ -100,7 +100,10 @@
             <button type="button" id="btn_create_team" class="btn btn-lg btn-primary">Create Team</button>
             <button type="button" id="btn_create_issue" class="btn btn-lg btn-primary">Add Issue</button>
             <button type="button" id="btn_select_team" class="btn btn-lg btn-primary">Select Team</button>
-            <button type="button" id="btn_issues" class="btn btn-lg btn-primary">issue list</button>
+            <form action="/issue/list" method="post">
+                {% csrf_token %}
+                <button class="btn btn-lg btn-primary" type="submit" value="Issues" id="btn_issues">Issues</button>
+            </form>
             <button type="button" id="btn_setting" class="btn btn-lg btn-primary">Setting</button>
             {% block post_issue_block %}
             {% endblock %}
@@ -152,8 +155,8 @@
                     <h3>Select Issue</h3>
                     <br>
                     <div class="dropdown">
-                        <button id="btn_issue" class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-                            <span id="assignment_title">Select Issue</span>
+                        <button id="btn_select_issue" class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                            <span id="select_issue_title">Select Issue</span>
                             <span class="caret"></span>
                         </button>
 
@@ -169,7 +172,7 @@
                                         var issue;
                                         $('#ul_issues').on("click", 'li', function (event) {
                                             issue = $(event.target).text();
-                                            $('#btn_issue').text(issue);
+                                            $('#select_issue_title').text(issue);
                                         });
                                         $('#ul_assignment').on("click", 'li', function (event) {
                                             assignment = $(event.target).text();
