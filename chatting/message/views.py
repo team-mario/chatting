@@ -5,7 +5,7 @@ from team.forms import IssueForm, TeamForm, UploadFileForm, SearchForm
 from team.models import Issue, Team
 from django.shortcuts import get_object_or_404, render, redirect
 from datetime import datetime
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 import json
 
 
@@ -40,7 +40,50 @@ def get_messages(request, issue_name=None):
     except:
         Team.objects.create(team_name=default)
 
+    print('user')
+    print(request.user)
     user_list = User.objects.filter(groups__name=cur_team)
+    my_teams = request.user.groups.all()
+
+    print('cur_team')
+    print(cur_team)
+    print('my_teams')
+    print(my_teams)
+    print('user_list')
+    print(user_list)
+
+    invite_user = []
+    is_valid = False
+    print('aaaaaaaaaaaaa')
+    if user_list.exists() is False:
+        print('none')
+        for user in User.objects.all():
+            if user != request.user:
+                invite_user.append(user)
+
+    else:
+        print('all')
+        print(User.objects.all())
+        print(user_list.all())
+        for user in User.objects.all():
+            for team_user in user_list.all():
+                print('view')
+                print(user)
+                print(team_user)
+                if user != team_user:
+                    print('true')
+                    is_valid = True
+                else:
+                    print('false')
+                    is_valid = False
+                    break
+
+            if is_valid is True and user is not request.user:
+                invite_user.append(user)
+
+    print('invite')
+    print(invite_user)
+
 
     context = {}
     context['issue_form'] = issue_form
@@ -50,6 +93,8 @@ def get_messages(request, issue_name=None):
     context['file_form'] = file_form
     context['search_form'] = search_form
     context['user_list'] = user_list
+    context['my_teams'] = my_teams
+    context['invite_user'] = invite_user
 
     if issue_name is not None:
         issue = get_object_or_404(Issue, issue_name=issue_name)

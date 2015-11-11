@@ -18,7 +18,7 @@ def create_issue(request):
         issue_content = request.POST.get('issue_content')
 
         team = Team.objects.get(team_name=cur_team)
-        issue = Issue(issue_name=issue_name, issue_content=issue_content, team=team, status="대기중")
+        issue = Issue(issue_name=issue_name, issue_content=issue_content, team=team, status="대기")
         user = User.objects.get(username=user_name)
         issue.user = user
         issue.save()
@@ -32,11 +32,11 @@ def issue_detail(request, issue_name):
 
 
 @login_required(login_url='/accounts/login/')
-def team_detail(request, team_name):
+def team_detail(request, team_name): #여기는 팀리스트일경우에만 뿌려줘야함
     request.session['cur_team'] = team_name
 
-    group = Group.objects.get(name=team_name)
-    request.user.groups.add(group)
+    # group = Group.objects.get(name=team_name)
+    # request.user.groups.add(group)
     return HttpResponseRedirect('/issue/')
 
 
@@ -57,9 +57,12 @@ def create_team(request):
         request.session['cur_team'] = team_name
         Team.objects.create(team_name=team_name)
 
+        user = User.objects.get(username=request.user)
         group = Group(name=team_name)
         group.save()
-        request.user.groups.add(group)
+        print('1')
+        group.user_set.add(user)
+        print('2')
 
     return HttpResponseRedirect('/issue/')
 
@@ -109,3 +112,16 @@ def search_issue(request):
     context['searched_list'] = searched_list
 
     return render(request, 'search/search.html', context)
+
+
+def invite_user(request):
+    if request.method == 'POST':
+        team_name = str(request.POST.get('team'))
+        invited_user = str(request.POST.get('user'))
+
+        user = User.objects.get(username=invited_user)
+        group = Group.objects.get(name=team_name)
+        group.user_set.add(user)
+        print('invite_user')
+
+    return HttpResponseRedirect('/issue/')

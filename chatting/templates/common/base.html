@@ -50,6 +50,9 @@
                     }
                 }
             });
+            $("#btn_invite").on("click",function(){
+                $('#create-invite-modal').modal('toggle');
+            });
             $("#btn_select_team").on("click",function(){
                 $("#team_select_dialog").dialog("open");
                 var ul = document.getElementById("list");
@@ -105,6 +108,7 @@
                 <button class="btn btn-lg btn-primary" type="submit" value="Issues" id="btn_issues">Issues</button>
             </form>
             <button type="button" id="btn_setting" class="btn btn-lg btn-primary">Setting</button>
+            <button type="button" id="btn_invite" class="btn btn-lg btn-primary">Invite</button>
             {% block post_issue_block %}
             {% endblock %}
         </div>
@@ -140,6 +144,96 @@
                         {{ file_form }}
                         <button type="submit" class="btn btn-primary" id="btn_file_submit">Upload</button>
                     </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="create-invite-modal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width:10%;">&times;</button>
+                    <h4 id="change_status_title" class="modal-title">Change Status</h4>
+                </div>
+                <div class="modal-body">
+                    <h3>My Teams</h3>
+                    <br>
+                    <div class="dropdown">
+                        <button id="btn_my_teams" class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">
+                            <span id="my_teams_title">My Teams</span>
+                            <span class="caret"></span>
+                        </button>
+                        <ul id="ul_my_teams" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                            {% for team in my_teams.all %}
+                                <li id="{{ team }}" ><a role="menuitem" tabindex="-1">{{ team }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <script>
+                        $(function(){
+                            var team;
+                            var user;
+                            $('#ul_my_teams').on("click", 'li', function (event) {
+                                issue = $(event.target).text();
+                                $('#my_teams_title').text(issue);
+                                team = issue;
+                            });
+                            $('#ul_users').on("click", 'li', function (event) {
+                                issue = $(event.target).text();
+                                $('#add_user_title').text(issue);
+                                user = issue;
+                            });
+                            $('#btn_invite_submit').click(function(){
+                                if(team != null && user != null) {
+                                    $('#create-invite-modal').modal('hide') // jang4427
+                                    invite_user(team, user);
+                                }
+                                else {
+                                    alert("Select item")
+                                }
+                            });
+                            function invite_user(team, user){
+                                csrftoken = $("input[name*='csrfmiddlewaretoken']").val();
+
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '/team/invite',
+                                    data: {team: team, user: user},
+                                    cache: false,
+                                    beforeSend:function(xhr){
+                                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                                    },
+                                    success: function(response) {
+                                        alert('success');
+                                    },
+                                    failure: function(response) {
+                                        alert('sorry, insert error. please try again');
+                                    },
+                                    complete: function(response){
+                                        console.log(JSON.stringify(response));
+                                    },
+                                });
+                            }
+                        });
+
+                    </script>
+                    <br><br>
+                    <h3>User</h3>
+                    <br>
+                    <div class="dropdown">
+                        <button class="btn btn-default dropdown-toggle" type="button" id="btn_add_users" data-toggle="dropdown" aria-expanded="true">
+                            <span id="add_user_title">Users</span>
+                            <span class="caret"></span>
+                        </button>
+                        <ul id="ul_users" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                            {% for user in invite_user %}
+                                <li id="{{ user }}" ><a role="menuitem" tabindex="-1">{{ user }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <br><br>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="btn_invite_submit">OK</button>
                 </div>
             </div>
         </div>
