@@ -23,14 +23,51 @@ class IssueTest(FunctionalTest):
 
     def test_can_move_to_own_issue_in_list(self):
         self.base_login()
-        self.create_issue("Test-Issue-01")
-        self.create_issue("Test-Issue-02")
 
         sorted_issue_list = self.browser.find_element_by_class_name('sorted_issues')
         ul_list = sorted_issue_list.find_element_by_tag_name('ul')
-        issue_1 = ul_list.find_element_by_id('Test-Issue-01')
+        issue_1 = ul_list.find_element_by_id('login_error')
 
         issue_1.click()
 
+        url_regex_str = '/issue/login_error'
+        self.assertRegex(self.browser.current_url, url_regex_str)
+        self.timeout(3)
+
+    def create_team(self):
+        self.browser.find_element_by_id('btn_create_team').click()
+        self.browser.find_element_by_id('id_team_name').send_keys('TestTeam')
+        self.browser.find_element_by_id('btn_create_team_submit').click()
+
+        self.timeout(2)
+
+    def test_can_change_issue_status(self):
+        self.base_login()
+        self.create_team()
+        self.create_issue("Test-Issue-01")
+
+        self.browser.find_element_by_id('btn_setting').click()
+        self.browser.find_element_by_id('btn_select_issue').click()
+        self.timeout(1)
+        self.browser.find_element_by_class_name('Test-Issue-01').click()
+
+        self.browser.find_element_by_id('btn_assignment').click()
+        self.timeout(1)
+        self.browser.find_element_by_id('tester').click()
+
+        self.browser.find_element_by_id('btn_status').click()
+        self.timeout(1)
+        self.browser.find_element_by_id('0').click()
+        self.browser.find_element_by_id('btn_change_status_submit').click()
+
+    def test_can_show_issue_list(self):
+        self.base_login()
+        self.create_team()
+        self.create_issue("Test-Issue-01")
+
+        self.browser.find_element_by_id('btn_issues').click()
+        issue = self.browser.find_element_by_id('0Test-Issue-01')
+        self.assertIn('Test-Issue-01', issue.text)
+        self.browser.find_element_by_id('0Test-Issue-01').click()
         url_regex_str = '/issue/Test-Issue-01'
         self.assertRegex(self.browser.current_url, url_regex_str)

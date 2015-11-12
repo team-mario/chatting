@@ -1,11 +1,13 @@
 from message.models import Message
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template.response import TemplateResponse
+from django.shortcuts import get_object_or_404, render, redirect
+from django.contrib.auth.models import User
 from team.forms import IssueForm, TeamForm, UploadFileForm, SearchForm, HashTagForm
 from team.models import Issue, Team, HashTag
+
 import json
 import datetime
-from django.shortcuts import get_object_or_404, render
 
 
 # Create your views here.
@@ -17,7 +19,6 @@ def get_messages(request, issue_name=None):
     issue_form = IssueForm
     team_form = TeamForm
     search_form = SearchForm
-    teams = Team.objects.values('team_name').distinct()
 
     default = 'default'
 
@@ -39,14 +40,18 @@ def get_messages(request, issue_name=None):
     except:
         Team.objects.create(team_name=default)
 
+    user_list = User.objects.filter(groups__name=cur_team)
+    my_teams = request.user.groups.all()
+
     context = {}
     context['issue_form'] = issue_form
     context['issues'] = issues
     context['team_form'] = team_form
-    context['teams'] = teams
     context['file_form'] = file_form
     context['hash_tag_form'] = hash_tag_form
     context['search_form'] = search_form
+    context['user_list'] = user_list
+    context['my_teams'] = my_teams
 
     if issue_name is not None:
         issue = get_object_or_404(Issue, issue_name=issue_name)
@@ -144,5 +149,87 @@ def get_message(request):
                     messages.append(dic)
                 messages = json.dumps(messages)
                 return HttpResponse(messages, content_type='application/json')
-
     return HttpResponse("error")
+
+
+def change_status(request):
+    if request.method == 'POST':
+        status = request.POST.get('status')
+        assignment = request.POST.get('assignment')
+        issue_name = request.POST.get('issue')
+        current_team = request.session['cur_team']
+
+        team = Team.objects.filter(team_name=current_team)
+        user = User.objects.get(username=assignment)
+        Issue.objects.filter(issue_name=issue_name, team=team).update(user=user, status=status)
+        return redirect('/accounts/profile/')
+    return redirect('/accounts/login/')
+
+
+def show_issues(request):
+    current_team = ''
+    file_form = UploadFileForm
+    issue_form = IssueForm
+    team_form = TeamForm
+    search_form = SearchForm
+    teams = Team.objects.values('team_name').distinct()
+
+    default = 'default'
+    search_text = request.POST.get('content', None)
+
+    if not search_text:
+        is_empty = True
+    else:
+        is_empty = False
+
+    if 'cur_team' in request.session:
+        current_team = request.session['cur_team']
+    else:
+        current_team = default
+        request.session['cur_team'] = default
+
+    searched_list = []
+    issues = ''
+    waiting = []
+    complete = []
+    fixing = []
+    user_list = ''
+
+    try:
+        team = Team.objects.filter(team_name=current_team)
+        issues = Issue.objects.filter(team=team)
+        user_list = User.objects.filter(groups__name=current_team)
+
+        for issue in issues.all():
+            issue_content = issue.issue_content
+            if issue.status == "대기중":
+                waiting.append(issue)
+            elif issue.status == "수정중":
+                fixing.append(issue)
+            elif issue.status == "완료":
+                complete.append(issue)
+
+            if issue_content.find(str(search_text)) is not -1 and is_empty is False:
+                searched_list.append(issue)
+    except:
+        Team.objects.create(team_name=default)
+
+    context = {}
+    context['issue_form'] = issue_form
+    context['issues'] = issues
+    context['team_form'] = team_form
+    context['teams'] = teams
+    context['file_form'] = file_form
+    context['search_form'] = search_form
+    context['searched_list'] = searched_list
+    context['user_list'] = user_list
+
+    context['waiting'] = waiting
+    context['fixing'] = fixing
+    context['complete'] = complete
+
+    return render(
+        request,
+        'message/issues.html',
+        context
+    )

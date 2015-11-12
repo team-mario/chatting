@@ -12,6 +12,7 @@ class Issue(models.Model):
     user = models.ForeignKey(User, default=None)
     team = models.ForeignKey(Team, default=None)
     issue_name = models.CharField(max_length=30)
+    status = models.CharField(max_length=30)
     issue_content = models.CharField(max_length=255, default='')
 
     def __str__(self):

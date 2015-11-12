@@ -2,6 +2,8 @@ from functional_tests.base import FunctionalTest
 
 
 class TeamTest(FunctionalTest):
+    fixtures = ['users.json', 'message_data.json', 'team_list.json', 'issue_data.json']
+
     def create_team(self):
         self.browser.find_element_by_id('btn_create_team').click()
         self.browser.find_element_by_id('id_team_name').send_keys('TestTeam')
@@ -29,3 +31,15 @@ class TeamTest(FunctionalTest):
         self.create_team()
         self.add_issue()
         self.select_team()
+
+    def test_invite_user(self):
+        self.base_login()
+        self.create_team()
+        self.browser.find_element_by_id('btn_invite').click()
+        self.browser.find_element_by_id('btn_my_teams').click()
+        self.browser.find_element_by_id('TestTeam').click()
+        self.browser.find_element_by_id('btn_add_users').click()
+        self.browser.find_element_by_id('tester2').click()
+        self.browser.find_element_by_id('btn_invite_submit').click()
+
+        self.timeout(3)

@@ -1,0 +1,26 @@
+{% extends "common/base.html" %}
+
+{% block container %}
+    <div>
+        <div>대기중</div>
+        <ul>
+            {% for issue in waiting %}
+                <li><a href="{% url 'issue_detail' issue.issue_name %}" id="0{{ issue.issue_name }}">{{ issue.issue_name }}</a></li>
+            {% endfor %}
+        </ul>
+
+        <div>수정중</div>
+        <ul id="issue_list">
+            {% for issue in fixing %}
+                <li><a href="{% url 'issue_detail' issue.issue_name %}" id="1{{ issue.issue_name }}">{{ issue.issue_name }}</a></li>
+            {% endfor %}
+        </ul>
+
+        <div>완료</div>
+        <ul id="issue_list">
+            {% for issue in complete %}
+                <li><a href="{% url 'issue_detail' issue.issue_name %}" id="2{{ issue.issue_name }}">{{ issue.issue_name }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

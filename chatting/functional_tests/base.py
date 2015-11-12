@@ -11,6 +11,7 @@ class FunctionalTest(StaticLiveServerTestCase):
         self.browser = webdriver.Firefox()
         self.browser.implicitly_wait(3)
         self.browser.get(self.live_server_url)
+        self.browser.maximize_window()
 
     def tearDown(self):
         self.browser.quit()

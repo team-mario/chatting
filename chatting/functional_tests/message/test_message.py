@@ -96,7 +96,7 @@ class NewVisitorTest(FunctionalTest):
         time_regex_str = "([1]|[0-9]):[0-5][0-9](\\s)?(?i)(am|pm)"
 
         # check compate send message to display message
-        self.assertEqual(msg_username.text, User.objects.last().get_username())
+        self.assertEqual(msg_username.text, User.objects.first().get_username())
         self.assertEqual(msg_content.text, 'parkyoungwoo')
         self.assertRegex(msg_time.text, time_regex_str)
 
