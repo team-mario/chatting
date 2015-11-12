@@ -48,7 +48,7 @@
             var message_tag = null;
             message_tag = '<div class="message"><div class="message_send_information"><span class="message_username">' + username + '</span><span class="message_time">' + time + '</span></div><div class="message_content">' + content + '</div></div>';
             $("#messages_container").append(message_tag);
-            last_primary_key = messages[key].id;
+            last_primary_key = messages[key].message_id;
             scroll_to_bottom('smooth');
 
             // In case of hash tag
