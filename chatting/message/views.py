@@ -124,8 +124,9 @@ def create_message(request):
                         created_hash_tag.save()
                         created_hash_tag.issues.add(issue[0])
 
-                return HttpResponse("Inserted.")
-
+                return HttpResponse("insert_success")
+            return HttpResponse("not found issue or user")
+        return HttpResponse("not found issue name")
     return HttpResponse("error request method.")
 
 

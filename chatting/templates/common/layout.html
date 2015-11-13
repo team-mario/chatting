@@ -1,0 +1,200 @@
+{% extends "common/base.html" %}
+{% block custom_layout %}
+<div id="wrap" class="clearfix">
+    <div id="header" class="clearfix">
+        <div class="logo">
+            <h1>TeamMario</h1>
+        </div>
+        <div class="search">
+            <form action="/team/search" method="post">
+                {% csrf_token %}
+                {{ search_form }}
+                <span class="clearfix"><button type="submit" value="Search" id="btn_search">Search</button></span>
+            </form>
+        </div>
+        <div class="my_information">
+            <span class="clearfix"><input type="button" id="btn_information" value="my_information"></span>
+        </div>
+    </div>
+    <div id="nav">
+        <div class='btns'>
+            <button type="button" id="btn_create_team" class="btn btn-lg btn-primary">Create Team</button>
+            <button type="button" id="btn_create_issue" class="btn btn-lg btn-primary">Add Issue</button>
+            <button type="button" id="btn_select_team" class="btn btn-lg btn-primary">Select Team</button>
+            <form action="/issue/list" method="post">
+                {% csrf_token %}
+                <button class="btn btn-lg btn-primary" type="submit" value="Issues" id="btn_issues">Issues</button>
+            </form>
+            <button type="button" id="btn_setting" class="btn btn-lg btn-primary">Setting</button>
+            <button type="button" id="btn_invite" class="btn btn-lg btn-primary">Invite</button>
+            {% block post_issue_block %}
+            {% endblock %}
+        </div>
+        <div class='sorted_issues'>
+            <h2>Favourite Issues</h2>
+            <ul>
+                {% for issue in issues.all %}
+                    <li><a href="{% url 'issue_detail' issue.issue_name %}" id="{{ issue.issue_name }}">{{ issue.issue_name }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div id="create-team-modal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width:10%;">&times;</button>
+                    <h4 id="team_title" class="modal-title">Create a team</h4>
+                </div>
+                <div class="modal-body">
+                    <form action="../../team/create" method="post">
+                        {% csrf_token %}
+                        {{ team_form }}
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" id="btn_create_team_submit">Create a team</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="create-invite-modal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width:10%;">&times;</button>
+                    <h4 id="change_status_title" class="modal-title">Change Status</h4>
+                </div>
+                <div class="modal-body">
+                    <h3>My Teams</h3>
+                    <br>
+                    <div class="dropdown">
+                        <button id="btn_my_teams" class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">
+                            <span id="my_teams_title">My Teams</span>
+                            <span class="caret"></span>
+                        </button>
+                        <ul id="ul_my_teams" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                            {% for team in my_teams.all %}
+                                <li id="{{ team }}" ><a role="menuitem" tabindex="-1">{{ team }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <h3>User</h3>
+                    <br>
+                    <div class="dropdown">
+                        <button class="btn btn-default dropdown-toggle" type="button" id="btn_add_users" data-toggle="dropdown" aria-expanded="true">
+                            <span id="add_user_title">Users</span>
+                            <span class="caret"></span>
+                        </button>
+                        <ul id="ul_users" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                        </ul>
+                    </div>
+                    <br><br>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="btn_invite_submit">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="create-setting-modal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width:10%;">&times;</button>
+                    <h4 id="change_status_title" class="modal-title">Change Status</h4>
+                </div>
+                <div class="modal-body">
+                    <h3>Select Issue</h3>
+                    <br>
+                    <div class="dropdown">
+                        <button id="btn_select_issue" class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                            <span id="select_issue_title">Select Issue</span>
+                            <span class="caret"></span>
+                        </button>
+
+                        <ul id="ul_issues" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                            {% for issue in issues.all %}
+                                <li id="{{ issue.issue_name }}" class="{{ issue.issue_name }}"><a role="menuitem" tabindex="-1">{{ issue.issue_name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <br><br>
+                    <h3>Current Assignment</h3>
+                    <br>
+                    <div class="dropdown">
+                        <button id="btn_assignment" class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">
+                            <span id="assignment_title">Current Assignment</span>
+                            <span class="caret"></span>
+                        </button>
+                        <ul id="ul_assignment" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                            {% for user in user_list.all %}
+                                <li id="{{ user }}" ><a role="menuitem" tabindex="-1">{{ user }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <br><br>
+                    <h3>Current Status</h3>
+                    <br>
+                    <div class="dropdown">
+                        <button class="btn btn-default dropdown-toggle" type="button" id="btn_status" data-toggle="dropdown" aria-expanded="true">
+                            <span id="status_title">Status</span>
+                            <span class="caret"></span>
+                        </button>
+                        <ul id="ul_status" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                            <li id="0"><a role="menuitem" tabindex="-1">대기중</a></li>
+                            <li id="1"><a role="menuitem" tabindex="-1">수정중</a></li>
+                            <li id="2"><a role="menuitem" tabindex="-1">완료</a></li>
+                        </ul>
+                    </div>
+                    <br><br>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="btn_change_status_submit">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="create-issue-modal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width:10%;">&times;</button>
+                    <h4 id="issue_title" class="modal-title">Create A Issue</h4>
+                </div>
+                <div class="modal-body">
+                    <form action="../../issue/create" method="post">
+                        {% csrf_token %}
+                        {{ issue_form }}
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" id="btn_create_issue_submit">Create a issue</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="container">
+        {% block contents_container %}
+        {% endblock %}
+    </div>
+</div>
+
+<div id="dialog" title="My Information">
+    <ul>
+        <li><a id="btn_logout" href="/accounts/logout/">Logout</a></li>
+        <li><a id="btn_change_password" href="/accounts/change_password/">Change Password</a></li>
+    </ul>
+</div>
+
+<div id="team_select_dialog" title="Select Team">
+    <ul id="team_list">
+    </ul>
+</div>
+
+<script type="text/javascript">
+    $(function(){
+        {% for team in my_teams.all %}
+            add_team('{{ team }}');
+        {% endfor %}
+    });
+</script>
+
+{% endblock %}

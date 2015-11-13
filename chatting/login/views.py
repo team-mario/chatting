@@ -8,7 +8,7 @@ from django.views.decorators.csrf import csrf_protect
 
 
 def index(request):
-    return HttpResponseRedirect('/accounts/login/')
+    return render_to_response('common/index.html')
 
 
 def logout_page(request):
@@ -17,7 +17,7 @@ def logout_page(request):
 
 
 @csrf_protect
-def register_page(request):
+def registration(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
@@ -26,7 +26,7 @@ def register_page(request):
                 password=form.cleaned_data['password1'],
                 email=form.cleaned_data['email']
             )
-            return HttpResponseRedirect('/register/success/')
+            return HttpResponseRedirect('/')
     else:
         form = RegistrationForm()
 
@@ -35,6 +35,6 @@ def register_page(request):
     })
 
     return render_to_response(
-        'registration/register.html',
+        'registration/registration.html',
         variables,
     )
