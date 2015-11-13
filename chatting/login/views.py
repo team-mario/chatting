@@ -26,7 +26,7 @@ def registration(request):
                 password=form.cleaned_data['password1'],
                 email=form.cleaned_data['email']
             )
-            return HttpResponseRedirect('/accounts/registration/success/')
+            return HttpResponseRedirect('/')
     else:
         form = RegistrationForm()
 

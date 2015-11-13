@@ -20,7 +20,6 @@ urlpatterns = [
     url(r'^message/get$', 'message.views.get_message'),
     url(r'^accounts/logout/$', 'django.contrib.auth.views.logout',
         {'next_page': '/accounts/login/'}),
-    url(r'^accounts/registration/success/$', 'django.contrib.auth.views.login'),
     url(r'^accounts/registration/$', 'login.views.registration'),
     url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
     url(r'^accounts/change_password/$', 'django.contrib.auth.views.password_change',
