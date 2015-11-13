@@ -1,12 +1,28 @@
 {% extends "common/base.html" %}
 {% block custom_layout %}
-    <h1>Registration</h1>
-    <form method="post" action=".">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" id="btn_registration" value="Registration" />
-    </form>
-    {% if form.errors %}
-        <p>Invalid id or password</p>
-    {% endif %}
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'css/landing.css' %}">
+    <div id="landing" class="landing_register">
+        {% include "common/landing_header.html" %}
+        <div id="container">
+            <div class="container_registration clearfix">
+                <div class="area_form">
+                    <p class="title"><img src="{% static 'images/txt_signup.png' %}" width='110'  border="0" alt="sign up">
+                    <div class="form">
+                        <form method="post" action=".">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            {% if form.errors %}
+                                <p class="alert">Invalid id or password</p>
+                            {% endif %}
+                            <p class="submit"><input type="submit" id="btn_registration_submit" value="Registration" class="red" /></p>
+                        </form>
+                    </div>
+                </div>
+                <div class="area_image">
+                    <img src="{% static 'images/img_relation.png' %}" width="330"  border="0" alt="We connected">
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

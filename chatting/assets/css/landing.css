@@ -76,7 +76,7 @@ html, body{
 .landing_imgs .txt{
     padding-top:30px;
 }
-.login_container{
+.container_login{
     position:absolute;
     width:400px;
     top:40%;
@@ -86,33 +86,58 @@ html, body{
     background-color:rgba(255, 255, 255, 0.3);
     color:#fff;
 }
-.login_container h2{
+.container_registration{
+    position:absolute;
+    width:800px;
+    top:20%;
+    left:50%;
+    margin:-125px 0 0 -400px;
+}
+.container_registration .area_form{
+    float:left;
+    width:400px;
+}
+.container_registration .area_form .form{
+    margin-top:20px;
+    padding:20px;
+    background-color:rgba(255, 255, 255, 0.3);
+    color:#fff;
+}
+.container_registration .area_image{
+    float:right;
+    width:330px;
+    height:653px;
+}
+#landing #container h2{
     font-size:24px;
     font-weight:bold;
 }
-.login_container label{
+#landing #container label{
     margin:0;
     padding:13px 0 5px 0;
 }
-.login_container p{
+#landing #container p{
     padding:0;
     margin:0;
     font-size:14px;
     font-weight:bold;
 }
-.login_container p.alert{
+#landing #container p.alert{
     padding-top:10px;
     color:#ffff00;
 }
-.login_container input[type="submit"], .login_container input[type="button"]{
+#landing #container input[type="submit"],
+#landing #container input[type="button"]{
     width:100%;
     font-size:18px;
     font-weight:bold;
     text-align:center;
     padding:6px;
     border:0;
+    color:#fff;
 }
-.login_container input[type="text"], .login_container input[type="password"]{
+#landing #container input[type="text"],
+#landing #container input[type="password"]{
     width:100%;
     color:#666;
     background-color:rgba(255, 255, 255, 0.6);
@@ -121,8 +146,11 @@ html, body{
     font-size:16px;
     border:0;
 }
-.login_container p.submit{
-    padding-top:13px;
+#landing #container p.submit{
+    padding-top:20px;
+}
+.container_registration p.title{
+    padding:7px 0 0 0 !important;
 }
 .red{
     background-color:#c52f3f;
