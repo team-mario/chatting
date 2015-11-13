@@ -1,0 +1,27 @@
+*{
+    box-sizing: border-box;
+}
+html, body, h1, h2, h3, h4, ul, li {
+    padding : 0;
+    margin : 0;
+}
+body{
+    font-family:Helvetica, arial, sans-serif;
+}
+.clearfix:after{
+    clear: both;
+    content: '';
+    display: block;
+}
+.modal-header{
+    padding: .5rem 1rem;
+    background: #f2f2f5;
+    color: #555459;
+    font-weight: 900;
+    border-bottom: none;
+    border-top-right-radius: .25rem;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: .25rem;
+    background-clip: padding-box;
+}

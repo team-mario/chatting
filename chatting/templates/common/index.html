@@ -1,0 +1,41 @@
+{% extends "common/base.html" %}
+{% block custom_layout %}
+<style type="text/css">
+html, body{
+    width: 100%;
+    height: 100%;
+}
+.landing{
+    width: 100%;
+    height: 100%;
+    background-color: #d44956;
+}
+</style>
+{% load staticfiles %}
+<div class="landing">
+    <div id="header">
+        <div class="logo">
+            <img src="{% static 'images/logo_white.png' %}">
+        </div>
+        <div class="top_right_btns">
+
+        </div>
+    </div>
+    <div id="container">
+        <div class="welcome">
+
+        </div>
+        <div class="landing_imgs">
+
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function(){
+        {% for team in my_teams.all %}
+            add_team('{{ team }}');
+        {% endfor %}
+    });
+</script>
+
+{% endblock %}
