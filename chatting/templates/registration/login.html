@@ -8,10 +8,7 @@
         <input id="btn_login" type="submit" value="Login" />
     </form>
 
-    <form method="POST" action="/register/">
-        {% csrf_token %}
-        <input id="btn_registration" type="submit" value="Registration" />
-    </form>
+    <a href="/accounts/registration/" id="btn_registration">Registration</a>
 
     {% if form.errors %}
         <p id="login_error">Invalid id or password</p>
