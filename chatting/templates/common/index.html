@@ -1,50 +1,32 @@
 {% extends "common/base.html" %}
 {% block custom_layout %}
-{% load staticfiles %}
-<link rel="stylesheet" href="{% static 'css/landing.css' %}">
-<div id="landing">
-    <div id="header" class="clearfix">
-        <div class="logo">
-            <a href="/" id="logo"><img src="{% static 'images/logo_white.png' %}" border="0" alt="Cobweb logo"></a>
-        </div>
-        <div class="top_right_btns">
-            <ul>
-                <li><a href="/accounts/login/" id="btn_login"><img src="{% static 'images/btn_login_white.png' %}" border="0" alt="login"></a></li>
-                <li><a href="/accounts/registration/" id="btn_register"><img src="{% static 'images/btn_registration.png' %}" border="0" alt="registration"></a></li>
-            </ul>
-        </div>
-    </div>
-    <div id="container">
-        <div class="txt_welcome">
-            <img src="{% static 'images/txt_welcome.png' %}" border="0" alt="Welcome to Cobweb">
-        </div>
-        <div class="txt_todo">
-            <img src="{% static 'images/txt_todo.png' %}" border="0" alt="To do">
-        </div>
-        <div class="landing_imgs">
-            <ul>
-                <li>
-                    <p class="img"><img src="{% static 'images/img_computer.png' %}" border="0" alt="Idea"></p>
-                    <p class="txt"><img src="{% static 'images/txt_register.png' %}" border="0" alt="Idea"></p>
-                </li>
-                <li>
-                    <p class="img"><img src="{% static 'images/img_shop.png' %}" border="0" alt="Idea"></p>
-                    <p class="txt"><img src="{% static 'images/txt_find.png' %}" border="0" alt="Idea"></p>
-                </li>
-                <li>
-                    <p class="img"><img src="{% static 'images/img_idea.png' %}" border="0" alt="Idea"></p>
-                    <p class="txt"><img src="{% static 'images/txt_process.png' %}" border="0" alt="Idea"></p>
-                </li>
-            </ul>
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'css/landing.css' %}">
+    <div id="landing" class="landing_index">
+        {% include "common/landing_header.html" %}
+        <div id="container">
+            <div class="txt_welcome">
+                <img src="{% static 'images/txt_welcome.png' %}" border="0" alt="Welcome to Cobweb">
+            </div>
+            <div class="txt_todo">
+                <img src="{% static 'images/txt_todo.png' %}" border="0" alt="To do">
+            </div>
+            <div class="landing_imgs">
+                <ul>
+                    <li>
+                        <p class="img"><img src="{% static 'images/img_computer.png' %}" border="0" alt="Idea"></p>
+                        <p class="txt"><img src="{% static 'images/txt_register.png' %}" border="0" alt="Idea"></p>
+                    </li>
+                    <li>
+                        <p class="img"><img src="{% static 'images/img_shop.png' %}" border="0" alt="Idea"></p>
+                        <p class="txt"><img src="{% static 'images/txt_find.png' %}" border="0" alt="Idea"></p>
+                    </li>
+                    <li>
+                        <p class="img"><img src="{% static 'images/img_idea.png' %}" border="0" alt="Idea"></p>
+                        <p class="txt"><img src="{% static 'images/txt_process.png' %}" border="0" alt="Idea"></p>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
-</div>
-<script type="text/javascript">
-    $(function(){
-        {% for team in my_teams.all %}
-            add_team('{{ team }}');
-        {% endfor %}
-    });
-</script>
-
 {% endblock %}
