@@ -30,7 +30,7 @@ class FunctionalTest(StaticLiveServerTestCase):
         self.browser.find_element_by_id('btn_login').click()
         self.browser.find_element_by_id('id_username').send_keys('tester')
         self.browser.find_element_by_id('id_password').send_keys('test')
-        self.browser.find_element_by_id('btn_login').submit()
+        self.browser.find_element_by_id('btn_login_submit').submit()
 
     def timeout(self, time_to_sleep):
         time.sleep(time_to_sleep)

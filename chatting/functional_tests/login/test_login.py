@@ -8,7 +8,7 @@ class LoginTest(FunctionalTest):
         self.browser.find_element_by_id('id_email').send_keys('test@naver.com')
         self.browser.find_element_by_id('id_password1').send_keys('test')
         self.browser.find_element_by_id('id_password2').send_keys('test')
-        self.browser.find_element_by_id('btn_registration').submit()
+        self.browser.find_element_by_id('btn_registration_submit').submit()
 
     def login(self):
         self.browser.find_element_by_id('btn_login').click()
