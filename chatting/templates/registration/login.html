@@ -1,16 +1,25 @@
 {% extends "common/base.html" %}
 {% block custom_layout %}
-    <h2>Login</h2>
-    <form method="POST" action=".">
-        {% csrf_token %}
-        <p><label for="userID">ID</label> {{ form.username }}</p>
-        <p><label for="userPWD">Password</label> {{ form.password }}</p>
-        <input id="btn_login" type="submit" value="Login" />
-    </form>
-
-    <a href="/accounts/registration/" id="btn_registration">Registration</a>
-
-    {% if form.errors %}
-        <p id="login_error">Invalid id or password</p>
-    {% endif %}
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'css/landing.css' %}">
+    <div id="landing" class="landing_login">
+        {% include "common/landing_header.html" %}
+        <div id="container">
+            <div class="container_login">
+                <h2>Login</h2>
+                <form method="POST" action=".">
+                    {% csrf_token %}
+                    <p><label for="userID">Enter your email</label></p>
+                    <p>{{ form.username }}</p>
+                    <p><label for="userPWD">Enter your password</label></p>
+                    <p>{{ form.password }}</p>
+                    {% if form.errors %}
+                        <p id="login_error" class="alert">Invalid id or password</p>
+                    {% endif %}
+                    <p class="submit"><input id="btn_login_submit" type="submit" value="Login" class="red"/><p>
+                    <p class="submit"><input id="btn_login_facebook" type="button" value="Login with Facebook" class="blue"/><p>
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock %}

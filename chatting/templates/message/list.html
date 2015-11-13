@@ -1,5 +1,7 @@
 {% extends "common/layout.html" %}
 {% block contents_container %}
+{% load staticfiles %}
+<script src="{% static 'js/message.js' %}"></script>
 {% csrf_token %}
 <div id="messages_container">
     <div class="message_date">

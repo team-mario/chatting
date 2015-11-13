@@ -3,19 +3,18 @@ from functional_tests.base import FunctionalTest
 
 class LoginTest(FunctionalTest):
     def registration(self):
-        self.browser.find_element_by_id('btn_register').click()
         self.browser.find_element_by_id('btn_registration').click()
         self.browser.find_element_by_id('id_username').send_keys("new_user")
         self.browser.find_element_by_id('id_email').send_keys('test@naver.com')
         self.browser.find_element_by_id('id_password1').send_keys('test')
         self.browser.find_element_by_id('id_password2').send_keys('test')
-        self.browser.find_element_by_id('btn_registration').submit()
+        self.browser.find_element_by_id('btn_registration_submit').submit()
 
     def login(self):
         self.browser.find_element_by_id('btn_login').click()
         self.browser.find_element_by_id('id_username').send_keys('new_user')
         self.browser.find_element_by_id('id_password').send_keys('test')
-        self.browser.find_element_by_id('btn_login').submit()
+        self.browser.find_element_by_id('btn_login_submit').submit()
 
     def change_password(self):
         self.browser.find_element_by_id('btn_information').click()
@@ -40,7 +39,7 @@ class LoginTest(FunctionalTest):
         self.assertIn('/', logo.get_attribute('href'))
 
         btn_login = self.browser.find_element_by_id('btn_login')
-        btn_register = self.browser.find_element_by_id('btn_register')
+        btn_register = self.browser.find_element_by_id('btn_registration')
 
         self.assertIn('/accounts/login/', btn_login.get_attribute('href'))
         self.assertIn('/accounts/registration/', btn_register.get_attribute('href'))
