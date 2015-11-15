@@ -5,7 +5,6 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.models import User
 from team.forms import IssueForm, TeamForm, UploadFileForm, SearchForm, HashTagForm
 from team.models import Issue, Team, HashTag
-
 import json
 import datetime
 
@@ -195,6 +194,7 @@ def show_issues(request):
     complete = []
     fixing = []
     user_list = ''
+    my_teams = request.user.groups.all()
 
     try:
         team = Team.objects.filter(team_name=current_team)
@@ -224,7 +224,7 @@ def show_issues(request):
     context['search_form'] = search_form
     context['searched_list'] = searched_list
     context['user_list'] = user_list
-
+    context['my_teams'] = my_teams
     context['waiting'] = waiting
     context['fixing'] = fixing
     context['complete'] = complete
