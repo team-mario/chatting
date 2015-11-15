@@ -52,7 +52,6 @@ class HashTagTest(TestCase):
         hash_1.tag_name = tag_name
         hash_1.save()
 
-
         User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
         user = User.objects.get(username='john')
 
