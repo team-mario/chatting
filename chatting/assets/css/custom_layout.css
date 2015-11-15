@@ -5,7 +5,7 @@
     position:fixed;
     z-index:2;
     border-bottom:3px solid #f0bf2f;
-
+    background-color:#fff;
 }
 body.search {
     background: #eee;

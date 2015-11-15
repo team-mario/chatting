@@ -9,7 +9,7 @@
                 <h2>Login</h2>
                 <form method="POST" action=".">
                     {% csrf_token %}
-                    <p><label for="userID">Enter your email</label></p>
+                    <p><label for="userID">Enter your name</label></p>
                     <p>{{ form.username }}</p>
                     <p><label for="userPWD">Enter your password</label></p>
                     <p>{{ form.password }}</p>
