@@ -71,9 +71,14 @@ def add_hash_tag(request):
         issue_name = request.session.get('issue_name')
         issue = Issue.objects.get(issue_name=issue_name)
         tag_name = request.POST.get('tag_name')
-        created_hash_tag = HashTag(tag_name=tag_name)
-        created_hash_tag.save()
-        created_hash_tag.issues.add(issue)
+
+        hash_tag = HashTag.objects.filter(tag_name=tag_name)
+        if hash_tag.count() > 0:
+            hash_tag[0].issues.add(issue)
+        else:
+            created_hash_tag = HashTag(tag_name=tag_name)
+            created_hash_tag.save()
+            created_hash_tag.issues.add(issue)
 
         return redirect(reverse('issue_detail', kwargs={'issue_name': issue_name}))
 

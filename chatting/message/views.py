@@ -119,9 +119,13 @@ def create_message(request):
                 for content in content_list:
                     if content.find("#") != -1:
                         splited_content = content.split('#')
-                        created_hash_tag = HashTag(tag_name=splited_content[1])
-                        created_hash_tag.save()
-                        created_hash_tag.issues.add(issue[0])
+                        hash_tag = HashTag.objects.filter(tag_name=splited_content[1])
+                        if hash_tag.count() > 0:
+                            hash_tag[0].issues.add(issue[0])
+                        else:
+                            created_hash_tag = HashTag(tag_name=splited_content[1])
+                            created_hash_tag.save()
+                            created_hash_tag.issues.add(issue[0])
 
                 return HttpResponse("insert_success")
             return HttpResponse("not found issue or user")
