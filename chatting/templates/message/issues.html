@@ -1,9 +1,11 @@
 {% extends "common/layout.html" %}
+{% load staticfiles %}
+<link rel="stylesheet" href="{% static 'css/custom_layout.css' %}">
 {% block contents_container %}
     <div class="waiting">
         <div class="watting_title">대기중</div>
         <br><br><br>
-        <ul>
+        <ul id="issue_list">
             {% for issue in waiting %}
                 <li>
                     <div class="issue_name">Issue Name :</div>
