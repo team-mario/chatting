@@ -2,7 +2,8 @@ __author__ = 'judelee'
 from django.test import TestCase
 from team.models import Issue, Team, HashTag
 from django.contrib.auth.models import User
-from team.forms import TeamForm, IssueForm, HashTagForm
+from team.forms import TeamForm, HashTagForm
+from django.core.exceptions import ValidationError
 
 
 class IssueFormTest(TestCase):
@@ -21,13 +22,9 @@ class IssueFormTest(TestCase):
         user = User.objects.get(username='john')
         Issue.objects.create(user=user, issue_name='test', issue_content='test contents', team=team)
 
-        data = {
-            'issue_name': 'test',
-            'issue_content': 'test contents'
-        }
-        form = IssueForm(data)
-        self.assertTrue(form.is_bound)
-        self.assertFalse(form.is_valid())
+        same_issue = Issue(user=user, issue_name='test', issue_content='test contents', team=team)
+        with self.assertRaises(ValidationError):
+            same_issue.validate_unique()
 
 
 class TeamModelTest(TestCase):

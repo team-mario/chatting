@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 import os
 from django.conf import settings
 
+DUPLICATE_ISSUE_ERROR = "You've already got same issue name in your team"
+
 
 class Team(models.Model):
     team_name = models.CharField(max_length=30, unique=True)
@@ -11,9 +13,13 @@ class Team(models.Model):
 class Issue(models.Model):
     user = models.ForeignKey(User, default=None)
     team = models.ForeignKey(Team, default=None)
-    issue_name = models.CharField(max_length=30, unique=True)
+    issue_name = models.CharField(max_length=30)
     status = models.CharField(max_length=30)
     issue_content = models.CharField(max_length=255, default='')
+
+    class Meta:
+        ordering = ('id',)
+        unique_together = ('team', 'issue_name')
 
     def __str__(self):
         return self.issue_name
