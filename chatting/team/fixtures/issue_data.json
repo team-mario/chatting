@@ -28,5 +28,15 @@
         "team": 1,
         "issue_name": "design"
     }
+},
+  {
+    "pk": 4,
+    "model": "team.issue",
+    "fields": {
+        "issue_content": "test contents",
+        "user": 1,
+        "team": 2,
+        "issue_name": "login_error"
+    }
 }
 ]

@@ -72,7 +72,11 @@ def add_file(request):
 def add_hash_tag(request):
     if request.method == 'POST':
         issue_name = request.session.get('issue_name')
-        issue = Issue.objects.get(issue_name=issue_name)
+        if 'cur_team' in request.session:
+            cur_team = request.session['cur_team']
+            team = Team.objects.get(team_name=cur_team)
+
+        issue = Issue.objects.get(issue_name=issue_name, team=team)
         tag_name = request.POST.get('tag_name')
 
         hash_tag = HashTag.objects.filter(tag_name=tag_name)

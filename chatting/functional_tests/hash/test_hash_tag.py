@@ -54,7 +54,8 @@ class HashTagTest(FunctionalTest):
         message_input_box.send_keys(Keys.ENTER)
 
         import time
-        time.sleep(3)
+        time.sleep(2)
+
         messages_container = self.browser.find_element_by_id('messages_container')
         messages = messages_container.find_elements_by_class_name("message")
 
