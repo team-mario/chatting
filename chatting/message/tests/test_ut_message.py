@@ -10,7 +10,6 @@ from django.utils.importlib import import_module
 from team.models import Team
 import json
 
-
 #  Create your tests here.
 fixtures_data_count = 5
 
@@ -68,6 +67,11 @@ class MessageTest(TestCase):
         request.POST['issue_name'] = Issue.objects.first().issue_name
         request.POST['content'] = 'wow_wow'
 
+        engine = import_module(settings.SESSION_ENGINE)
+        session_key = None
+        request.session = engine.SessionStore(session_key)
+        request.session['cur_team'] = 'mario'
+
         create_message(request)
 
         self.assertEqual(Message.objects.count(), fixtures_data_count + 1)
@@ -85,12 +89,23 @@ class MessageTest(TestCase):
         request.user = user
         request.POST['issue_name'] = Issue.objects.first().issue_name
         request.POST['content'] = 'test contest'
+
+        engine = import_module(settings.SESSION_ENGINE)
+        session_key = None
+        request.session = engine.SessionStore(session_key)
+        request.session['cur_team'] = 'mario'
+
         create_message(request)
 
         request = HttpRequest()
         request.method = 'GET'
         request.GET['last_primary_key'] = last_primary_key
         request.GET['issue_name'] = Issue.objects.first().issue_name
+
+        engine = import_module(settings.SESSION_ENGINE)
+        session_key = None
+        request.session = engine.SessionStore(session_key)
+        request.session['cur_team'] = 'mario'
 
         response = get_message(request)
         messages = json.loads(response.content.decode())

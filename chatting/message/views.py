@@ -53,7 +53,7 @@ def get_messages(request, issue_name=None):
     context['my_teams'] = my_teams
 
     if issue_name is not None:
-        issue = get_object_or_404(Issue, issue_name=issue_name, team=team)
+        issue = get_object_or_404(Issue, team=team, issue_name=issue_name)
     else:
         return render(
             request,
@@ -105,8 +105,11 @@ def get_messages(request, issue_name=None):
 def create_message(request):
     if request.method == 'POST':
         issue_name = request.POST.get('issue_name', None)
+        if 'cur_team' in request.session:
+            cur_team = request.session['cur_team']
+            team = Team.objects.get(team_name=cur_team)
         if issue_name is not None:
-            issue = Issue.objects.filter(issue_name=issue_name)
+            issue = Issue.objects.filter(issue_name=issue_name, team=team)
             if issue is not None and request.user is not None:
                 Message.objects.create(
                     user=request.user,
@@ -141,7 +144,11 @@ def get_message(request):
         if last_primary_key is not None and issue_name is not None:
             messages = []
             last_key = int(last_primary_key)
-            issue = Issue.objects.filter(issue_name=issue_name)
+            if 'cur_team' in request.session:
+                cur_team = request.session['cur_team']
+
+            team = Team.objects.get(team_name=cur_team)
+            issue = Issue.objects.filter(issue_name=issue_name, team=team)
             if issue is not None:
                 for data in Message.objects.filter(issue=issue, id__gt=last_key).order_by('id'):
                     dic = {}
