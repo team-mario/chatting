@@ -60,7 +60,7 @@ $(function(){
                 xhr.setRequestHeader("X-CSRFToken", csrftoken);
             },
             success: function(response) {
-                alert('success');
+                location.reload();
             },
             failure: function(response) {
                 alert('sorry, insert error. please try again');

@@ -314,3 +314,6 @@ body.search {
 .issue_list_title{
     color: #f0bf2f;
 }
+#issue_list, #search_view{
+    list-style: none;
+}
