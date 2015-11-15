@@ -1,20 +1,19 @@
 {% extends "common/base.html" %}
+{% load staticfiles %}
 {% block custom_layout %}
 <div id="wrap" class="clearfix">
     <div id="header" class="clearfix">
         <div class="logo">
-            <h1>TeamMario</h1>
+            <img src="{% static 'images/logo_orange.png' %}">
         </div>
         <div class="search">
             <form action="/team/search" method="post">
                 {% csrf_token %}
-                {{ search_form }}
-                <span class="clearfix"><button type="submit" value="Search" id="btn_search">Search</button></span>
+                <div class="search_form"><p>{{ search_form }}</p></div>
+                <div class="search_submit"><p class="submit"><input id="btn_search" type="submit" value="Search"/><p></div>
             </form>
         </div>
-        <div class="my_information">
-            <span class="clearfix"><input type="button" id="btn_information" value="my_information"></span>
-        </div>
+        <div id="btn_information"></div>
     </div>
     <div id="nav">
         <div class='btns'>
@@ -78,6 +77,7 @@
                             {% endfor %}
                         </ul>
                     </div>
+                    <br><br>
                     <h3>User</h3>
                     <br>
                     <div class="dropdown">
