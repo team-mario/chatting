@@ -2,15 +2,20 @@
     width:100%;
     height:80px;
     min-width:800px;
-    background-color:#f0f0f0;
     position:fixed;
     z-index:2;
+    border-bottom:3px solid #f0bf2f;
+
+}
+body.search {
+    background: #eee;
 }
 #wrap #header .logo{
     float:left;
     width:250px;
     height:80px;
-    background-color:#664963;
+    margin-left: 20px;
+    margin-top: 13px;
 }
 #wrap #header .logo h1{
     color:#fff;
@@ -18,30 +23,40 @@
     text-align:center;
     margin-top:20px;
 }
-#wrap #header .search{
+#wrap #header .search form{
+    background-color:#fff;
+}
+#wrap #header .search_form{
     float:left;
-    margin:22px 0 0 30px;
+    width:168px;
+    height:32px;
+    border:3px solid #f0bf2f;
+    margin-top:20px;
+    margin-left:60px;
+    background-color:#fff;
+    color: #f0bf2f;
 }
-#wrap #header .search span{
+#wrap #header .search_submit{
     float:left;
-}
-#wrap #header .search input[type="text"]{
-    width:200px;
-    height:28px;
-    border:1px solid #AAA;
-    font-size:14px;
-    margin:0;
-    padding:0 10px;
-}
-#wrap #header .search input[type="button"]{
     width:80px;
-    height:30px;
-    border:0px;
-    background-color:#AAA;
-    margin:0;
-    padding:0;
-    font-size:14px;
-    color:#FFF;
+    height:32px;
+    margin-top:20px;
+    margin-left:-5px;
+    background-color:#fff;
+}
+#wrap #header .search input[type="submit"]{
+    height:32px;
+    border:3px solid #f0bf2f;
+    color: #f0bf2f;
+    background-color:#fff;
+}
+#btn_information{
+    margin-top: 23px;
+    float:right;
+    width: 200px;
+    height: 30px;
+    background-repeat: no-repeat;
+    background-image: url(../images/my_information.png);
 }
 #wrap #header .my_information{
     float:right;
@@ -53,10 +68,16 @@
     width:250px;
     height:100%;
     margin-top:80px;
-    background-color:#443242;
+
+}
+#wrap #nav .btns, .sorted_issues{
+    background-color:#323334;
+    border-right:3px solid #f0bf2f;
 }
 #wrap #nav .sorted_issues{
     padding:30px 0 0 20px;
+    width:250px;
+    height:100%;
 }
 #wrap #nav h2{
     font-size:18px;
@@ -78,9 +99,19 @@
 #wrap #container{
     position:relative;
     margin-left:250px;
-    padding:90px 10px 10px 10px;
+    padding:60px 10px 10px 10px;
+}
+#default_view{
+    margin-top: 40px;
+    margin-left: 60px;
+}
+#search_area{
+    margin-top: 40px;
+    margin-left: 60px;
 }
 #messages_container{
+    margin-top:40px;
+    margin-left: 30px;
     margin-bottom:80px;
 }
 #messages_container .message{
@@ -153,6 +184,49 @@
     border-radius:0 6px 6px 0;
     border-left:0;
 }
+.watting_title{
+    color: #f0bf2f;
+    float: left;
+    margin-top: 20px;
+    padding-left: 100px;
+}
+.fixing_title{
+    color: #f0bf2f;
+    float: left;
+    margin-top: 20px;
+    padding-left: 120px;
+}
+.complete_title{
+    color: #f0bf2f;
+    float: left;
+    margin-top: 20px;
+    padding-left: 130px;
+}
+.waiting{
+    border-right:3px solid #f0bf2f;
+    text-align: center;
+    margin-top: 19px;
+    margin-left: 28px;
+    width: 30%;
+    height: 600px;
+    float: left;
+}
+.fixing{
+    border-right:3px solid #f0bf2f;
+    margin-top: 19px;
+    text-align: center;
+    margin-left: 28px;
+    width: 32%;
+    height: 600px;
+    float: left;
+}
+.complete{
+    margin-top: 19px;
+    text-align: center;
+    margin-left: 20px;
+    width: 30%;
+    float: left;
+}
 #wrap #nav .post_issue input[type="button"], input[type="submit"], button{
     width:100%;
 }
@@ -186,4 +260,57 @@
 .popup_menu a:hover{
     background-color:#664963;
     color:#fff;
+}
+
+.search .form-row #id_content {
+    clear: both;
+    padding: 6px;
+    width: 100%;
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+}
+
+.search span.help {
+    font-size: 10px;
+    display: block;
+}
+
+.search .submit-row {
+    clear: both;
+    padding: 1em 0 0 9.4em;
+}
+
+.search .password-reset-link {
+    text-align: center;
+}
+
+.left_issue_name{
+    float:left;
+    width: 400px;
+}
+.right_issue_content{
+    float:left;
+    width: 400px;
+}
+.issue_name{
+    float:left;
+    color: #f0bf2f;
+}
+.issue_value{
+    float:left;
+    margin-left: 10px;
+    color: #f0bf2f;
+}
+.issue_content{
+    float:left;
+    color: #f0bf2f;
+}
+.issue_content_value{
+    float:left;
+    margin-left: 10px;
+    color: #f0bf2f;
+}
+.issue_list_title{
+    color: #f0bf2f;
 }

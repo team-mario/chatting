@@ -5,7 +5,6 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.models import User
 from team.forms import IssueForm, TeamForm, UploadFileForm, SearchForm, HashTagForm
 from team.models import Issue, Team, HashTag
-
 import json
 import datetime
 

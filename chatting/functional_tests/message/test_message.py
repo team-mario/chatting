@@ -10,10 +10,6 @@ class NewVisitorTest(FunctionalTest):
         # check browser title
         self.assertIn('issue chat', self.browser.title)
 
-        # check h1 : team name
-        text_h1 = self.browser.find_element_by_tag_name('h1').text
-        self.assertEqual('TeamMario', text_h1)
-
         # check left navi structure : #nav > .sorted_issues > h2, ul > li
         nav = self.browser.find_element_by_id('nav')
         div = nav.find_element_by_class_name('sorted_issues')

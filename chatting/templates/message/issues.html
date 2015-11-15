@@ -1,25 +1,40 @@
 {% extends "common/layout.html" %}
 {% block contents_container %}
-    <div>
-        <div>대기중</div>
+    <div class="waiting">
+        <div class="watting_title">대기중</div>
+        <br><br><br>
         <ul>
             {% for issue in waiting %}
-                <li><a href="{% url 'issue_detail' issue.issue_name %}" id="0{{ issue.issue_name }}">{{ issue.issue_name }}</a></li>
-            {% endfor %}
-        </ul>
-
-        <div>수정중</div>
-        <ul id="issue_list">
-            {% for issue in fixing %}
-                <li><a href="{% url 'issue_detail' issue.issue_name %}" id="1{{ issue.issue_name }}">{{ issue.issue_name }}</a></li>
-            {% endfor %}
-        </ul>
-
-        <div>완료</div>
-        <ul id="issue_list">
-            {% for issue in complete %}
-                <li><a href="{% url 'issue_detail' issue.issue_name %}" id="2{{ issue.issue_name }}">{{ issue.issue_name }}</a></li>
+                <li>
+                    <div class="issue_name">Issue Name :</div>
+                    <a href="{% url 'issue_detail' issue.issue_name %}" id="0{{ issue.issue_name }}">{{ issue.issue_name }}</a>
+                </li>
             {% endfor %}
         </ul>
     </div>
+    <div class="fixing">
+        <div class="fixing_title">수정중</div>
+        <br><br><br>
+        <ul id="issue_list">
+            {% for issue in fixing %}
+                <li>
+                    <div class="issue_name">Issue Name :</div>
+                    <a href="{% url 'issue_detail' issue.issue_name %}" id="1{{ issue.issue_name }}">{{ issue.issue_name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="complete">
+        <div class="complete_title">완료</div>
+        <br><br><br>
+        <ul id="issue_list">
+            {% for issue in complete %}
+                <li>
+                    <div class="issue_name">Issue Name :</div>
+                    <a href="{% url 'issue_detail' issue.issue_name %}" id="2{{ issue.issue_name }}">{{ issue.issue_name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
 {% endblock %}

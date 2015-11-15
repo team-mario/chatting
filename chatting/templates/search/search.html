@@ -1,10 +1,23 @@
 {% extends "common/layout.html" %}
-
+{% load staticfiles %}
+<link rel="stylesheet" href="{% static 'css/custom_layout.css' %}">
 {% block contents_container %}
-    <div id="test">
+    <div id="search_area">
         <ul id="search_view">
             {% for issue in searched_list %}
-                <li><a href="{% url 'issue_detail' issue.issue_name %}" id="{{ issue.issue_name }}">{{ issue.issue_name }}</a></li>
+                <li>
+                    <div class="left_issue_name">
+                        <div class="issue_name">Issue Name :
+                        </div>
+                        <div class="issue_value">
+                            <a href="{% url 'issue_detail' issue.issue_name %}" id="{{ issue.issue_name }}">{{ issue.issue_name }}</a>
+                        </div>
+                    </div>
+                    <div class="right_issue_content">
+                        <div class="issue_content">Issue Content :</div>
+                        <div class="issue_content_value">{{ issue.issue_content }}</div>
+                    </div>
+                </li>
             {% endfor %}
         </ul>
     </div>

@@ -1,0 +1,62 @@
+/* LOGIN FORM */
+
+.search #container {
+    background: white;
+    border: 1px solid #ccc;
+    width: 28em;
+    min-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 100px;
+}
+#wrap #header .search{
+    width: 400px;
+    height: 400px;
+    background-repeat: no-repeat;
+    background-image: url(../img/search_btn.png);
+}
+
+.blue{
+    background-color:#31438b;
+}
+
+.search #content-main {
+    width: 100%;
+}
+
+.search form {
+    margin-top: 1em;
+}
+
+.search .form-row {
+    padding: 4px 0;
+    float: left;
+    width: 100%;
+}
+
+/*.search .form-row label {*/
+    /*padding-right: 0.5em;*/
+    /*line-height: 2em;*/
+    /*font-size: 1em;*/
+    /*clear: both;*/
+    /*color: #333;*/
+/*}*/
+
+.search .form-row #id_username{
+    clear: both;
+    padding: 6px;
+    width: 100%;
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+}
+
+.search span.help {
+    font-size: 10px;
+    display: block;
+}
+
+.search .submit-row {
+    clear: both;
+    padding: 1em 0 0 9.4em;
+}
