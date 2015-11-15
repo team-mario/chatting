@@ -11,7 +11,7 @@ class Team(models.Model):
 class Issue(models.Model):
     user = models.ForeignKey(User, default=None)
     team = models.ForeignKey(Team, default=None)
-    issue_name = models.CharField(max_length=30)
+    issue_name = models.CharField(max_length=30, unique=True)
     status = models.CharField(max_length=30)
     issue_content = models.CharField(max_length=255, default='')
 
@@ -21,7 +21,7 @@ class Issue(models.Model):
 
 class HashTag(models.Model):
     issues = models.ManyToManyField(Issue)
-    tag_name = models.CharField(max_length=20)
+    tag_name = models.CharField(max_length=20, unique=True)
 
     def __str__(self):
         return self.tag_name

@@ -44,3 +44,39 @@ class HashTagTest(TestCase):
             list(hash_3.issues.all()),
             [issue_3]
         )
+
+    def test_hash_tags_can_saved_into_multiple_channels_with_same_name(self):
+        # Many to many relationships.
+        tag_name = 'soma'
+        hash_1 = HashTag()
+        hash_1.tag_name = tag_name
+        hash_1.save()
+
+
+        User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
+        user = User.objects.get(username='john')
+
+        team = Team.objects.create(team_name='test')
+        issue_1 = Issue.objects.create(user=user, issue_name='issue_1', team=team)
+        issue_2 = Issue.objects.create(user=user, issue_name='issue_2', team=team)
+
+        hash_1.issues.add(issue_1)
+
+        self.assertEqual(
+            list(hash_1.issues.all()),
+            [issue_1]
+        )
+
+        same_hash_tag = HashTag.objects.filter(tag_name=tag_name)
+        same_hash_tag[0].issues.add(issue_2)
+        self.assertEqual(hash_1, same_hash_tag[0])
+
+        self.assertEqual(
+            list(same_hash_tag[0].issues.all()),
+            [issue_1, issue_2]
+        )
+
+        self.assertEqual(
+            list(hash_1.issues.all()),
+            [issue_1, issue_2]
+        )
