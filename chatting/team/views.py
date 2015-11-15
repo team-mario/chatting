@@ -25,7 +25,10 @@ def create_issue(request):
         issue = Issue(issue_name=issue_name, issue_content=issue_content, team=team, status="대기중")
         user = User.objects.get(username=user_name)
         issue.user = user
-        issue.save()
+        try:
+            issue.save()
+        except:
+            HttpResponseRedirect('/issue/')
 
     return HttpResponseRedirect('/issue/')
 

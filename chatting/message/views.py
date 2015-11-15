@@ -53,7 +53,7 @@ def get_messages(request, issue_name=None):
     context['my_teams'] = my_teams
 
     if issue_name is not None:
-        issue = get_object_or_404(Issue, issue_name=issue_name)
+        issue = get_object_or_404(Issue, issue_name=issue_name, team=team)
     else:
         return render(
             request,
