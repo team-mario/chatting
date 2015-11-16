@@ -2,6 +2,8 @@ from functional_tests.base import FunctionalTest
 
 
 class IssueTest(FunctionalTest):
+    fixtures = ['users.json', 'message_data.json', 'team_list.json', 'issue_data.json']
+
     def create_issue(self, issue_name):
         self.wait_for_element_with_id('btn_create_issue')
 
@@ -23,14 +25,16 @@ class IssueTest(FunctionalTest):
 
     def test_can_move_to_own_issue_in_list(self):
         self.base_login()
+        self.create_team()
+        self.add_issue()
 
         sorted_issue_list = self.browser.find_element_by_class_name('sorted_issues')
         ul_list = sorted_issue_list.find_element_by_tag_name('ul')
-        issue_1 = ul_list.find_element_by_id('login_error')
+        issue_1 = ul_list.find_element_by_id('Test')
 
         issue_1.click()
 
-        url_regex_str = '/issue/login_error'
+        url_regex_str = '/issue/Test'
         self.assertRegex(self.browser.current_url, url_regex_str)
         self.timeout(3)
 
