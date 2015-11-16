@@ -5,7 +5,7 @@
     position:fixed;
     z-index:2;
     border-bottom:3px solid #f0bf2f;
-
+    background-color:#fff;
 }
 body.search {
     background: #eee;
@@ -316,4 +316,9 @@ body.search {
 }
 #issue_list, #search_view{
     list-style: none;
+}
+
+.file_upload_image{
+    width:15%;
+    height:15%;
 }

@@ -1,1 +1,52 @@
-[{"model": "message.message", "fields": {"issue": 1, "content": "1-1", "user":1, "create_datetime": "2015-11-02T19:15:20.440"}, "pk": 1}, {"model": "message.message", "fields": {"issue": 1, "content": "1-2", "user": 1, "create_datetime": "2015-11-02T19:15:24.526"}, "pk": 2}, {"model": "message.message", "fields": {"issue": 1, "content": "1-3", "user": 1, "create_datetime": "2015-11-02T19:15:26.790"}, "pk": 3}, {"model": "message.message", "fields": {"issue": 2, "content": "2-1", "user": 1, "create_datetime": "2015-11-02T19:15:31.053"}, "pk": 4}, {"model": "message.message", "fields": {"issue": 2, "content": "2-2", "user": 1, "create_datetime": "2015-11-02T19:15:32.876"}, "pk": 5}]
+[
+	{
+		"model": "message.message",
+		"fields": {
+			"issue": 1,
+			"content": "1-1",
+			"user": 1,
+			"create_datetime": "2015-11-02T19:15:20.440"
+		},
+		"pk": 1
+	},
+	{
+		"model": "message.message",
+		"fields": {
+			"issue": 1,
+			"content": "1-2 #Hash_1",
+			"user": 1,
+			"create_datetime": "2015-11-02T19:15:24.526"
+		},
+		"pk": 2
+	},
+	{
+		"model": "message.message",
+		"fields": {
+			"issue": 1,
+			"content": "1-3",
+			"user": 1,
+			"create_datetime": "2015-11-02T19:15:26.790"
+		},
+		"pk": 3
+	},
+	{
+		"model": "message.message",
+		"fields": {
+			"issue": 2,
+			"content": "2-1 #Hash_1",
+			"user": 1,
+			"create_datetime": "2015-11-02T19:15:31.053"
+		},
+		"pk": 4
+	},
+	{
+		"model": "message.message",
+		"fields": {
+			"issue": 2,
+			"content": "2-2",
+			"user": 1,
+			"create_datetime": "2015-11-02T19:15:32.876"
+		},
+		"pk": 5
+	}
+]
