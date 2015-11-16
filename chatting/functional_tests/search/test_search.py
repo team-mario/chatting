@@ -56,8 +56,6 @@ class SearchTest(FunctionalTest):
         url_regex_str = '/issue/.+'
         self.assertRegex(self.browser.current_url, url_regex_str)
 
-        self.timeout(10)
-
     def test_hash_tags_search(self):
         self.base_login()
         self.browser.find_element_by_id('id_content').send_keys('#Hash_1')
