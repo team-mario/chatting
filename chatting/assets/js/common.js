@@ -12,6 +12,13 @@ $(function () {
             }
         }
     });
+    $(".btns").on("click", function(){
+        change_menu_state();
+    });
+    $("#menu_items > li > a").on("click", function(){
+        is_menu_open = true;
+        change_menu_state();
+    });
 
     //simple click events
     $("#btn_information").on("click",function(){
@@ -42,3 +49,13 @@ $(function () {
         $('#HashTagAddModal').modal('toggle');
     });
 });
+
+var is_menu_open = false;
+function change_menu_state(){
+    if(is_menu_open){
+        $("#menu").css("display", "none");
+    }else{
+        $("#menu").css("display", "block");
+    }
+    is_menu_open = !is_menu_open;
+}

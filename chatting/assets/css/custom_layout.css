@@ -68,32 +68,49 @@ body.search {
     width:250px;
     height:100%;
     margin-top:80px;
-
-}
-#wrap #nav .btns, .sorted_issues{
     background-color:#323334;
     border-right:3px solid #f0bf2f;
 }
+#wrap #nav .btns{
+    cursor:pointer;
+    padding:10px;
+    border-bottom:2px solid #aaa;
+}
+#wrap #nav .btns:hover{
+    background-color:#222222;
+}
+#wrap #nav .btns .team_name{
+    font-size:22px;
+    color:#fff;
+    font-weight:bold;
+    text-align:center;
+}
+#wrap #nav .btns .user_name{
+    font-size:18px;
+    text-align:center;
+    color:#aaa;
+    font-weight:bold;
+}
 #wrap #nav .sorted_issues{
-    padding:30px 0 0 20px;
+    padding:20px 0 0 20px;
     width:250px;
     height:100%;
 }
 #wrap #nav h2{
     font-size:18px;
-    color:#bfb4be;
+    color:#efbe2f;
+    font-weight:bold;
 }
 #wrap #nav ul{
-    list-style:none;
     margin-top:10px;
 }
 #wrap #nav ul li{
-    margin-left:10px;
+    margin-left:20px;
     padding:3px 0;
-    color:#ab9ba9;
+    color:#efbe2f;
 }
 #wrap #nav ul li a:link, #wrap #nav ul li a:hover, #wrap #nav ul li a:visited{
-    color:#ab9ba9;
+    color:#efbe2f;
     text-decoration:underline;
 }
 #wrap #container{
@@ -329,3 +346,24 @@ body.search {
     width:15%;
     height:15%;
 }
+.menu{position:fixed;display:none;z-index:999;vertical-align:top;overflow:hidden;min-width:220px;max-width:20pc;font-family:Slack-Lato,appleLogo,sans-serif;color:#2c2d30;background:#fff;box-shadow:0 5px 10px rgba(0,0,0,.12);border-radius:6px;border:1px solid rgba(0,0,0,.15)}
+.menu ul{list-style-type:none;margin:.75rem 0;padding:0}
+.menu ul li{font-size:15px;line-height:25px;background:0 0;margin:0 .75rem;padding:0;overflow:hidden}
+.menu ul li.divider{border-bottom:1px solid rgba(0,0,0,.15);margin:.75rem 0}
+.menu ul li.divider:last-child{display:none}
+.menu ul li i{margin-right:.5rem;color:#babbbf;float:left}
+.menu ul li i:before{font-size:17px}
+.menu ul li:not(.dm_list_item) .member_image{margin-right:.5rem;vertical-align:top;margin-left:-11px;width:22px;height:22px;margin-top:1px}
+.menu ul li a{display:block;background:#fff;color:#2c2d30;text-decoration:none;padding:0 1rem 0 .75rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;outline:0;border-radius:.25rem}
+.menu ul li a.delete_link{color:#870000}
+.menu ul li.danger a{color:#eb4d5c}
+.menu ul li.disabled a{color:#babbbf;cursor:default}
+.menu ul li.highlighted a,.menu:not(.keyboard_active) ul li:hover a{background:#3aa3e3;color:#fff;text-decoration:none;overflow:hidden;text-shadow:0 1px 0 rgba(0,0,0,.1)}
+.menu ul li.highlighted a .prefix,.menu ul li.highlighted a i,.menu ul li.highlighted a.delete_link,.menu:not(.keyboard_active) ul li:hover a .prefix,.menu:not(.keyboard_active) ul li:hover a i,.menu:not(.keyboard_active) ul li:hover a.delete_link{color:#fff}
+.menu ul li.highlighted.danger a,.menu:not(.keyboard_active) ul li.danger:hover a{background:#eb4d5c}
+.menu .section_header{cursor:default;margin:.625rem .75rem;position:relative}
+.menu .section_header .header_label{background-color:#fff;color:#9e9ea6;padding-right:.8rem}
+.menu .section_header>.header_label{position:relative}
+.menu .section_header>div.header_label_container{color:#9e9ea6;padding-right:.375rem;position:relative}
+.menu .section_header hr{position:absolute;left:1rem;right:0;margin-top:.6rem;margin-bottom:0}
+

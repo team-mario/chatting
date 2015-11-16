@@ -7,6 +7,7 @@ class IssueTest(FunctionalTest):
     def create_issue(self, issue_name):
         self.wait_for_element_with_id('btn_create_issue')
 
+        self.browser.find_element_by_id('btn_open_menu').click()
         self.browser.find_element_by_id('btn_create_issue').click()
         self.timeout(1)
 
@@ -39,6 +40,7 @@ class IssueTest(FunctionalTest):
         self.timeout(3)
 
     def create_team(self):
+        self.browser.find_element_by_id('btn_open_menu').click()
         self.browser.find_element_by_id('btn_create_team').click()
         self.browser.find_element_by_id('id_team_name').send_keys('TestTeam')
         self.browser.find_element_by_id('btn_create_team_submit').click()
@@ -50,6 +52,7 @@ class IssueTest(FunctionalTest):
         self.create_team()
         self.create_issue("Test-Issue-01")
 
+        self.browser.find_element_by_id('btn_open_menu').click()
         self.browser.find_element_by_id('btn_setting').click()
         self.browser.find_element_by_id('btn_select_issue').click()
         self.timeout(1)
@@ -69,6 +72,7 @@ class IssueTest(FunctionalTest):
         self.create_team()
         self.create_issue("Test-Issue-01")
 
+        self.browser.find_element_by_id('btn_open_menu').click()
         self.browser.find_element_by_id('btn_issues').click()
         issue = self.browser.find_element_by_id('0Test-Issue-01')
         self.assertIn('Test-Issue-01', issue.text)
