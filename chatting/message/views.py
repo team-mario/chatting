@@ -42,6 +42,9 @@ def get_messages(request, issue_name=None):
     user_list = User.objects.filter(groups__name=cur_team)
     my_teams = request.user.groups.all()
 
+    if cur_team == default:
+        issues = None
+
     context = {}
     context['issue_form'] = issue_form
     context['issues'] = issues
@@ -225,6 +228,9 @@ def show_issues(request):
                 searched_list.append(issue)
     except:
         Team.objects.create(team_name=default)
+
+    if current_team == default:
+        issues = None
 
     context = {}
     context['issue_form'] = issue_form

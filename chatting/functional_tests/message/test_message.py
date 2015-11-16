@@ -34,6 +34,9 @@ class NewVisitorTest(FunctionalTest):
         self.base_login()
         self.check_basic_layout()
 
+        self.create_team()
+        self.add_issue()
+
         # find element by id 'first_issue' issue
         div = self.browser.find_element_by_class_name('sorted_issues')
         issues = div.find_elements_by_tag_name('a')

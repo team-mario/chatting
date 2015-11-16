@@ -7,6 +7,9 @@ class HashTagTest(FunctionalTest):
     def test_can_save_hash_tag_in_message(self):
         self.base_login()
 
+        self.create_team()
+        self.add_issue()
+
         div = self.browser.find_element_by_class_name('sorted_issues')
         issue_channels = div.find_elements_by_tag_name('a')
         issue_1 = issue_channels[0]
@@ -37,6 +40,9 @@ class HashTagTest(FunctionalTest):
 
     def test_can_save_hash_tag_as_message_input(self):
         self.base_login()
+
+        self.create_team()
+        self.add_issue()
 
         div = self.browser.find_element_by_class_name('sorted_issues')
         issue_channels = div.find_elements_by_tag_name('a')
