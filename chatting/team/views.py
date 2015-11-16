@@ -51,7 +51,10 @@ def add_file(request):
         user = request.user
         issue_name = request.session.get('issue_name')
         file_name = request.POST.get('file_name')
-        issue = Issue.objects.get(issue_name=issue_name)
+        if 'cur_team' in request.session:
+            cur_team = request.session['cur_team']
+            team = Team.objects.get(team_name=cur_team)
+        issue = Issue.objects.get(issue_name=issue_name, team=team)
         created_file = AttachedFile(file_name=file_name, file=request.FILES['file'], user=user, issue=issue)
         created_file.save()
 
