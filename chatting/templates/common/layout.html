@@ -17,6 +17,8 @@
     </div>
     <div id="nav">
         <div class='btns'>
+            <span class="team_name">{{ cur_team }}Team-mario</span>
+            <span class="user_name">{{ user_name }}Park</span>
             <button type="button" id="btn_create_team" class="btn btn-lg btn-primary">Create Team</button>
             <button type="button" id="btn_create_issue" class="btn btn-lg btn-primary">Add Issue</button>
             <button type="button" id="btn_select_team" class="btn btn-lg btn-primary">Select Team</button>
@@ -30,7 +32,7 @@
             {% endblock %}
         </div>
         <div class='sorted_issues'>
-            <h2>Favourite Issues</h2>
+            <h2>Issues</h2>
             <ul>
                 {% for issue in issues.all %}
                     <li><a href="{% url 'issue_detail' issue.issue_name %}" id="{{ issue.issue_name }}">{{ issue.issue_name }}</a></li>
