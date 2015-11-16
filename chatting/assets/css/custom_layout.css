@@ -106,8 +106,7 @@ body.search {
     margin-left: 60px;
 }
 #search_area{
-    margin-top: 40px;
-    margin-left: 60px;
+    margin-left: 90px;
 }
 #messages_container{
     margin-top:40px;
@@ -293,6 +292,11 @@ body.search {
     float:left;
     width: 400px;
 }
+.issue_user{
+    clear: left;
+    float:left;
+    color: #f0bf2f;
+}
 .issue_name{
     float:left;
     color: #f0bf2f;
@@ -313,6 +317,9 @@ body.search {
 }
 .issue_list_title{
     color: #f0bf2f;
+}
+#issue_list{
+    margin-top:-30px;
 }
 #issue_list, #search_view{
     list-style: none;
