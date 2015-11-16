@@ -4,7 +4,7 @@
 <div id="wrap" class="clearfix">
     <div id="header" class="clearfix">
         <div class="logo">
-            <img src="{% static 'images/logo_orange.png' %}">
+            <a href="/" border="0"><img src="{% static 'images/logo_orange.png' %}"></a>
         </div>
         <div class="search">
             <form action="/team/search" method="post">
@@ -15,22 +15,35 @@
         </div>
         <div id="btn_information"></div>
     </div>
+    <div id="menu" class="menu team_menu" style="top: 120px; left: 180px">
+        <div>
+            <div class="monkey_scroller" style="max-height: 679px;">
+                <ul id="menu_items" role="menu" no-bootstrap="1">
+                    <div class="section_header"><hr><span class="header_label"> You</span></div>
+                    <li><a href="/accounts/logout/">Logout</a></li>
+                    <li><a href="/accounts/change_password/">Change Password</a></li>
+                    <div class="section_header"><hr><div class="header_label_container"><span class="header_label"> Team</span></div></div>
+                    <li><a href="#" id="btn_create_team" onclick="return false">Create Team</a></li>
+                    <li><a href="#" id="btn_select_team" onclick="return false">Select Team</a></li>
+                    <div class="section_header"><hr><div class="header_label_container"><span class="header_label"> Issue</span></div></div>
+                    <li><a href="/issue/list" id="btn_issues">All Issues</a></li>
+                    <li><a href="#" id="btn_create_issue" onclick="return false">Add Issue</a></li>
+                    <li><a href="#" id="btn_setting" onclick="return false">Update Issue</a></li>
+                    <div class="section_header"><hr><div class="header_label_container"><span class="header_label"> Invite</span></div></div>
+                    <li><a href="#" id="btn_invite" onclick="return false">Invite User</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
     <div id="nav">
-        <div class='btns'>
-            <button type="button" id="btn_create_team" class="btn btn-lg btn-primary">Create Team</button>
-            <button type="button" id="btn_create_issue" class="btn btn-lg btn-primary">Add Issue</button>
-            <button type="button" id="btn_select_team" class="btn btn-lg btn-primary">Select Team</button>
-            <form action="/issue/list" method="post">
-                {% csrf_token %}
-                <button class="btn btn-lg btn-primary" type="submit" value="Issues" id="btn_issues">Issues</button>
-            </form>
-            <button type="button" id="btn_setting" class="btn btn-lg btn-primary">Setting</button>
-            <button type="button" id="btn_invite" class="btn btn-lg btn-primary">Invite</button>
+        <div class='btns' id="btn_open_menu">
+            <div class="team_name">{{ cur_team }}Team-mario</div>
+            <div class="user_name">{{ user_name }}Park</div>
             {% block post_issue_block %}
             {% endblock %}
         </div>
         <div class='sorted_issues'>
-            <h2>Favourite Issues</h2>
+            <h2>Issues</h2>
             <ul>
                 {% for issue in issues.all %}
                     <li><a href="{% url 'issue_detail' issue.issue_name %}" id="{{ issue.issue_name }}">{{ issue.issue_name }}</a></li>

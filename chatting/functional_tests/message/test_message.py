@@ -16,7 +16,7 @@ class NewVisitorTest(FunctionalTest):
         h2 = div.find_element_by_tag_name('h2')
 
         # check nav > h2 : sorted issue title
-        self.assertEqual('Favourite Issues', h2.text)
+        self.assertEqual('Issues', h2.text)
 
         # check the correct class in (nav > div)
         self.assertIn('sorted_issues', div.get_attribute('class'))

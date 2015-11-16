@@ -5,6 +5,7 @@ class TeamTest(FunctionalTest):
     fixtures = ['users.json', 'message_data.json', 'team_list.json', 'issue_data.json']
 
     def select_team(self):
+        self.browser.find_element_by_id('btn_open_menu').click()
         self.browser.find_element_by_id('btn_select_team').click()
         self.browser.find_element_by_id('element').click()
 
@@ -24,6 +25,7 @@ class TeamTest(FunctionalTest):
     def test_invite_user(self):
         self.base_login()
         self.create_team()
+        self.browser.find_element_by_id('btn_open_menu').click()
         self.browser.find_element_by_id('btn_invite').click()
         self.browser.find_element_by_id('btn_my_teams').click()
         self.browser.find_element_by_id('TestTeam').click()
