@@ -150,6 +150,11 @@ def search_issue(request):
             issue_content = issue.issue_content
             if issue_content.find(str(search_text)) is not -1 and is_empty is False:
                 searched_list.append(issue)
+
+        for msg in Message.objects.all():
+            if msg.issue.team.team_name == current_team and msg.content.find(str(search_text)) \
+                    is not -1 and is_empty is False:
+                searched_list.append(msg.issue)
     except:
         Team.objects.create(team_name=default)
 
