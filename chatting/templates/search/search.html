@@ -6,17 +6,15 @@
         <ul id="search_view">
             {% for issue in searched_list %}
                 <li>
-                    <div class="left_issue_name">
-                        <div class="issue_name">Issue Name :
-                        </div>
-                        <div class="issue_value">
-                            <a href="{% url 'issue_detail' issue.issue_name %}" id="{{ issue.issue_name }}">{{ issue.issue_name }}</a>
-                        </div>
+                    <br>
+                    <br>
+                    <div class="issue_name">Issue Name :
+                        <a href="{% url 'issue_detail' issue.issue_name %}" id="0{{ issue.issue_name }}">{{ issue.issue_name }}</a>
                     </div>
-                    <div class="right_issue_content">
-                        <div class="issue_content">Issue Content :</div>
-                        <div class="issue_content_value">{{ issue.issue_content }}</div>
-                    </div>
+                    <div class="issue_user">Issue Content : {{ issue.issue_content }}</div>
+                    <div class="issue_user">Assigned : {{ issue.user }}</div>
+                    <br>
+                    <br>
                 </li>
             {% endfor %}
         </ul>

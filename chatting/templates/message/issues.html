@@ -8,8 +8,15 @@
         <ul id="issue_list">
             {% for issue in waiting %}
                 <li>
-                    <div class="issue_name">Issue Name :</div>
-                    <a href="{% url 'issue_detail' issue.issue_name %}" id="0{{ issue.issue_name }}">{{ issue.issue_name }}</a>
+                    <br>
+                    <br>
+                    <div class="issue_name">Issue Name :
+                        <a href="{% url 'issue_detail' issue.issue_name %}" id="0{{ issue.issue_name }}">{{ issue.issue_name }}</a>
+                    </div>
+                    <div class="issue_user">Issue Content : {{ issue.issue_content }}</div>
+                    <div class="issue_user">Assigned : {{ issue.user }}</div>
+                    <br>
+                    <br>
                 </li>
             {% endfor %}
         </ul>
@@ -20,8 +27,15 @@
         <ul id="issue_list">
             {% for issue in fixing %}
                 <li>
-                    <div class="issue_name">Issue Name :</div>
-                    <a href="{% url 'issue_detail' issue.issue_name %}" id="1{{ issue.issue_name }}">{{ issue.issue_name }}</a>
+                    <br>
+                    <br>
+                    <div class="issue_name">Issue Name :
+                        <a href="{% url 'issue_detail' issue.issue_name %}" id="0{{ issue.issue_name }}">{{ issue.issue_name }}</a>
+                    </div>
+                    <div class="issue_user">Issue Content : {{ issue.issue_content }}</div>
+                    <div class="issue_user">Assigned : {{ issue.user }}</div>
+                    <br>
+                    <br>
                 </li>
             {% endfor %}
         </ul>
@@ -32,8 +46,15 @@
         <ul id="issue_list">
             {% for issue in complete %}
                 <li>
-                    <div class="issue_name">Issue Name :</div>
-                    <a href="{% url 'issue_detail' issue.issue_name %}" id="2{{ issue.issue_name }}">{{ issue.issue_name }}</a>
+                    <br>
+                    <br>
+                    <div class="issue_name">Issue Name :
+                        <a href="{% url 'issue_detail' issue.issue_name %}" id="0{{ issue.issue_name }}">{{ issue.issue_name }}</a>
+                    </div>
+                    <div class="issue_user">Issue Content : {{ issue.issue_content }}</div>
+                    <div class="issue_user">Assigned : {{ issue.user }}</div>
+                    <br>
+                    <br>
                 </li>
             {% endfor %}
         </ul>
