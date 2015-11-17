@@ -32,5 +32,3 @@ class TeamTest(FunctionalTest):
         self.browser.find_element_by_id('btn_add_users').click()
         self.browser.find_element_by_id('tester2').click()
         self.browser.find_element_by_id('btn_invite_submit').click()
-
-        self.timeout(3)
