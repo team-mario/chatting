@@ -5,6 +5,7 @@ $(function() {
     $("#msg").keyup(function (e) {
         var regex = /#{2,}/;
         var input_valud = $("#msg").val();
+        input_valud = autoLink(input_valud);
         var is_hashtag = regex.test(input_valud);
         if(is_hashtag) {
             $("#msg").val('#');
@@ -19,6 +20,26 @@ $(function() {
     scroll_to_bottom('direct');
     setInterval(get_message, 3000);
 });
+function autoLink(content) {
+
+    var regURL = new RegExp('(^|[^"])(http|https|ftp|telnet|news|irc)://([-/.a-zA-Z0-9_~#%$?&=:200-377()]+)', 'gi');
+
+    var regURL2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
+
+    //var regEmail = new RegExp('([^:])([xA1-xFEa-z0-9_-]+@[xA1-xFEa-z0-9-]+\.[a-z0-9-]+\.[a-z0-9-]+)', 'gi');
+
+
+
+    return content.replace(regURL, '$1<a class="autoLink" href="$2://$3" target="_blank">$2://$3</a>')
+
+    	.replace(regURL2, '$1<a class="autoLink" href="http://$2" target="_blank">$2</a>');
+
+    	//.replace(regEmail, '$1<a class="autoLink" href="mailto:$2">$2</a>');
+
+}
+
+
+
 function scroll_to_bottom(mode){
     if(mode == 'smooth')
         $("html, body").animate({ scrollTop: $(document).height() }, "slow");
