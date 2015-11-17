@@ -3,8 +3,14 @@ var last_primary_key = 0;
 var selected_issue_name = '';
 $(function() {
     $("#msg").keyup(function (e) {
+        var regex = /#{2,}/;
+        var input_valud = $("#msg").val();
+        var is_hashtag = regex.test(input_valud);
+        if(is_hashtag) {
+            $("#msg").val('#');
+        }
         if (e.keyCode == 13 && $("#msg").val() != "") {
-            send_message($("#msg").val());
+            send_message(input_valud);
         }
     });
     $("#btn_plus").click(function(){
