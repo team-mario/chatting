@@ -26,16 +26,9 @@ function autoLink(content) {
 
     var regURL2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
 
-    //var regEmail = new RegExp('([^:])([xA1-xFEa-z0-9_-]+@[xA1-xFEa-z0-9-]+\.[a-z0-9-]+\.[a-z0-9-]+)', 'gi');
-
-
-
     return content.replace(regURL, '$1<a class="autoLink" href="$2://$3" target="_blank">$2://$3</a>')
 
-    	.replace(regURL2, '$1<a class="autoLink" href="http://$2" target="_blank">$2</a>');
-
-    	//.replace(regEmail, '$1<a class="autoLink" href="mailto:$2">$2</a>');
-
+        .replace(regURL2, '$1<a class="autoLink" href="http://$2" target="_blank">$2</a>');
 }
 
 
