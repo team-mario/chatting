@@ -54,6 +54,8 @@ def get_messages(request, issue_name=None):
     context['search_form'] = search_form
     context['user_list'] = user_list
     context['my_teams'] = my_teams
+    context['team_name'] = cur_team
+    context['user_name'] = request.user.get_username()
 
     if issue_name is not None:
         issue = get_object_or_404(Issue, team=team, issue_name=issue_name)
@@ -245,6 +247,8 @@ def show_issues(request):
     context['waiting'] = waiting
     context['fixing'] = fixing
     context['complete'] = complete
+    context['team_name'] = current_team
+    context['user_name'] = request.user.get_username()
 
     return render(
         request,
