@@ -146,14 +146,16 @@ def search_issue(request):
     try:
         team = Team.objects.get(team_name=current_team)
         issues = Issue.objects.filter(team=team.id)
+        issue_name = ''
         for issue in issues.all():
             issue_content = issue.issue_content
             if issue_content.find(str(search_text)) is not -1 and is_empty is False:
                 searched_list.append(issue)
+                issue_name = issue.issue_name
 
         for msg in Message.objects.all():
             if msg.issue.team.team_name == current_team and msg.content.find(str(search_text)) \
-                    is not -1 and is_empty is False:
+                    is not -1 and is_empty is False and issue_name != msg.issue.issue_name:
                 searched_list.append(msg.issue)
     except:
         Team.objects.create(team_name=default)
